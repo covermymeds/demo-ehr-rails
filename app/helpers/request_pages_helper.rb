@@ -71,10 +71,10 @@ module RequestPagesHelper
     # loop through each question-set, looking for FILE elements
     has_file_questions = false
     form[:question_sets].each do |qs|
-      file_questions = qs[:questions].select {|q| q[:question_type] == "FILE" }
-      has_file_questions ||= (!file_questions.empty?)
+      has_file_questions ||= qs[:questions].any? {|q| q[:question_type] == "FILE" }
     end
-    return (has_file_questions) ? 'multipart/form-data' : 'application/x-www-form-urlencoded'
+    
+    (has_file_questions) ? 'multipart/form-data' : 'application/x-www-form-urlencoded'
   end
 
 end

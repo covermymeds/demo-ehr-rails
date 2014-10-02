@@ -16,17 +16,6 @@ class PatientsController < ApplicationController
         format.json { render :show, status: :ok, location: @patient }
       end
     else
-      # update the patient's PA list
-      # post to the api to create a pa request
-      client = RequestConfigurator.api_client
-      @patient.pa_requests.each do |pa|
-        request = client.get_request(pa.cmm_token)
-        pa.set_cmm_values(request)
-      end
-      ActiveRecord::Base.transaction do
-        @patient.pa_requests.each {|pa| pa.save!}
-      end
-
       respond_to do |format|
         format.html {render :show}
         format.json {render :show, status: :ok, location: @patient}

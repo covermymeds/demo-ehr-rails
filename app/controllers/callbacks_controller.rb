@@ -5,26 +5,26 @@ class CallbacksController < ApplicationController
   # POST /callbacks/handle.json {JSON body}
   def handle
     # receive information about a request & handle it
-    @cb_data = request_params
+    @callback = request_params
 
     # find the request in our local database
-    @pa = PaRequest.find_by_cmm_id(@cb_data['id'])
-    if is_delete?(@cb_data) && @pa
+    @pa = PaRequest.find_by_cmm_id(@callback['id'])
+    if is_delete?(@callback) && @pa
       # first check if it's been deleted on CoverMyMeds
       @pa.update_attributes(:cmm_token => nil)
 
     else
       # if it's there, must be an update callback
       if @pa
-        @pa.update_from_callback(@cb_data)
+        @pa.update_from_callback(@callback)
         
       else
         # couldn't find it in our db, must be a retrospective
         @pa = PaRequest.new 
-        @pa.init_from_callback(@cb_data)
+        @pa.init_from_callback(@callback)
       end
 
-      bad_request unless @pa.save
+      @pa.save!
     end
 
     respond_to do |format|
@@ -35,14 +35,8 @@ class CallbacksController < ApplicationController
 
   private
 
-  def is_delete?(cb_data)
-    # next, check if the PA has been deleted.  if so, remove it from our list
-    del = (cb_data['events'] || []).select {|ev| ev['type'] == "DELETE"}
-    return !del.empty?
-  end
-
-  def bad_request
-    raise ActionController::BadRequest.new('Bad Request')
+  def is_delete?(callback)
+    (callback['events'] || []).any? {|ev| ev['type'] == "DELETE"}
   end
 
   def request_params

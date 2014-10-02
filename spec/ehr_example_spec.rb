@@ -209,7 +209,7 @@ describe 'eHR Example App' do
     visit('/')
     click_link('Resources')
     click_link('Source Code')
-    expect(page).to have_content('Demonstration EHR system using CoverMyMeds to handle Prior Authorization')
+    expect(page).to have_content('Reference implementation of an EHR integration with CoverMyMeds, written in Ruby on Rails.')
   end    
 
 end

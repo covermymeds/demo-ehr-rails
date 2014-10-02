@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Drug number:</strong>
+  <%= @prescription.drug_number %>
+</p>
+
+<p>
+  <strong>Quantity:</strong>
+  <%= @prescription.quantity %>
+</p>
+
+<p>
+  <strong>Frequency:</strong>
+  <%= @prescription.frequency %>
+</p>
+
+<p>
+  <strong>Refills:</strong>
+  <%= @prescription.refills %>
+</p>
+
+<p>
+  <strong>Dispense as written:</strong>
+  <%= @prescription.dispense_as_written %>
+</p>
+
+<p>
+  <strong>Patient:</strong>
+  <%= @prescription.patient %>
+</p>
+
+<%= link_to 'Edit', edit_patient_prescription_path(@patient, @prescription) %> |
+<%= link_to 'Back', patient_prescriptions_path(@patient) %>

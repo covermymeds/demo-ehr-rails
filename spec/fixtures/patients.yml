@@ -1,0 +1,69 @@
+#
+# this seeds the database with default values before each test run
+#
+
+patient_Amber:
+    first_name: Amber
+    last_name: Smith
+    date_of_birth: 10/01/1971
+    state: OH
+    bin: 111111,
+    pcn: SAMP001,
+    group_id: NOTREAL
+
+patient_Nathan:
+    first_name: Nathan
+    last_name: Johnson
+    date_of_birth: 10/01/1971
+    state: OH
+
+patient_Amber4:
+    first_name: Amber
+    last_name: Williams
+    date_of_birth: 10/01/1971
+    state: OH
+
+patient_Nathan2:
+    first_name: Nathan
+    last_name: Jones
+    date_of_birth: 10/01/1971
+    state: OH
+
+patient_Becky:
+    first_name: Becky
+    last_name: Brown
+    date_of_birth: 10/01/1971
+    state: OH
+
+patient_Mark:
+    first_name: Mark
+    last_name: Davis
+    date_of_birth: 10/01/1971
+    state: OH
+
+patient_Mike:
+    first_name: Mike
+    last_name: Miller
+    date_of_birth: 10/01/1971
+    state: OH
+
+patient_Amanda:
+    first_name: Amanda
+    last_name: Wilson
+    date_of_birth: 10/01/1971
+    state: OH
+
+patient_Amber2:
+    first_name: Amber
+    last_name: Moore
+    date_of_birth: 10/01/1971
+    state: OH
+
+patient_Amber3:
+    first_name: Amber
+    last_name: Taylor
+    date_of_birth: 10/01/1971
+    state: OH
+
+
+

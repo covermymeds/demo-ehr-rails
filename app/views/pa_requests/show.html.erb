@@ -1,0 +1,55 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Prescription</h2>
+<p>
+  <strong>Drug number:</strong>
+  <%= @prescription.drug_number %>
+</p>
+
+<p>
+  <strong>Quantity:</strong>
+  <%= @prescription.quantity %>
+</p>
+
+<p>
+  <strong>Frequency:</strong>
+  <%= @prescription.frequency %>
+</p>
+
+<p>
+  <strong>Refills:</strong>
+  <%= @prescription.refills %>
+</p>
+
+<p>
+  <strong>Dispense as written:</strong>
+  <%= @prescription.dispense_as_written %>
+</p>
+
+<p>
+  <strong>Patient:</strong>
+  <%= @prescription.patient %>
+</p>
+
+<h2>Request</h2>
+<p>
+  <strong>Form Id</strong>
+  <%= @pa_request.form_id %>
+</p>
+
+<p><strong>Sent?</strong>
+<%= @pa_request.sent %>
+</p>
+
+<p>
+  <strong>Urgent?</strong>
+  <%= @pa_request.urgent %>
+</p>
+
+<p>
+  <strong>State</strong>
+  <%= @pa_request.state %>
+</p>
+
+<%= link_to 'View Details', cmm_request_link_for(@pa_request), :class=>'btn btn-success' %>
+<%= link_to 'Back', patient_path(@patient) %>

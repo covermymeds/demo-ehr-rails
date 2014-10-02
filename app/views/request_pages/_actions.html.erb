@@ -1,0 +1,14 @@
+<div>
+  <% actions.each do |action| %>
+    <div class="action">
+    <button type='submit' 
+      formmethod='POST'
+      formaction="<%= action[:href] %>"
+      class='btn btn-primary btn-lg'
+      <%= display_if_not(action[:display]) %>
+      >
+      <%= action[:title] %>
+    </button>
+    </div>
+  <% end %>
+</div>

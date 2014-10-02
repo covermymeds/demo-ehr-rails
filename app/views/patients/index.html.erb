@@ -1,0 +1,32 @@
+<div id="patients-list" class="template">
+  <h1>Patients
+    <%= link_to "Add patient", new_patient_path, :class=>'btn btn-small btn-success' %>
+  </h1>
+
+  <% if @patients.empty? %>
+  <h2>No Patients</h2>
+  <% end %>
+
+  <table class="table table-striped">
+    <tr class="header">
+      <th class="open">Open PAs</th>
+      <th>Patient Name</th>
+      <th class="remove"></th>
+    </tr>
+    <% @patients.each do |patient| %>
+    <tr class="patients">
+      <td class="open">
+        <span class="label label-info"><%= patient.requests %></span>
+      </td>
+      <td>
+        <%= link_to "#{patient.description}", patient, :class=>'patient-link' %>
+      </td>
+      <td class="remove">
+        <%= link_to "Edit", edit_patient_path(patient), :class => 'btn btn-xs btn-info'%>
+        <%= link_to "X", patient, method: :delete, :class=>'btn btn-xs btn-danger' %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+

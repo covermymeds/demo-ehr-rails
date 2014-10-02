@@ -1,0 +1,9 @@
+# pharmacy.yml
+pharmacy_CVS:
+  name: 'CVS'
+  street: '670 N. High St.'
+  city: 'Columbus'
+  state: 'OH'
+  fax: '555-555-5555'
+  phone: '614-555-1212'
+  zip: '43021'

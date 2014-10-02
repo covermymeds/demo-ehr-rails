@@ -1,0 +1,49 @@
+.question {
+  padding-top: 8px;
+}
+.action {
+  padding-top: 8px;
+  .btn {
+    width: 100%;
+    white-space: normal;
+  }
+}
+.required::after {
+  content: image-url('required_field.png');
+  position: absolute;
+  top: 0px;
+  right: -99px;
+}
+.signature-pad {
+  background: white image-url('signaturepad.png') no-repeat left top;
+}
+.signature-pad-reset, .signature-pad-reset:hover {
+  display: block;
+  text-decoration: none;
+}
+.ui-dialog-osx {
+    -moz-border-radius: 0 0 8px 8px;
+    -webkit-border-radius: 0 0 8px 8px;
+    border-radius: 0 0 8px 8px; border-width: 0 8px 8px 8px;
+}
+
+#json-source {
+  display:none;
+  top: 200px;
+  right: 50px;
+  z-index: 1;
+  position: absolute;
+  white-space: pre;
+  width:50%;
+  overflow:auto;
+  box-shadow: 2px 2px 9px #555;
+}
+
+[data-coded-reference="CoverMyMeds:prior-auth-header:1"] img {
+  margin-right: 32px;
+  box-shadow: 2px 2px 6px #444;
+}
+
+[data-coded-reference="CoverMyMeds:prior-auth-header:1"] tr:first-child {
+  font-weight: bold;
+}

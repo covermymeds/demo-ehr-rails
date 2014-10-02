@@ -1,0 +1,29 @@
+<h1>Prescriptions for <%= "#{@patient.full_name} (#{@patient.date_of_birth})" %></h1>
+
+<table class='table table-striped'>
+  <thead>
+    <tr>
+      <th>Drug number</th>
+      <th>Quantity</th>
+      <th>Frequency</th>
+      <th>Refills</th>
+      <th>Dispense as written</th>
+      <th>Patient</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @prescriptions.each do |prescription| %>
+    <tr>
+      <td><%= link_to prescription.drug_name, [@patient, prescription] %></td>
+      <td><%= prescription.quantity %></td>
+      <td><%= prescription.frequency %></td>
+      <td><%= prescription.refills %></td>
+      <td><%= prescription.dispense_as_written %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

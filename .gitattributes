@@ -1,0 +1,7 @@
+*.rb    filter=spabs
+*.erb   filter=spabs
+*.js    filter=spabs4
+*.yml   filter=spabs
+*.json  filter=spabs4
+Gemfile* filter=spabs2
+

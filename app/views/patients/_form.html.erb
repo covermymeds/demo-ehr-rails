@@ -1,0 +1,97 @@
+<%= form_for(@patient) do |f| %>
+<% if @patient.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@patient.errors.count, "error") %> prohibited this patient from being saved:</h2>
+
+  <ul>
+    <% @patient.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+<div id="patient-add" class="template">
+  <fieldset id='patient'>
+    <legend>Patient</legend>
+
+    <div class='row'>
+      <div class='form-group col-md-4'>
+        <%= f.label :first_name, "First Name" %><br>
+        <%= f.text_field :first_name, :class=>'form-control', :placeholder=>'First Name' %>
+      </div>
+
+      <div class='form-group col-md-4'>
+        <%= f.label :last_name, "Last Name" %><br>
+        <%= f.text_field :last_name, :class=>'form-control', :placeholder=>'Last Name' %>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='form-group col-md-2'>
+        <%= f.label :gender, "Gender" %>
+        <%= f.select :gender, [['male', 'm'], ['female', 'f']], {}, {class: 'form-control'} %>
+      </div>
+
+      <div class='form-group col-md-2'>
+        <%= f.label :date_of_birth, "Birthdate" %><br>
+        <%= f.text_field :date_of_birth, :class=>'form-control datepicker', :placeholder=>"e.g. 01/01/1900" %>
+      </div>
+    </div>
+    <div class='form-group'>
+      <%= f.label :street_1, "Street Address" %><br>
+      <%= f.text_field :street_1, :class=>'form-control', :placeholder=>'1234 Main St.' %>
+    </div>
+    <div class='form-group'>
+      <%= f.label :street_2, "Apartment/Suite #" %><br>
+      <%= f.text_field :street_2, :class=>'form-control', :placeholder=>'Apartment/Suite #' %>
+    </div>
+    <div class='row'>
+      <div class='form-group col-md-6'>
+        <%= f.label :city, "City" %><br>
+        <%= f.text_field :city, :class=>'form-control', :placeholder=>'City' %>
+      </div>
+      <div class='form-group col-md-3'>
+        <%= f.label :state, "State"%><br/>
+        <%= f.subregion_select :state, 'US', {:priority => [@patient.state]}, :class=>'form-control', :value=>"#{@patient.state}"%>
+      </div>
+
+      <div class='form-group col-md-3'>
+        <%= f.label :zip, "Zip" %><br>
+        <%= f.text_field :zip, :class=>'form-control', :placeholder=>'12345' %>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='form-group col-md-4'>
+        <%= f.label :phone_number, "Phone Number" %><br>
+        <%= f.text_field :phone_number, :class=>'form-control', :placeholder=>'e.g. 555-555-5555' %>
+      </div>
+
+      <div class='form-group col-md-6'>
+        <%= f.label :email, "Email" %><br>
+        <%= f.text_field :email, :class=>'form-control', :placeholder=>'e.g. example@example.com' %>
+      </div>
+    </div>
+  </fieldset>
+  <div class='row'>
+  <fieldset id='insurance'>
+    <legend>Insurance</legend>
+    <div class='form-group col-md-4'>
+      <%= f.label :bin, "Payer BIN" %>
+      <%= f.text_field :bin, :class=>'form-control', :placeholder=>'111111'%>
+    </div>
+    <div class='form-group col-md-4'>
+      <%= f.label :pcn, "Payment Control Number (PCN)" %>
+      <%= f.text_field :pcn, :class=>'form-control', :placeholder=>'SAMP001'%>
+    </div>
+    <div class='form-group col-md-4'>
+      <%= f.label :bin, "Group Rx ID" %>
+      <%= f.text_field :group_id, :class=>'form-control', :placeholder=>'NOTREAL'%>
+    </div>
+  </fieldset>
+</div>
+<div class="actions">
+  <%= link_to "Cancel", patients_path, :class=>"btn btn-default cancel" %>
+  <%= f.submit "Create", :class => "btn btn-primary create" %>
+</div>
+
+</div>
+<% end %>

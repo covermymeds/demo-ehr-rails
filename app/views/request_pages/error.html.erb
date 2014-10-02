@@ -1,0 +1,27 @@
+<h1>Prior Auth Request <small>(<%= @pa_request.cmm_id %>)</small></h1>
+
+<!-- adds a button to the title bar that shows the JSON -->
+<% content_for :controls do %>
+<button id='show-json-source' class='btn btn-default navbar-btn'>Show JSON</button>
+<% end %>
+
+<div class='request-pages'>
+  <h2>There were errors in your request</h2>
+   <% @request_page.each do |error| %>
+    <div class='row'>
+      <div class='col-md-2'>
+        <span><%= error[:code] %></span>
+      </div>
+      <div class='col-md-5'>
+        <span><%= error[:message] %></span>
+      </div>
+      <div class='col-md-5'>
+        <span><%= error[:debug] %></span>
+      </div>
+    </div>
+    <% end %>
+</div>
+
+<code id='json-source'>
+  <%= JSON.pretty_generate(@request_page) %>
+</code>

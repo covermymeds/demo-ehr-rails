@@ -1,0 +1,6 @@
+<div class="col-md-3">
+  <span>Unknown Question Type: <%= question[:question_type] %> </span>
+</div>
+<div class="col-md-9">
+  <%= (question[:question_text] || "").html_safe %>
+</div>

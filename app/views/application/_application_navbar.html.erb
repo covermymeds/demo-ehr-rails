@@ -1,0 +1,50 @@
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <%= link_to "M 'r' Us", root_path, :class=>'navbar-brand' %>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+          <%= link_to "Home", root_path %>
+        </li>
+        <li>
+          <%= link_to "Patients", patients_path %>
+        </li>
+        <li class='dropdown'>
+          <a href='#' class='dropdown-toggle' data-toggle='dropdown'>Prior Authorizations<b class='caret'></b></a>
+          <ul class='dropdown-menu'>
+            <li><%= link_to "Dashboard", pa_requests_path %></li>
+            <li><%= link_to "New PA Request", new_pa_request_path %></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class='nav navbar-nav navbar-right'>
+          <li>
+            <%= form_tag('/toggle_ui', :method=>'post', :class=>'navbar-form navbar-left', :id=>'custom_ui_form') do |f| %>
+              <%= hidden_field_tag "return", request.original_url %>
+              <%= select_tag "change_view", options_for_select(['Custom UI', 'CMM UI'], (@_use_custom_ui ? 'Custom UI' : 'CMM UI')), :class=>'form-control' %>
+            <% end %>
+          </li>
+          <li class='dropdown'>
+            <a href='#' class='dropdown-toggle' data-toggle='dropdown'>Resources<b class='caret'></b></a>
+            <ul class='dropdown-menu'>
+              <li><%= link_to "Contact CoverMyMeds", help_path %></li>
+              <li><%= link_to "API Documentation", api_documentation_path %></li>
+              <li><%= link_to "Source Code", source_code_path %></li>
+            </ul>
+          </li>
+          <li>
+            <%= yield :controls %>
+          </li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</div>

@@ -1,0 +1,78 @@
+<%= form_for @pa_request do |f| %>
+<% if @pa_request.errors.any? %>
+
+<div id="error_explanation">
+  <h2><%= pluralize(@pa_request.errors.count, "error") %> prohibited this prescription from being saved:</h2>
+  <ul>
+    <% @pa_request.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div class='form-group'>
+  <%= f.label :patient_id, "Patient" %><br/>
+  <%= select :patient, :id, Patient.all.collect {|p| [p.description, p.id]}, {prompt:'Select a Patient'},{:class=>'form-control'} %>
+  <%= link_to "New Patient...", new_patient_path, :class=>'btn btn-primary' %>
+</div>
+
+<div class='form-group'>
+  <%= f.label :state, "State"%><br/>
+  <%= f.subregion_select :state, 'US', {priority: %w(@patient.state), prompt:'Choose state patient lives in'}, :class=>'form-control' %>
+</div>
+
+<div class="form-group">
+  <%= label_tag :prescription_drug_number, "Medication" %><br/>
+  <%= search_field :prescription, :drug_number, :class=>'form-control' %>
+  <%= hidden_field :prescription, :drug_name %>
+</div>
+
+<div class='row'>
+  <%= hidden_field :prescription, :id %>
+  <div class="form-group col-md-2">
+    <%= label_tag :prescription_quantity, "Quantity" %><br>
+    <%= number_field :prescription, :quantity, in: 1..90, :class=>'form-control' %>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= label_tag :prescription_frequency , "Directions"%><br>
+    <%= select :prescription, :frequency, Prescription::FREQUENCIES, {}, {class: 'form-control'} %>
+  </div>
+
+  <div class="form-group col-md-2">
+    <%= label_tag :prescription_refills, "Refills" %><br>
+    <%= select :prescription, :refills, options_for_select((1..10)), {}, {class: 'form-control'} %>
+  </div>
+
+  <div class='checkbox form-group col-md-4'>
+    <%= label_tag :prescription_dispense_as_written, "Dispense As Written" do %>
+    <%= check_box_tag :dispense_as_written, 1, true, {:name => 'prescription[dispense_as_written]'} %>
+    <b>Dispense as Written</b>
+    <% end %>
+  </div>
+</div>
+
+<div class='form-group'>
+  <%= label_tag :pharmacy_id, "Pharmacy to Fill Prescription" %>
+  <%= select :pharmacy, :id, Pharmacy.all.collect {|p| [p.display_name, p.id]}, {prompt:'Select a Pharmacy'}, {:class=>'form-control'} %>
+</div>
+
+<div class='form-group'>
+  <%= f.label :form_id, "Payer" %>
+  <%= f.text_field :form_id, :class=>'form-control' %>
+</div>
+
+<div class='checkbox'>
+  <%= f.label :urgent do %>
+  <%= f.check_box :urgent, :class=>'checkbox' %>
+  <b>Urgent?</b>
+  <% end %>
+</div>
+
+<div class='form-actions'>
+  <%= link_to "Cancel", dashboard_path, :class=>'btn btn-default'%>
+  <%= f.submit "Create", :class=>'btn btn-primary', :id=>'create'%>
+</div>
+
+<% end %>

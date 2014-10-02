@@ -48,7 +48,7 @@ module RequestPagesHelper
 
   def render_coded_reference(ref)
     if(ref)
-      referenceString = [ref['qualifier'], ref['code'], ref['code_system_version']].join(":")
+      referenceString = [ref[:qualifier], ref[:code], ref[:code_system_version]].join(":")
       "data-coded-reference=" + referenceString
     end
   end

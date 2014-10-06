@@ -3,7 +3,7 @@
 </div>
 <div class="col-md-9 <%= require_if(question[:flag]) %> ">
   <input type="text"
-  class="form-control datepicker"
+  class="form-control datepicker <%= require_if(question[:flag]) %>"
   name="<%= massage(question[:question_id], form_name) %>"
   value="<%= data[question[:question_id]] %>"
   data-validation="<%= question[:validations][0] %>"

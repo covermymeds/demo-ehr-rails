@@ -8,12 +8,14 @@
     white-space: normal;
   }
 }
-.required::after {
-  content: image-url('required_field.png');
-  position: absolute;
-  top: 0px;
-  right: -99px;
+
+input[type=text]:required, textarea:required, checkbox:required, input.required, textarea.required {
+  box-shadow: 0 0 5px rgba(255, 0, 0, 1);
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 1px solid rgba(255, 0, 0, 1);
 }
+
 .signature-pad {
   background: white image-url('signaturepad.png') no-repeat left top;
 }

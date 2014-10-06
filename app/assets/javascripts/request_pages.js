@@ -4,8 +4,10 @@ $(function() {
   });
 
   $("[data-coded-reference='CoverMyMeds:signature-pad:1']").each(function(idx, el) {
-    G_vmlCanvasManager.initElement(el);
-    var ctx = el.getContext('2d');
+    if (typeof(G_vmlCanvasManager) != 'undefined') {
+      G_vmlCanvasManager.initElement(el);
+      var ctx = el.getContext('2d');
+    }
   })
 
   $("[data-coded-reference='CoverMyMeds:signature-pad:1']").signaturePad()

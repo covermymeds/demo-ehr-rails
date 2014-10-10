@@ -11,9 +11,9 @@
   <%= require_if(question[:flag]) %>
   <%= render_coded_reference(question[:coded_reference]) %>
   />
+  <span class="help-block"><%= question[:help_text] %></span>
   <% question[:validations].each do |validation| %>
     <span class="help-block"><%= @validations[validation][:message] %></span>
   <% end %>
-  <span class="help-block"><%= question[:help_text] %></span>
 </div>
 

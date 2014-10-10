@@ -17,5 +17,8 @@
     <%= data[question[:question_id]] %>
     </span>
   </span>
+  <% question[:validations].each do |validation| %>
+    <span class="help-block"><%= @validations[validation][:message] %></span>
+  <% end %>
 </div>
 

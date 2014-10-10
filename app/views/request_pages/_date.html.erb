@@ -10,4 +10,8 @@
   data-default-next-id="<%= massage(question[:default_next_question_id], form_name) %>"
   <%= require_if(question[:flag]) %>
   />
+  <span class="help-block"><%= question[:help_text] %></span>
+  <% question[:validations].each do |validation| %>
+    <span class="help-block"><%= @validations[validation][:message] %></span>
+  <% end %>
 </div>

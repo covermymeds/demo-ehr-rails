@@ -19,7 +19,6 @@ $(function() {
   $(formSelector).questionVisibility({
     last: $(formSelector).attr('id')+"[END]"
   })
-
   
   // on change hide/show questions
   var decision = ".question select, .question input[type='checkbox']"
@@ -27,5 +26,14 @@ $(function() {
     $(formSelector).questionVisibility("changed", $(this))
   })
 
+  $(formSelector).validate({
+        onKeyup : true,
+        eachValidField : function() {
+          $(this).closest('div').removeClass('has-error').addClass('has-success');
+        },
+        eachInvalidField : function() {
+          $(this).closest('div').removeClass('has-success').addClass('has-error');
+        }
+      })
 
 });

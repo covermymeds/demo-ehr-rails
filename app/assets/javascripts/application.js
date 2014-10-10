@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require jquery-validate
 // Loads all Bootstrap javascripts
 //= require bootstrap
 //= require bootstrap-datepicker

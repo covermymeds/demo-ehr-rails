@@ -1,3 +1,4 @@
 <div class="row question" data-question-id='<%= question[:question_id] %>'>
+  <% # this is a helper function that encapsulates rendering the various different types of questions %>
   <%= render_question(question, form_name, data) %>
 </div>

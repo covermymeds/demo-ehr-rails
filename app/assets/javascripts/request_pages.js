@@ -3,6 +3,13 @@ $(function() {
     $('#json-source').slideToggle();
   });
 
+  $("[data-coded-reference='CoverMyMeds:signature-pad:1']").each(function(idx, el) {
+    if (typeof(G_vmlCanvasManager) != 'undefined') {
+      G_vmlCanvasManager.initElement(el);
+      var ctx = el.getContext('2d');
+    }
+  })
+
   $("[data-coded-reference='CoverMyMeds:signature-pad:1']").signaturePad()
 
   if ($("[data-coded-reference='CoverMyMeds:form-search:1']").size()) {
@@ -19,7 +26,6 @@ $(function() {
   $(formSelector).questionVisibility({
     last: $(formSelector).attr('id')+"[END]"
   })
-
   
   // on change hide/show questions
   var decision = ".question select, .question input[type='checkbox']"
@@ -27,5 +33,14 @@ $(function() {
     $(formSelector).questionVisibility("changed", $(this))
   })
 
+  $(formSelector).validate({
+        onKeyup : true,
+        eachValidField : function() {
+          $(this).closest('div').removeClass('has-error').addClass('has-success');
+        },
+        eachInvalidField : function() {
+          $(this).closest('div').removeClass('has-success').addClass('has-error');
+        }
+      })
 
 });

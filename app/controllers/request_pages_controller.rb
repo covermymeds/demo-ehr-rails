@@ -19,6 +19,7 @@ class RequestPagesController < ApplicationController
 
       @forms = @request_page[:forms]
       @data = @request_page[:data]
+      @validations = @request_page[:validations]
     end
 
   end

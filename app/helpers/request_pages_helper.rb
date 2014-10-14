@@ -37,19 +37,28 @@ module RequestPagesHelper
   end
 
   def require_if(flag)
-    "required" if flag == "REQUIRED"
+    "data-required required" if flag == "REQUIRED"
   end
 
   def validations_if(validations)
     if not validations.nil?
-      "data-validation='"+validations[0]+"'"
+      ("data-validation='"+validations+"'").html_safe
     end
   end
 
   def render_coded_reference(ref)
     if(ref)
       referenceString = [ref[:qualifier], ref[:code], ref[:code_system_version]].join(":")
-      "data-coded-reference=" + referenceString
+      ("data-coded-reference=" + referenceString).html_safe
+    end
+  end
+
+  def render_validation(key, validations)
+    if(key && validations)
+      validation = validations[key.to_sym]
+      if(validation[:type] == "REGEX")
+        ("data-pattern='" + validation[:value] + "'").html_safe
+      end
     end
   end
 

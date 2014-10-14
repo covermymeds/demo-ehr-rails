@@ -1,9 +1,9 @@
 <div class="col-md-3">
-  <span> <%= question[:question_text] %> </span>
+  <span><label> <%= question[:question_text] %></label> </span>
 </div>
 <div class="col-md-9 <%= require_if(question[:flag]) %> ">
   <textarea type="text"
-  class="form-control"
+  class="form-control <%= require_if(question[:flag]) %>"
   name="<%= massage(question[:question_id], form_name) %>"
   value="<%= data[question[:question_id]] %>"
   data-validation="<%= question[:validations][0] %>"
@@ -11,4 +11,5 @@
   <%= require_if(question[:flag]) %>
   <%= render_coded_reference(question[:coded_reference]) %>
   ></textarea>
+  <span class="help-block"><%= question[:help_text] %></span>
 </div>

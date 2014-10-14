@@ -1,9 +1,9 @@
 <div class="col-md-3">
-  <span> <%= question[:question_text] %> </span>
+  <span> <label><%= question[:question_text] %></label> </span>
 </div>
 <div class="col-md-9 <%= require_if(question[:flag]) %> ">
   <input type="file"
-  class="form-control"
+  class="form-control <%= require_if(question[:flag]) %>"
   id="<%= question[:question_id] %>"
   name="<%= massage(question[:question_id], form_name) %>"
   data-validation="<%= question[:validations][0] %>"
@@ -17,5 +17,8 @@
     <%= data[question[:question_id]] %>
     </span>
   </span>
+  <% question[:validations].each do |validation| %>
+    <span class="help-block"><%= @validations[validation][:message] %></span>
+  <% end %>
 </div>
 

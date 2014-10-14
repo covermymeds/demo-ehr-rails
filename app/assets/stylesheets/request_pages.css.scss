@@ -17,7 +17,7 @@
 }
 */
 
-div.required::before{
+div.required:before{
    content:"* Required" ;
    color:red   
 }

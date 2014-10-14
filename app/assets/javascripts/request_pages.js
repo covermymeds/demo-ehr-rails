@@ -3,6 +3,13 @@ $(function() {
     $('#json-source').slideToggle();
   });
 
+  $("[data-coded-reference='CoverMyMeds:signature-pad:1']").each(function(idx, el) {
+    if (typeof(G_vmlCanvasManager) != 'undefined') {
+      G_vmlCanvasManager.initElement(el);
+      var ctx = el.getContext('2d');
+    }
+  })
+
   $("[data-coded-reference='CoverMyMeds:signature-pad:1']").signaturePad()
 
   if ($("[data-coded-reference='CoverMyMeds:form-search:1']").size()) {

@@ -3,7 +3,7 @@
 </div>
 <div class="col-md-9 <%= require_if(question[:flag]) %> has-feedback">
   <input type="text"
-  class="form-control"
+  class="form-control <%= require_if(question[:flag]) %>"
   name="<%= massage(question[:question_id], form_name) %>"
   value="<%= data[question[:question_id]] %>"
   <%= render_validation(question[:validations][0], @validations) %>

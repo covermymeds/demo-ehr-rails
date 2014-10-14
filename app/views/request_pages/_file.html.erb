@@ -3,7 +3,7 @@
 </div>
 <div class="col-md-9 <%= require_if(question[:flag]) %> ">
   <input type="file"
-  class="form-control"
+  class="form-control <%= require_if(question[:flag]) %>"
   id="<%= question[:question_id] %>"
   name="<%= massage(question[:question_id], form_name) %>"
   data-validation="<%= question[:validations][0] %>"

@@ -1,8 +1,6 @@
 <fieldset class="question-set form-group">
 <legend><%= question_set[:title] %></legend>
   <% question_set[:questions].each do |question| %>
-    <div class="row question" data-question-id='<%= question[:question_id] %>'>
-      <%= render_question(question, form_name, data) %>
-    </div>
+    <%= render partial: "question", locals:{question_set: question_set, question:question, form_name:form_name, data: data} %>
   <% end %>
 </fieldset>

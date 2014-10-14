@@ -1,5 +1,5 @@
 <div class="col-md-3">
-  <span> <%= question[:question_text] %> </span>
+  <span> <label><%= question[:question_text] %></label> </span>
 </div>
 <div class="col-md-9 <%= require_if(question[:flag]) %> ">
   <input type="text"

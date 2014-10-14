@@ -8,12 +8,20 @@
     white-space: normal;
   }
 }
+/*
 .required::after {
   content: image-url('required_field.png');
   position: absolute;
   top: 0px;
   right: -99px;
 }
+*/
+
+div.required::before{
+   content:"* Required" ;
+   color:red   
+}
+
 .signature-pad {
   background: white image-url('signaturepad.png') no-repeat left top;
 }

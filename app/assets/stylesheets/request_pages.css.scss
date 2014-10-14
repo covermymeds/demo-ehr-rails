@@ -1,6 +1,7 @@
 .question {
   padding-top: 8px;
 }
+
 .action {
   padding-top: 8px;
   .btn {
@@ -8,13 +9,15 @@
     white-space: normal;
   }
 }
-/*
-}
-*/
 
 div.required:before{
    content:"* Required" ;
    color:red   
+}
+
+div.has-error:before{
+  content:"* Validation Error";
+  color:red
 }
 
 .signature-pad {

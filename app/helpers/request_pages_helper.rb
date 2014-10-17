@@ -56,8 +56,13 @@ module RequestPagesHelper
   def render_validation(key, validations)
     if(key && validations)
       validation = validations[key.to_sym]
-      if(validation[:type] == "REGEX")
+      case validation[:type]
+      when "REGEX"
         ("data-pattern='" + validation[:value] + "'").html_safe
+      when "MIME_TYPES"
+        ("accept='"+ validation[:value].join(', ') + "'").html_safe
+      when "BYTE_LIMIT"
+        ("data-file-size='" + validation[:value].to_s + "'").html_safe
       end
     end
   end

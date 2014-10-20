@@ -49,7 +49,7 @@ describe 'eHR Example App' do
     end
 
     it 'should navigate to the contact cmm view' do
-      click_link('Resources')
+      click_link('Prior Authorizations')
       click_link('Contact CoverMyMeds')
       expect(page).to have_content('For assistance using CoverMyMeds')
     end
@@ -200,7 +200,7 @@ describe 'eHR Example App' do
 
   it 'should display a help view' do
     visit('/')
-    click_link('Resources')
+    click_link('Prior Authorizations')
     click_link('Contact CoverMyMeds')
     expect(page).to have_content('For assistance using CoverMyMeds')
   end

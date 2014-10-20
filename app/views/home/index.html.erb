@@ -1,18 +1,17 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
-    <h1>Your EHR</h1>
     <h2>Lets pretend that this is your EHR...</h2>
     <p>This is a simple demo system to show how to integrate CoverMyMeds into your system using the <a href='https://api.covermymeds.com/'>CoverMyMeds API</a>. In addition to the API, this demo system uses the <a href='https://github.com/covermymeds/api-jquery-plugins'>jQuery plugins</a> for CoverMyMeds PA requests, the dashboard, and for submitting and editing requests.</p>
 
-    <p>You will need to create four interface elements:</p>
-    <ol>
-      <li>a button to start a prior authorization while the provider is working with an electronic prescription.</li>
-      <li>a prior authorization task list which will be used to show the PAs being worked upon.</li>
-      <li>a form to start a new prior authorization.</li>
-      <li>a contact page so CoverMyMeds can help your users.</li>
-    </ol>
+    <p>This system demonstrates 4 main elements:</p>
+    <ul>
+      <li>a prior authorization task list to show the PAs being worked upon.</li>
+      <li>starting a prior authorization within the electronic prescription workflow.</li>
+      <li>starting a new prior authorization outside e-Prescribing.</li>
+      <li>managing the PA workflow with request-pages</li>
+    </ul>
     <a href="https://api.covermymeds.com/#quick-start" class="btn btn-primary btn-lg" role="button">
-      Learn more &raquo;
+      API Docs &raquo;
     </a>
     <h2>Start the Demonstration</h2>
     <%= link_to "Start e-Prescribing Workflow", patients_path, :class => 'btn btn-success', :role=>'button'%>

@@ -50,7 +50,7 @@
 </div>
 
 <% else %>
-<div id="dashboard" data-tokens="[<%= request_tokens.join(', ') %>]"></div>
+<div id="dashboard" data-tokens="<%= @tokens.to_s %>"></div>
 <% end %>
 
 

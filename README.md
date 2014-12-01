@@ -16,18 +16,33 @@ This application demonstrates what a typical web-based EHR can do to automate pr
 * Bundler
 * phantom.js (brew install phantomjs)
 
-Run ``` bundle install ``` to install all of the gem dependencies. Once complete
-run ``` bundle exec rspec ``` to run through the tests.
+Run `bundle install` to install all of the gem dependencies.
 
 ### Installation
 
-First, see [Heroku Postgres](http://postgresapp.com/) for installing Postgres on your platform.  Once that is installed, you can install Ruby and Rails, and the gems that are bundled.
+First, see [Heroku Postgres](http://postgresapp.com/) for installing
+Postgres on your platform.  Once that is installed, you can install
+Ruby and Rails, and the gems that are bundled.
 
-Run ``` bundle install ``` if you have not installed the gem dependencies. The application is written for Rails 4.1.1.  When the bundle is completed, run ``` rake db:setup ```, ``` rake db:seed ```, and ``` rake db:migrate ```.  To start the server, run ``` rails server ```.
+Run `bundle install` if you have not installed the gem
+dependencies. The application is written for Rails 4.1.1.  When the
+bundle is completed, run:
 
-The API key is stored in the configuration file, settings.yml, but you'll want to use your own unique key. Contact us at [developers@covermymeds.com](mailto:developers@covermymeds.com) for an API key as well as implementation support.
+```sh
+bundle exec rake db:setup
+bundle exec rake db:migrate
+bundle exec rake db:seed
+```
 
-In the production environment, the app pulls the API key and API secret out of environment variables instead of the yaml file.  Set those variables on your production servers before deployment.
+You'll need to obtain your own unique API key, which must be stored in
+environment variables that the server can access. You can obtain your
+API keys at
+[api.covermymeds.com/your-account](https://api.covermymeds.com/your-account).
+
+Once your API keys are set in the environment, you can run `bundle exec rspec` to
+run through the tests.
+
+To start the server, run `bundle exec rails server`.
 
 ### Distribution
 
@@ -52,7 +67,7 @@ The example ehr application gives you the ability to manage patients.
 The following goes through the workflow of managing patients,
 prescriptions, and prior authorization requests.
 
-Route: ``` /patients ```
+Route: `/patients`
 
 The patient list view shows patients witin the ehr system. Each patient
 has a count beside their name. This indicates the number of PA requests
@@ -62,7 +77,7 @@ From this view you can add a patient by clicking on the green
 "Add Patient" button at the top. Removing a patient can be done by
 clicking on the red "Remove" button to the right of the patient name.
 
-Route: ``` /patients/:id ```
+Route: `/patients/:id`
 
 Clicking on a patient will direct you to the patients show view. There
 are two possible scenarios when arriving to this view. If the patient
@@ -71,7 +86,7 @@ prompted to add one. However, if the patient has associated
 prescriptions you will be directed to a list of prescriptions for that
 patient along with their statuses.
 
-Route ``` /patients/new ```
+Route `/patients/new`
 
 If there are no prescriptions present you will be asked to create a new
 prescription for that patient. On this page the drug and form search
@@ -80,8 +95,8 @@ form search to make a successful query a drug must be selected from the
 drug search field.
 
 To see an example of how the drug and form search plugins are used,
-see ``` /app/assets/javascripts/pa_requests.js  ``` and the
-``` /app/assets/javascripts/prescriptions.js ``` files.
+see `/app/assets/javascripts/pa_requests.js ` and the
+`/app/assets/javascripts/prescriptions.js` files.
 
 If there are prescriptions present then a list of the patient's
 prescriptions are shown. From here you can change and add prescriptions, or you
@@ -91,29 +106,29 @@ When creating a new prescription, clicking the checkbox "Start PA"
 causes a new PA to be started in the CoverMyMeds API Create Request
 endpoint. When the prescription is submitted the example application
 gathers the prescriptions and sends them off to be filled. All of this
-logic is done in the ``` prescripions_controller  ``` file.
+logic is done in the `prescripions_controller ` file.
 
-Route: ``` /requests/new  ```
+Route: `/requests/new `
 
 Allows you to add a single prior authorization request. The drug and
 form search plugins are used here as well as the create request plugin.
 When the form is filled out and the request is successful you will be
 redirected to the task list or dashboard page.
 
-Route: ``` /request-pages ```
+Route: `/request-pages`
 
 The Request Pages resource gives EHRs an ability to completely embed the CoverMyMeds workflow within your own UI.  This API returns a UI-agnostic description of a request at a particular point in the workflow, along with a set of actions the user can take to move the request through to the next workflow.  Based on the idea of Hypermedia API's, Request Pages lends the strength of CoverMyMeds' years of experience in managing workflow to your EHR.
 
 #### Dashboard/Task List
 
-Route: ``` /dashboard ```
+Route: `/dashboard`
 
 This page will query an array of ids supplied to the plugin and come back with details for each prior authorization request.
 
-To see an example of the dashbord plugin view the ``` /app/assets/javascripts/pa_requests.js ```
+To see an example of the dashbord plugin view the `/app/assets/javascripts/pa_requests.js`
 
 #### Contact CoverMyMeds
 
-Under the menu "Resources" are links to the resources you might need to build your own application.  You can find documentation, contacts at CoverMyMeds, and a link to the source code.  
+Under the menu "Resources" are links to the resources you might need to build your own application.  You can find documentation, contacts at CoverMyMeds, and a link to the source code.
 
 If you decide to integrate your EHR with CoverMyMeds' PA functionality, please contact us before you go live so we can discuss business terms.

@@ -11,7 +11,7 @@ $(function () {
   var dashboard_options = {
     apiId: options.apiId,
     version: 1,
-    tokenIds: eval($('meta[name=tokens]').attr('content')) || eval([ ]),
+    tokenIds: $('#dashboard').data('tokens'),
     folders: {
       'All':{ workflow_statuses: all_statuses, data: [] },
       'New': { workflow_statuses: new_statuses, data: [] },

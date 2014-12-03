@@ -7,6 +7,7 @@ class PaRequestsController < ApplicationController
     # the @requests var holds all requests to be shown to the user
     # if the token parameter is nil, then we don't have access to the request
     @requests = PaRequest.where.not(:cmm_token => nil).order(created_at: :desc)
+    @tokens = @requests.pluck(:cmm_token)
   end
 
   # GET /patients/1/prescriptions/1/pa_requests/1

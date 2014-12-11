@@ -6,8 +6,8 @@
    * secret in a server-side API middleman endpoint.
    */
   window.config = {
-    apiId:  'd895441311099b4f52cb',
-    apiSecret: 'd895441311099b4f52cb-d895441311099b4f52c',
+    apiId:'<%= ENV['CMM_API_KEY'] %>',
+    apiSecret:'<%= ENV['CMM_API_SECRET'] %>',
     version: 1
   };
 }(window));

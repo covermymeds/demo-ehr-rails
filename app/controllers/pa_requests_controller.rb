@@ -119,21 +119,21 @@ class PaRequestsController < ApplicationController
 
   private
   
-    # Use callbacks to share common setup or constraints between actions.
-    def set_request
-      @patient = Patient.find(params[:patient_id])
-      @prescription = @patient.prescriptions.find(params[:prescription_id])
-      @pa_request = @prescription.pa_requests.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def pa_request_params
-      params.require(:pa_request).permit(:patient_id, :prescription_id, :form_id, :urgent, :state, :sent, :cmm_token, :cmm_link, :cmm_id, :cmm_workflow_status, :cmm_outcome)
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def prescription_params
-      params.require(:prescription).permit(:drug_number, :quantity, :frequency, :refills, :dispense_as_written, :patient_id, :drug_name, :formulary_status, :pharmacy_id)
-    end
-
+  # Use callbacks to share common setup or constraints between actions.
+  def set_request
+    @patient = Patient.find(params[:patient_id])
+    @prescription = @patient.prescriptions.find(params[:prescription_id])
+    @pa_request = @prescription.pa_requests.find(params[:id])
   end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def pa_request_params
+    params.require(:pa_request).permit(:patient_id, :prescription_id, :form_id, :urgent, :state, :sent, :cmm_token, :cmm_link, :cmm_id, :cmm_workflow_status, :cmm_outcome)
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def prescription_params
+    params.require(:prescription).permit(:drug_number, :quantity, :frequency, :refills, :dispense_as_written, :patient_id, :drug_name, :formulary_status, :pharmacy_id)
+  end
+
+end

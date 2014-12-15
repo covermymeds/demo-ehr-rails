@@ -57,18 +57,17 @@ group :test do
 end
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.0.0'
   gem 'capybara'
-  gem 'poltergeist'
-  gem 'database_cleaner', :git => 'git://github.com/bmabey/database_cleaner.git'
   gem 'capybara-webkit'
-  gem 'launchy'
-  gem 'pry'
-  gem 'pry-byebug'
+  gem 'database_cleaner', :git => 'git://github.com/bmabey/database_cleaner.git'
   gem 'guard'
   gem 'guard-rspec'
+  gem 'launchy'
+  gem 'poltergeist'
+  gem 'pry'
+  gem 'pry-byebug'
+  gem 'rspec-rails', '~> 3.0.0'
   gem 'selenium-webdriver'
-
 end
 
 # Use ActiveModel has_secure_password

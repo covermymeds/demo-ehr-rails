@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
 
   resources :users
-
+  
+  get '/login/:id' => 'users#login', as: :login
+  
+  get '/logout' => 'users#logout'
+  
   resources :patients do
     resources :prescriptions do
       resources :pa_requests 

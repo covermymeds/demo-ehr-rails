@@ -11,19 +11,18 @@ describe 'eHR Example App' do
       visit '/'
     end
 
-    it 'should navigate to the patients view', js:true do
+    it 'should navigate to the patients view', js: true do
       click_link('Patients')
-      expect(page).to have_content('Patients')
       expect(page).to have_content('Patients')
     end
 
-    it 'should navigate to the home view', js:true do
+    it 'should navigate to the home view', js: true do
       visit '/patients' # To test the home link visit another page besides the home page
       click_link('Home')
       expect(page).to have_content('Lets pretend that this is your EHR...')
     end
 
-    it 'should navigate to the dashboard view', js:true do
+    it 'should navigate to the dashboard view', js: true do
       click_link('Prior Authorizations')
       click_link('Dashboard')
       expect(page).to have_content('Your Prior Auth Dashboard')

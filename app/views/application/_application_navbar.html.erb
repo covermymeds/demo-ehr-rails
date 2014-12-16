@@ -29,6 +29,13 @@
         </li>
       </ul>
       <ul class='nav navbar-nav navbar-right'>
+          <li class='dropdown'>
+            <a href='#' class='dropdown-toggle' data-toggle='dropdown'>Sign in...<b class='caret'></b></a>
+            <ul class='dropdown-menu'>
+              <li><%= link_to "API Documentation", api_documentation_path %></li>
+              <li><%= link_to "Source Code", source_code_path %></li>
+            </ul>
+          </li>
           <li>
             <%= form_tag('/toggle_ui', :method=>'post', :class=>'navbar-form navbar-left', :id=>'custom_ui_form') do |f| %>
               <%= hidden_field_tag "return", request.original_url %>

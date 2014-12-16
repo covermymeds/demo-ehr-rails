@@ -15,8 +15,6 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'bootstrap-sass', '~> 3.1.1'
 gem 'bootstrap-datepicker-rails'
 
-gem 'httmultiparty'
-gem 'httparty'
 gem 'rest_client'
 
 # for heroku

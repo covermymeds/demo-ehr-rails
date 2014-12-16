@@ -69,10 +69,10 @@ describe UsersController, :type => :controller do
         expect(assigns(:user)).to eq(user)
       end
 
-      it "redirects to the user" do
+      it "redirects to the root" do
         user = User.create! valid_attributes
         put :update, {:id => user.to_param, :user => valid_attributes}, valid_session
-        expect(response).to redirect_to(user)
+        expect(response).to redirect_to(root_path)
       end
     end
 

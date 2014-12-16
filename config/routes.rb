@@ -34,6 +34,8 @@ Rails.application.routes.draw do
 
   post 'callbacks/handle'
 
+  get '/home' => 'home#home', as: :home
+  
   root 'home#index'
 
 end

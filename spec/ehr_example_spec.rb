@@ -8,7 +8,7 @@ describe 'eHR Example App' do
     fixtures :patients, :prescriptions
 
     before(:each) do
-      visit '/'
+      visit '/logout'
     end
 
     it 'should navigate to the patients view', js: true do
@@ -16,9 +16,9 @@ describe 'eHR Example App' do
       expect(page).to have_content('Patients')
     end
 
-    it 'should navigate to the home view', js: true do
+    it 'should navigate to the Your EHR view', js: true do
       visit '/patients' # To test the home link visit another page besides the home page
-      click_link('Home')
+      click_link('Your EHR')
       expect(page).to have_content('Lets pretend that this is your EHR...')
     end
 

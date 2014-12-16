@@ -16,7 +16,7 @@ module ApplicationHelper
   def ehr_error_messages(flash)
     html = "<div class='row'>"
     flash.each do |key, value| 
-      value.each do |message|
+      Array(value).each do |message|
         html += <<-HTML
         <div class="#{flash_class(key.parameterize.underscore.to_sym)}" id="flash_#{key}">
           <button type='button' class='close' data-dismiss='alert'>&times;</button>

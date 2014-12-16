@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :users
+
   resources :patients do
     resources :prescriptions do
       resources :pa_requests 

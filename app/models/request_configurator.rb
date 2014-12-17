@@ -51,15 +51,15 @@ class RequestConfigurator
       # merge prescriber information
       # for now, just hard code doctor information.  Technically, this would come from the 
       # currently logged in user, or some other way of selecting the physician.
-      physician = {:npi => "1234567890", 
-        :first_name => "James", 
-        :last_name => "Kirk", 
-        :clinic => "The Enterprise Clinic",
-        :fax_number => "555-555-5555",
-        :street => "1 Starship Way",
-        :city => "Riverside",
-        :state => "OH",
-        :zip => "52327" }
+      physician = {npi: "1234567890", 
+        first_name: "James", 
+        last_name: "Kirk", 
+        clinic: "The Enterprise Clinic",
+        fax_number: "555-555-5555",
+        street: "1 Starship Way",
+        city: "Riverside",
+        state: "OH",
+        zip: "52327" }
 
       new_request.prescriber.npi = physician[:npi] 
       new_request.prescriber.first_name = physician[:first_name]

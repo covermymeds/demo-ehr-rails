@@ -1,20 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe "prescriptions/new", :type => :view do
+RSpec.describe "prescriptions/new", type: :view do
   before(:each) do
     @patient = assign(:patient, Patient.create!(
-      :first_name => "Mark",
-      :last_name => "Harris",
-      :date_of_birth => "10/11/1971",
-      :state => "OH"
+      first_name: "Mark",
+      last_name: "Harris",
+      date_of_birth: "10/11/1971",
+      state: "OH"
       ))
     @prescription = assign(:prescription, Prescription.new(
-      :drug_number => "MyString",
-      :quantity => 1,
-      :frequency => "MyString",
-      :refills => 1,
-      :dispense_as_written => false,
-      :patient_id => @patient.id
+      drug_number: "MyString",
+      quantity: 1,
+      frequency: "MyString",
+      refills: 1,
+      dispense_as_written: false,
+      patient_id: @patient.id
       ))
   end
 

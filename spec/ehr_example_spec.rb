@@ -8,22 +8,21 @@ describe 'eHR Example App' do
     fixtures :patients, :prescriptions
 
     before(:each) do
-      visit '/'
+      visit '/logout'
     end
 
-    it 'should navigate to the patients view', js:true do
+    it 'should navigate to the patients view', js: true do
       click_link('Patients')
       expect(page).to have_content('Patients')
-      expect(page).to have_content('Patients')
     end
 
-    it 'should navigate to the home view', js:true do
+    it 'should navigate to the Your EHR view', js: true do
       visit '/patients' # To test the home link visit another page besides the home page
-      click_link('Home')
+      click_link('Your EHR')
       expect(page).to have_content('Lets pretend that this is your EHR...')
     end
 
-    it 'should navigate to the dashboard view', js:true do
+    it 'should navigate to the dashboard view', js: true do
       click_link('Prior Authorizations')
       click_link('Dashboard')
       expect(page).to have_content('Your Prior Auth Dashboard')
@@ -94,7 +93,7 @@ describe 'eHR Example App' do
       expect(page).to have_css('.table tr.patients', count: 10)
     end
 
-    it 'should navigate to new prescription form if patient is clicked with no prescriptions assigned', :failed => true do
+    it 'should navigate to new prescription form if patient is clicked with no prescriptions assigned', failed: true do
       click_link('Mike Miller 10/01/1971 OH')
       expect(page).to have_content('Prescription -')
     end
@@ -148,7 +147,7 @@ describe 'eHR Example App' do
       within '.select2-results' do
         find('li:first-child').click
       end
-      select "CVS - 670 N. High St., Columbus, fax: 555-555-5555", :from => "prescription_pharmacy_id"
+      select "CVS - 670 N. High St., Columbus, fax: 555-555-5555", from: "prescription_pharmacy_id"
 
       click_on('Save')
 

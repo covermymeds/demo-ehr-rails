@@ -5,13 +5,9 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-Patient.all.each do |patient|
-  Patient.destroy(patient)
-end
+Patient.destroy_all
 
-PaRequest.all.each do |request|
-  PaRequest.destroy(request)
-end
+PaRequest.destroy_all
 
 patients = [
   {first_name:'Autopick', last_name:'Smith',    gender:'f', date_of_birth:'10/01/1971', street_1:'221 Baker St.', street_2:'Apt B', city:'London', state:'OH', zip:'43210', phone_number:'614-555-1212', email:'test@covermymeds.com', bin:'111111', pcn:'SAMP001', group_id:'NOTREAL'},
@@ -32,10 +28,7 @@ patients.each do |patient|
   Patient.create(patient)
 end
 
-Pharmacy.all.each do |pharmacy|
-  Pharmacy.destroy(pharmacy)
-end
-
+Pharmacy.destroy_all
 pharmacies = [
   {name:'CVS Pharmacy', street:'759 Neil Ave.', city:'Columbus', state:'OH', fax:'555-555-5555', phone:'555-555-1212', zip:'43201'},
   {name:'Crosbys', street:'2609 N High St.', city:'Columbus', state:'OH', fax:'555-555-5555', phone:'555-555-1212', zip:'43201'},
@@ -49,3 +42,8 @@ pharmacies = [
 pharmacies.each do |pharmacy|
   Pharmacy.create(pharmacy)
 end
+
+User.destroy_all
+
+User.new(name: "Dr. Alexander Fleming", npi: "1234567890").tap {|u| u[:id] = 1}.save!
+User.new(name: "Staff", npi: nil).tap {|u| u[:id] = 2}.save!

@@ -1,5 +1,5 @@
 class CallbacksController < ApplicationController
-  skip_before_filter :verify_authenticity_token, :only => [:handle]
+  skip_before_filter :verify_authenticity_token, only: [:handle]
 
   # POST /callbacks/handle {URLEncoded body}
   # POST /callbacks/handle.json {JSON body}
@@ -11,7 +11,7 @@ class CallbacksController < ApplicationController
     @pa = PaRequest.find_by_cmm_id(@callback['id'])
     if is_delete?(@callback) && @pa
       # first check if it's been deleted on CoverMyMeds
-      @pa.update_attributes(:cmm_token => nil)
+      @pa.update_attributes(cmm_token: nil)
 
     else
       # if it's there, must be an update callback

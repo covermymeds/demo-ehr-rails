@@ -1,7 +1,7 @@
 require 'rest_client'
 
 class RequestPagesController < ApplicationController
-  skip_before_filter :verify_authenticity_token, :only => [:do_action]
+  skip_before_filter :verify_authenticity_token, only: [:do_action]
   before_action :set_request_pages
   before_action :redirect_if_using_cmm
 

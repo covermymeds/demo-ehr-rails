@@ -4,6 +4,22 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :set_use_custom_ui
 
+  def current_user
+    @current_user ||= User.find_by_id(session["user_id"])
+    @current_user
+  end
+  helper_method :current_user
+
+
+  def salutation
+    if current_user
+      "Welcome, #{current_user.name}"
+    else
+      "Sign in..."
+    end
+  end
+  helper_method :salutation
+  
   def flash_message(text, type = :notice)
     flash[type] ||= []
     flash[type] << text

@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe "patients/new", :type => :view do
+RSpec.describe "patients/new", type: :view do
   before(:each) do
     assign(:patient, Patient.new(
-      :first_name => "MyString",
-      :last_name => "MyString",
-      :date_of_birth => "10/11/1971",
-      :state => "OH",
-      :bin => '111111',
-      :pcn => 'SAMP001',
-      :group_id => 'NOTREAL'
+      first_name: "MyString",
+      last_name: "MyString",
+      date_of_birth: "10/11/1971",
+      state: "OH",
+      bin: '111111',
+      pcn: 'SAMP001',
+      group_id: 'NOTREAL'
     ))
   end
 

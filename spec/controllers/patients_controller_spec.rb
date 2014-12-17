@@ -18,17 +18,17 @@ require 'rails_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-RSpec.describe PatientsController, :type => :controller do
+RSpec.describe PatientsController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
   # Patient. As you add validations to Patient, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {:first_name=>'Mark', :last_name=>'Harris', :date_of_birth=>'10/11/1971', :state=>'OH'}
+    {first_name:'Mark', last_name:'Harris', date_of_birth:'10/11/1971', state:'OH'}
   }
 
   let(:invalid_attributes) {
-    {:first_name=>'', :last_name=>'', :date_of_birth=>'October 11, 1971', :state=>'OH'}
+    {first_name:'', last_name:'', date_of_birth:'October 11, 1971', state:'OH'}
   }
 
   # This should return the minimal set of values that should be in the session
@@ -47,7 +47,7 @@ RSpec.describe PatientsController, :type => :controller do
   describe "GET show" do
     it "assigns the requested patient as @patient" do
       patient = Patient.create! valid_attributes
-      get :show, {:id => patient.to_param}, valid_session
+      get :show, {id: patient.to_param}, valid_session
       expect(assigns(:patient)).to eq(patient)
     end
   end
@@ -62,7 +62,7 @@ RSpec.describe PatientsController, :type => :controller do
   describe "GET edit" do
     it "assigns the requested patient as @patient" do
       patient = Patient.create! valid_attributes
-      get :edit, {:id => patient.to_param}, valid_session
+      get :edit, {id: patient.to_param}, valid_session
       expect(assigns(:patient)).to eq(patient)
     end
   end
@@ -71,30 +71,30 @@ RSpec.describe PatientsController, :type => :controller do
     describe "with valid params" do
       it "creates a new Patient" do
         expect {
-          post :create, {:patient => valid_attributes}, valid_session
+          post :create, {patient: valid_attributes}, valid_session
         }.to change(Patient, :count).by(1)
       end
 
       it "assigns a newly created patient as @patient" do
-        post :create, {:patient => valid_attributes}, valid_session
+        post :create, {patient: valid_attributes}, valid_session
         expect(assigns(:patient)).to be_a(Patient)
         expect(assigns(:patient)).to be_persisted
       end
 
       it "redirects to the created patient" do
-        post :create, {:patient => valid_attributes}, valid_session
-        expect(response).to redirect_to(:action => :index)
+        post :create, {patient: valid_attributes}, valid_session
+        expect(response).to redirect_to(action: :index)
       end
     end
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved patient as @patient" do
-        post :create, {:patient => invalid_attributes}, valid_session
+        post :create, {patient: invalid_attributes}, valid_session
         expect(assigns(:patient)).to be_a_new(Patient)
       end
 
       it "re-renders the 'new' template" do
-        post :create, {:patient => invalid_attributes}, valid_session
+        post :create, {patient: invalid_attributes}, valid_session
         expect(response).to render_template("new")
       end
     end
@@ -103,39 +103,39 @@ RSpec.describe PatientsController, :type => :controller do
   describe "PUT update" do
     describe "with valid params" do
       let(:new_attributes) {
-        {:first_name => 'Jack', :last_name=>'Johnson', :date_of_birth=>'1/1/2013', :state=>'CA'}
+        {first_name: 'Jack', last_name:'Johnson', date_of_birth:'1/1/2013', state:'CA'}
       }
 
       it "updates the requested patient" do
         patient = Patient.create! valid_attributes
-        put :update, {:id => patient.to_param, :patient => new_attributes}, valid_session
+        put :update, {id: patient.to_param, patient: new_attributes}, valid_session
         patient.reload
         expect(patient.first_name).to eql("Jack")
       end
 
       it "assigns the requested patient as @patient" do
         patient = Patient.create! valid_attributes
-        put :update, {:id => patient.to_param, :patient => valid_attributes}, valid_session
+        put :update, {id: patient.to_param, patient: valid_attributes}, valid_session
         expect(assigns(:patient)).to eq(patient)
       end
 
       it "redirects to the patient" do
         patient = Patient.create! valid_attributes
-        put :update, {:id => patient.to_param, :patient => valid_attributes}, valid_session
-        expect(response).to redirect_to(:action => :index)
+        put :update, {id: patient.to_param, patient: valid_attributes}, valid_session
+        expect(response).to redirect_to(action: :index)
       end
     end
 
     describe "with invalid params" do
       it "assigns the patient as @patient" do
         patient = Patient.create! valid_attributes
-        put :update, {:id => patient.to_param, :patient => invalid_attributes}, valid_session
+        put :update, {id: patient.to_param, patient: invalid_attributes}, valid_session
         expect(assigns(:patient)).to eq(patient)
       end
 
       it "re-renders the 'edit' template" do
         patient = Patient.create! valid_attributes
-        put :update, {:id => patient.to_param, :patient => invalid_attributes}, valid_session
+        put :update, {id: patient.to_param, patient: invalid_attributes}, valid_session
         expect(response).to render_template("edit")
       end
     end
@@ -145,13 +145,13 @@ RSpec.describe PatientsController, :type => :controller do
     it "destroys the requested patient" do
       patient = Patient.create! valid_attributes
       expect {
-        delete :destroy, {:id => patient.to_param}, valid_session
+        delete :destroy, {id: patient.to_param}, valid_session
       }.to change(Patient, :count).by(-1)
     end
 
     it "redirects to the patients list" do
       patient = Patient.create! valid_attributes
-      delete :destroy, {:id => patient.to_param}, valid_session
+      delete :destroy, {id: patient.to_param}, valid_session
       expect(response).to redirect_to(patients_url)
     end
   end

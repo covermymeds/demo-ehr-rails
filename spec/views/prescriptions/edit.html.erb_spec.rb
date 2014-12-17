@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "prescriptions/edit", :type => :view do
+RSpec.describe "prescriptions/edit", type: :view do
   before(:each) do
     @pharmacy = assign(:pharmacy, Pharmacy.create!(
-      :name => 'cvs'
+      name: 'cvs'
     ))
 
     @patient = assign(:patient, Patient.create!(
@@ -13,13 +13,13 @@ RSpec.describe "prescriptions/edit", :type => :view do
       state: "OH"
     ))
     @prescription = assign(:prescription, Prescription.create!(
-      :drug_number => "12345",
-      :quantity => 1,
-      :frequency => "qD",
-      :refills => 1,
-      :dispense_as_written => false,
-      :patient => @patient,
-      :pharmacy => @pharmacy
+      drug_number: "12345",
+      quantity: 1,
+      frequency: "qD",
+      refills: 1,
+      dispense_as_written: false,
+      patient: @patient,
+      pharmacy: @pharmacy
     ))
   end
 

@@ -6,7 +6,7 @@ class PaRequestsController < ApplicationController
   def index
     # the @requests var holds all requests to be shown to the user
     # if the token parameter is nil, then we don't have access to the request
-    @requests = PaRequest.where.not(:cmm_token => nil).order(created_at: :desc)
+    @requests = PaRequest.where.not(cmm_token: nil).order(created_at: :desc)
     @tokens = @requests.pluck(:cmm_token)
   end
 
@@ -105,7 +105,7 @@ class PaRequestsController < ApplicationController
     # first, delete the PA request from our CMM dashboard
     client = RequestConfigurator.api_client
     client.revoke_access_token? @pa_request.cmm_token
-    @pa_request.update_attributes(:cmm_token => nil)
+    @pa_request.update_attributes(cmm_token: nil)
 
     # delete the PA request from our database
     # we'll delete the PA request when the callback arrives

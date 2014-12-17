@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe UsersController, :type => :controller do
+describe UsersController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
   # User. As you add validations to User, be sure to
@@ -22,7 +22,7 @@ describe UsersController, :type => :controller do
     it "logs in the desired user" do
       expect(controller.current_user).to be_nil
       user = User.create! valid_attributes
-      get :login, {:id => user.to_param}, valid_session
+      get :login, {id: user.to_param}, valid_session
       expect(session["user_id"].to_i).to eq(user.id)
       expect(controller.current_user).to eq(user)
     end
@@ -32,7 +32,7 @@ describe UsersController, :type => :controller do
     it "logs out the current user" do
       expect(controller.current_user).to be_nil
       user = User.create! valid_attributes
-      get :login, {:id => user.to_param}, valid_session
+      get :login, {id: user.to_param}, valid_session
       expect(session["user_id"].to_i).to eq(user.id)
       expect(controller.current_user).to eq(user)
 
@@ -45,7 +45,7 @@ describe UsersController, :type => :controller do
   describe "GET edit" do
     it "assigns the requested user as @user" do
       user = User.create! valid_attributes
-      get :edit, {:id => user.to_param}, valid_session
+      get :edit, {id: user.to_param}, valid_session
       expect(assigns(:user)).to eq(user)
     end
   end
@@ -58,20 +58,20 @@ describe UsersController, :type => :controller do
 
       it "updates the requested user" do
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => new_attributes}, valid_session
+        put :update, {id: user.to_param, user: new_attributes}, valid_session
         user.reload
         expect(assigns(:user)).to eq(user)
       end
 
       it "assigns the requested user as @user" do
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => valid_attributes}, valid_session
+        put :update, {id: user.to_param, user: valid_attributes}, valid_session
         expect(assigns(:user)).to eq(user)
       end
 
       it "redirects to the root" do
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => valid_attributes}, valid_session
+        put :update, {id: user.to_param, user: valid_attributes}, valid_session
         expect(response).to redirect_to(root_path)
       end
     end
@@ -79,13 +79,13 @@ describe UsersController, :type => :controller do
     describe "with invalid params" do
       it "assigns the user as @user" do
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => invalid_attributes}, valid_session
+        put :update, {id: user.to_param, user: invalid_attributes}, valid_session
         expect(assigns(:user)).to eq(user)
       end
 
       it "re-renders the 'edit' template" do
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => invalid_attributes}, valid_session
+        put :update, {id: user.to_param, user: invalid_attributes}, valid_session
         expect(response).to render_template("edit")
       end
     end

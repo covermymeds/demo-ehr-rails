@@ -3,7 +3,7 @@ class Prescription < ActiveRecord::Base
   belongs_to :pharmacy, inverse_of: :prescriptions
   has_many :pa_requests, dependent: :destroy
 
-  validates :drug_number, :format=> {:with => /[0-9]+/ , :message => 'Drug Number is invalid'}
+  validates :drug_number, format: {with: /[0-9]+/ , message: 'Drug Number is invalid'}
   
   scope :active, -> { where(active: true) }
   

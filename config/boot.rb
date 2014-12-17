@@ -10,7 +10,7 @@ module Rails
     alias :default_options_alias :default_options
     def default_options
       if ENV['RAILS_ENV'] == 'test'
-        default_options_alias.merge! :Port => 3001, :pid => 'tmp/pids/server.test.pid'
+        default_options_alias.merge! Port: 3001, pid: 'tmp/pids/server.test.pid'
       else
         default_options_alias
       end

@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe Prescription, :type => :model do
+RSpec.describe Prescription, type: :model do
     let(:prescription_params) do
       {
-        :drug_number => '123456',
-        :quantity => 30,
-        :frequency => 'qD', 
-        :refills => 2, 
-        :dispense_as_written => true,
-        :drug_name => 'My Drug', 
-        :formulary_status => 'PA Required'
+        drug_number: '123456',
+        quantity: 30,
+        frequency: 'qD', 
+        refills: 2, 
+        dispense_as_written: true,
+        drug_name: 'My Drug', 
+        formulary_status: 'PA Required'
       }
     end
   it 'allows a pharmacy' do

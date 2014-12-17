@@ -1,26 +1,26 @@
 require 'rails_helper'
 
-RSpec.describe "patients/show", :type => :view do
+RSpec.describe "patients/show", type: :view do
   before(:each) do
     @patient = assign(:patient, Patient.create!(
-      :first_name => "First Name",
-      :last_name => "Last Name",
-      :date_of_birth => "10/11/1971",
-      :state => "OH"
+      first_name: "First Name",
+      last_name: "Last Name",
+      date_of_birth: "10/11/1971",
+      state: "OH"
     ))
     @pharmacy = assign(:pharmacy, Pharmacy.create!(
-      :name => 'CVS',
-      :street => '123 Easy St.'
+      name: 'CVS',
+      street: '123 Easy St.'
     ))
     @prescription = assign(:prescription, Prescription.create!(
-      :drug_number => '12345',
-      :drug_name => 'Nexium',
-      :quantity => '10',
-      :frequency => 'qD',
-      :refills => '3',
-      :dispense_as_written => true,
-      :formulary_status => 'On Formulary',
-      :pharmacy_id => @pharmacy.id
+      drug_number: '12345',
+      drug_name: 'Nexium',
+      quantity: '10',
+      frequency: 'qD',
+      refills: '3',
+      dispense_as_written: true,
+      formulary_status: 'On Formulary',
+      pharmacy_id: @pharmacy.id
     ))
     @patient.prescriptions.push(@prescription)
     @prescriptions = @patient.prescriptions

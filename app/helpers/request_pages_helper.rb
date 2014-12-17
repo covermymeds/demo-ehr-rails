@@ -3,14 +3,14 @@ module RequestPagesHelper
   def render_question(question, form_name, data)
     # render the correct question based on the type
     types = {
-      :FREE_TEXT =>  "free_text",
-      :FREE_AREA =>  "free_area",
-      :DATE      =>  "date",
-      :STATEMENT =>  "statement",
-      :CHOICE    =>  "choice",
-      :CHECKBOX  =>  "checkbox",
-      :HIDDEN    =>  "hidden",
-      :FILE      =>  "file"
+      FREE_TEXT: "free_text",
+      FREE_AREA: "free_area",
+      DATE: "date",
+      STATEMENT: "statement",
+      CHOICE: "choice",
+      CHECKBOX: "checkbox",
+      HIDDEN: "hidden",
+      FILE: "file"
     }
     question_type = question[:question_type].to_sym
     if types.has_key?(question_type)

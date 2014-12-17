@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Prescriptions", :type => :request do
+RSpec.describe "Prescriptions", type: :request do
   fixtures :all
   describe "GET /patient/1/prescriptions" do
     it "gets list of prescriptions for patients" do

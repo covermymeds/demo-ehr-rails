@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "patients/edit", :type => :view do
+RSpec.describe "patients/edit", type: :view do
   before(:each) do
     @patient = assign(:patient, Patient.create!(
-      :first_name => "MyString",
-      :last_name => "MyString",
-      :date_of_birth => "10/11/1971",
-      :state => "OH"
+      first_name: "MyString",
+      last_name: "MyString",
+      date_of_birth: "10/11/1971",
+      state: "OH"
     ))
   end
 

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe User, :type => :model do
+describe User, type: :model do
   describe "#prescriber?" do
     let(:user) { User.new name: 'Test McTestface', npi: npi }
     

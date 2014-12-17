@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "home/index.html.erb", :type => :view do
+describe "home/index.html.erb", type: :view do
 
   before do
     render

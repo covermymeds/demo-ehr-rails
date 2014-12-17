@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe CallbacksController, :type => :controller do
+RSpec.describe CallbacksController, type: :controller do
 
   describe "POST handle" do
 

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Patient, :type => :model do
+RSpec.describe Patient, type: :model do
   # Prefix class methods with a '.'
   it 'allows first and last name, state, and date_of_birth' do
     # setup

@@ -6,7 +6,7 @@ class PrescriptionsController < ApplicationController
   # GET /prescriptions.json
   def index
     @patient = Patient.find(params[:patient_id])
-    @prescriptions = Prescription.where(:patient_id => params[:patient_id]).where(:active => true)
+    @prescriptions = Prescription.where(patient_id: params[:patient_id]).where(active: true)
   end
 
   # GET /prescriptions/1
@@ -106,7 +106,7 @@ class PrescriptionsController < ApplicationController
       flash_message("Your prior authorization request was successfully started.")
 
       # stash away the token, id, link, and workflow status from the return
-      pa_request = prescription.pa_requests.build(:urgent => false, :state => response.state, :form_id => response.form_id)
+      pa_request = prescription.pa_requests.build(urgent: false, state: response.state, form_id: response.form_id)
       pa_request.set_cmm_values(response)
       pa_request.save
 

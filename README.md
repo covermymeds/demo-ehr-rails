@@ -22,6 +22,10 @@ Run `bundle install` to install all of the gem dependencies.
 
 First, see [Heroku Postgres](http://postgresapp.com/) for installing Postgres on your platform. Once that is installed, you can install Ruby and Rails, and the gems that are bundled.
 
+Run postgres and create the required user:
+
+    CREATE ROLE demoehrrails LOGIN CREATEDB;
+
 Run `bundle install` if you have not installed the gem dependencies. The application is written for Rails 4.1.1. When the bundle is completed, run:
 
     bundle exec rake db:setup
@@ -31,6 +35,7 @@ You'll need to obtain your own unique API keys, which must be stored in environm
 Once your API keys are set in the environment, you can run `bundle exec rspec` to run through the tests.
 
 To start the server, run `bundle exec rails server`.
+
 
 ### Distribution
 

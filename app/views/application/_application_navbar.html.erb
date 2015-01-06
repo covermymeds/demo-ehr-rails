@@ -53,6 +53,7 @@
             <ul class='dropdown-menu'>
               <li><%= link_to "API Documentation", api_documentation_path %></li>
               <li><%= link_to "Source Code", source_code_path %></li>
+              <li><%= link_to "Reset Database", reset_db_path, method: :put, data: { confirm: 'Are you sure?!?' } %></li>
             </ul>
           </li>
           <li>

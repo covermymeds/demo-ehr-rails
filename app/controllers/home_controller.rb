@@ -16,4 +16,9 @@ class HomeController < ApplicationController
     session[:use_custom_ui] = (not session[:use_custom_ui])
     redirect_to params[:return]
   end
+
+  def reset_database
+    DbSeeder.seed
+    redirect_to root_url
+  end
 end

@@ -30,11 +30,12 @@ Run `bundle install` if you have not installed the gem dependencies. The applica
 
     bundle exec rake db:setup
 
-You'll need to obtain your own unique API keys, which must be stored in environment variables that the server can access. You can obtain your API keys at [api.covermymeds.com/your-account](https://api.covermymeds.com/your-account).
+You'll need to obtain your own unique API keys, which must be stored in environment variables that the server can access. You can obtain your API keys at [api.covermymeds.com/your-account](https://api.covermymeds.com/your-account). You'll have to set the `api_id` as `CMM_API_KEY` and `api_secret` as `CMM_API_SECRET`.
 
 Once your API keys are set in the environment, you can run `bundle exec rspec` to run through the tests.
 
 To start the server, run `bundle exec rails server`.
+
 
 
 ### Distribution
@@ -95,3 +96,4 @@ This page demonstrates using the dashboard plugin to build a task list of PA req
 Under the menu "Resources" are links to the resources you might need to build your own application.  You can find documentation, contacts at CoverMyMeds, and a link to the source code.
 
 If you decide to integrate your EHR with CoverMyMeds' PA functionality, please contact us before you go live so we can discuss business terms.
+

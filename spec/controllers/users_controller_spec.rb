@@ -6,11 +6,11 @@ describe UsersController, type: :controller do
   # User. As you add validations to User, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    { name: "Dr. Test McTester", npi: "3141592654" }
+    { first_name: "Dr. Test McTester", npi: "3141592654" }
   }
 
   let(:invalid_attributes) {
-    { name: nil, npi: "12345" }
+    { first_name: nil, npi: "12345" }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -27,7 +27,7 @@ describe UsersController, type: :controller do
       expect(controller.current_user).to eq(user)
     end
   end
-  
+
   describe "GET logout" do
     it "logs out the current user" do
       expect(controller.current_user).to be_nil
@@ -41,7 +41,7 @@ describe UsersController, type: :controller do
       expect(controller.current_user).to be_nil
     end
   end
-  
+
   describe "GET edit" do
     it "assigns the requested user as @user" do
       user = User.create! valid_attributes
@@ -53,7 +53,7 @@ describe UsersController, type: :controller do
   describe "PUT update" do
     describe "with valid params" do
       let(:new_attributes) {
-        { name: 'Dr. Robert Liston', npi: '4242424242' }
+        { first_name: 'Dr. Robert Liston', npi: '4242424242' }
       }
 
       it "updates the requested user" do
@@ -91,6 +91,6 @@ describe UsersController, type: :controller do
     end
   end
 
-  
-  
+
+
 end

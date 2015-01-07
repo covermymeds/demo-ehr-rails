@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   STAFF = 2
 
   validates :first_name, presence: true
+  validates :role_id, presence: true
   belongs_to :role
 
   def prescriber?

@@ -6,11 +6,11 @@ describe UsersController, type: :controller do
   # User. As you add validations to User, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    { first_name: "Dr. Test McTester", npi: "3141592654" }
+    { first_name: "Dr. Test McTester", npi: "3141592654", role_id: 1}
   }
 
   let(:invalid_attributes) {
-    { first_name: nil, npi: "12345" }
+    { first_name: nil, npi: "12345", role_id: nil }
   }
 
   # This should return the minimal set of values that should be in the session

@@ -19,6 +19,7 @@ class HomeController < ApplicationController
 
   def reset_database
     DbSeeder.seed
+    flash_message 'Database has been reset.'
     redirect_to root_url
   end
 end

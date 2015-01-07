@@ -1,6 +1,6 @@
 class RequestConfigurator
    def self.request(prescription, form_id)
-      
+
       client = self.api_client
 
       # get a hash of request data
@@ -49,11 +49,11 @@ class RequestConfigurator
       new_request.prescription.dispense_as_written = prescription.dispense_as_written
 
       # merge prescriber information
-      # for now, just hard code doctor information.  Technically, this would come from the 
+      # for now, just hard code doctor information.  Technically, this would come from the
       # currently logged in user, or some other way of selecting the physician.
-      physician = {npi: "1234567890", 
-        first_name: "James", 
-        last_name: "Kirk", 
+      physician = {npi: "1234567890",
+        first_name: "James",
+        last_name: "Kirk",
         clinic: "The Enterprise Clinic",
         fax_number: "555-555-5555",
         street: "1 Starship Way",
@@ -61,7 +61,7 @@ class RequestConfigurator
         state: "OH",
         zip: "52327" }
 
-      new_request.prescriber.npi = physician[:npi] 
+      new_request.prescriber.npi = physician[:npi]
       new_request.prescriber.first_name = physician[:first_name]
       new_request.prescriber.last_name = physician[:last_name]
       new_request.prescriber.clinic = physician[:clinic]
@@ -81,7 +81,7 @@ class RequestConfigurator
         new_request.pharmacy.address.state = pharmacy.state
         new_request.pharmacy.address.zip = pharmacy.zip
       end
-      
+
       new_request
     end
 

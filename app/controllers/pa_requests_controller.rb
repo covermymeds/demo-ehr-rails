@@ -64,7 +64,7 @@ class PaRequestsController < ApplicationController
 
     # set the pharmacy in our PA request
     pharmacy_id = (params[:pharmacy][:id] == "") ? Pharmacy.first.id : params[:pharmacy][:id]
-    @pharmacy = Pharmacy.find(pharmacy_id) 
+    @pharmacy = Pharmacy.find(pharmacy_id)
     @prescription.pharmacy = @pharmacy
 
     @prescription.date_prescribed = DateTime.now
@@ -118,7 +118,7 @@ class PaRequestsController < ApplicationController
   end
 
   private
-  
+
   # Use callbacks to share common setup or constraints between actions.
   def set_request
     @patient = Patient.find(params[:patient_id])

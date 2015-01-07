@@ -19,20 +19,20 @@ class ApplicationController < ActionController::Base
     end
   end
   helper_method :salutation
-  
+
   def flash_message(text, type = :notice)
     flash[type] ||= []
     flash[type] << text
   end
- 
+
   def set_use_custom_ui
     @_use_custom_ui = session[:use_custom_ui]
-  end  
+  end
 
   def cmm_request_link_for(request)
     params = {
       remote_user: {
-        display_name: 'James Kirk',
+        display_name: current_user.name || 'James Kirk',
         phone_number: '614-555-1212',
         fax_number: '614-444-4444'
       }

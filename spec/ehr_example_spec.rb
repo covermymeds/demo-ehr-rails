@@ -53,18 +53,33 @@ describe 'eHR Example App' do
       expect(page).to have_content('For assistance using CoverMyMeds')
     end
 
-    it 'should navigate to the api documentation' do
-      click_link('Resources')
-      click_link('API Documentation')
-      expect(page).to have_title('API Reference')
+    context 'Resources' do
+      before { click_link ('Resources') }
+
+      it 'should navigate to the api documentation' do
+        click_link('API Documentation')
+        expect(page).to have_title('API Reference')
+      end
+
+      it 'should display the source code when asked' do
+        click_link('Source Code')
+        expect(page).to have_content('Reference implementation of an EHR integration with CoverMyMeds, written in Ruby on Rails.')
+      end
+
+      it 'should reset the database when asked', js: true do
+        click_link('Reset Database')
+        Capybara.page.execute_script  'window.confirm = function () { return true }'
+        expect(page).to have_content('Database has been reset')
+      end
+
     end
 
-    it 'should navigate to the dashbaord view from button' do
+    it 'should navigate to the dashboard view from button' do
       click_link('Start Task List Workflow')
       expect(page).to have_content('Your Prior Auth Dashboard')
     end
 
-    it 'should navigate to the patient list from button' do 
+    it 'should navigate to the patient list from button' do
       click_link('Start e-Prescribing Workflow')
       expect(page).to have_content('Patients')
     end
@@ -147,7 +162,7 @@ describe 'eHR Example App' do
       within '.select2-results' do
         find('li:first-child').click
       end
-      select "CVS - 670 N. High St., Columbus, fax: 555-555-5555", from: "prescription_pharmacy_id"
+      select 'CVS - 670 N. High St., Columbus, fax: 555-555-5555', from: 'prescription_pharmacy_id'
 
       click_on('Save')
 
@@ -193,23 +208,15 @@ describe 'eHR Example App' do
   end
 
   it 'should allow accessing the site root' do
-    visit('/')
-    expect(page).to have_content("Lets pretend that this is your EHR...")
+    visit '/'
+    expect(page).to have_content('Lets pretend that this is your EHR...')
   end
 
   it 'should display a help view' do
-    visit('/')
+    visit '/'
     click_link('Prior Authorizations')
     click_link('Contact CoverMyMeds')
     expect(page).to have_content('For assistance using CoverMyMeds')
   end
 
-  it 'should display the source code when asked' do
-    visit('/')
-    click_link('Resources')
-    click_link('Source Code')
-    expect(page).to have_content('Reference implementation of an EHR integration with CoverMyMeds, written in Ruby on Rails.')
-  end    
-
 end
-

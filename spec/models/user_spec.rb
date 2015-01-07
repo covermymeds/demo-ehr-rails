@@ -6,7 +6,7 @@ describe User, type: :model do
   it { should respond_to(:role_id) }
 
   describe "#prescriber?" do
-    let(:user) { User.new first_name: 'Test McTestface', npi: npi }
+    let(:user) { User.new first_name: 'Test', last_name: 'McTestface', npi: npi }
 
     context "when user has a valid NPI number" do
       let(:npi) { "1234512345" }

@@ -12,8 +12,10 @@ class ApplicationController < ActionController::Base
 
 
   def salutation
-    if current_user
-      "Welcome, #{current_user.name}"
+    if current_user and current_user.role_id == Role.doctor.id
+      "Welcome, Dr. #{current_user.last_name}"
+    elsif current_user and current_user.role_id == Role.staff.id
+      "Welcome, #{current_user.first_name}"
     else
       "Sign in..."
     end

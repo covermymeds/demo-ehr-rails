@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   def cmm_request_link_for(request)
     params = {
       remote_user: {
-        display_name: current_user ? current_user.name : 'James Kirk',
+        display_name: current_user ? "#{current_user.first_name} #{current_user.last_name}" : 'James Kirk',
         phone_number: '614-555-1212',
         fax_number: '614-444-4444'
       }

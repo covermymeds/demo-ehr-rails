@@ -13,8 +13,18 @@
 
 <div class='form-group'>
   <%= f.label :patient_id, "Patient" %><br/>
-  <%= select :patient, :id, Patient.all.collect {|p| [p.description, p.id]}, {prompt:'Select a Patient'},{:class=>'form-control'} %>
+  <%= select :patient, :id, Patient.all.collect {|p| [p.description, p.id]}, {prompt:'Select a Patient'}, class: 'form-control' %>
   <%= link_to "New Patient...", new_patient_path, :class=>'btn btn-primary' %>
+</div>
+
+<div class='form-group'>
+  <%= f.label :prescriber_id, "Prescriber" %><br/>
+  <% if current_user.role_id == Role.doctor.id %>
+    <%= text_field "prescriber", :id, disabled: true, value: "Dr. #{current_user.first_name} #{current_user.last_name}", class: 'form-control' %>
+    <%= hidden_field_tag :prescriber, current_user.id %>
+  <% else %>
+    <%= select "prescriber", :id, User.doctors.collect { |d| ["Dr. #{d.first_name} #{d.last_name}", d.id] }, { prompt:'Select a Prescriber' }, class: 'form-control'%>
+  <% end %>
 </div>
 
 <div class='form-group'>

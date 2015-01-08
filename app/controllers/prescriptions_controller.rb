@@ -1,6 +1,7 @@
 class PrescriptionsController < ApplicationController
 
   before_action :set_prescription, only: [:show, :edit, :update, :destroy]
+  before_action :doctors_only, only: [:new, :create]
 
   # GET /prescriptions
   # GET /prescriptions.json
@@ -77,7 +78,7 @@ class PrescriptionsController < ApplicationController
       if client.revoke_access_token? pa_request.cmm_token
         flash_message("Request #{pa_request.cmm_id} removed from your dashboard.")
 
-        # delete the prescription, this deletes the pa_request too 
+        # delete the prescription, this deletes the pa_request too
         # we'll delete the PA request in the callback
       else
         flash_message("Unable to remove request #{pa_request.cmm_id} from your dashboard")
@@ -109,13 +110,19 @@ class PrescriptionsController < ApplicationController
       pa_request = prescription.pa_requests.build(urgent: false, state: response.state, form_id: response.form_id)
       pa_request.set_cmm_values(response)
       pa_request.save
-
     end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_prescription
       @patient = Patient.find(params[:patient_id])
       @prescription = Prescription.find(params[:id])
+    end
+
+    def doctors_only
+      unless current_user.role == Role.doctor
+        flash_message('Only doctors may create new prescriptions')
+        redirect_to Patient.find(params[:patient_id])
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

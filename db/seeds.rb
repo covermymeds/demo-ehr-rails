@@ -10,8 +10,8 @@ Patient.destroy_all
 PaRequest.destroy_all
 
 Role.destroy_all
-Role.create! description: 'Doctor'
-Role.create! description: 'Staff'
+Role.create! description: 'doctor'
+Role.create! description: 'staff'
 
 patients = [
   {first_name:'Autopick', last_name:'Smith',    gender:'f', date_of_birth:'10/01/1971', street_1:'221 Baker St.', street_2:'Apt B', city:'London', state:'OH', zip:'43210', phone_number:'614-555-1212', email:'test@covermymeds.com', bin:'111111', pcn:'SAMP001', group_id:'NOTREAL'},

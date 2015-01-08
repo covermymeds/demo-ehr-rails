@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "users/show", type: :view do
   before(:each) do
-    role = Role.create! description: 'Doctor'
+    role = Role.create! description: Role::DOCTOR
     @user = assign(:user, User.create!(
       first_name: "First",
       last_name: "Last",

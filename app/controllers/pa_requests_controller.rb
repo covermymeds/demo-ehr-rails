@@ -64,7 +64,7 @@ class PaRequestsController < ApplicationController
 
     # set the pharmacy in our PA request
     pharmacy_id = (params[:pharmacy][:id] == "") ? Pharmacy.first.id : params[:pharmacy][:id]
-    @pharmacy = Pharmacy.find(pharmacy_id) 
+    @pharmacy = Pharmacy.find(pharmacy_id)
     @prescription.pharmacy = @pharmacy
 
     @prescription.date_prescribed = DateTime.now
@@ -77,7 +77,7 @@ class PaRequestsController < ApplicationController
 
     # call out to the request pages API to create a request with CMM, given
     # the information we have about the patient and prescription
-    new_request = RequestConfigurator.request(@prescription, @pa_request.form_id)
+    new_request = RequestConfigurator.request(@prescription, @pa_request.form_id, User.find(params[:prescriber][:id] || User.find(params[:prescriber])))
 
     # create the request in the API
     # in your application, you will likely do this asynchronously, but
@@ -118,7 +118,7 @@ class PaRequestsController < ApplicationController
   end
 
   private
-  
+
   # Use callbacks to share common setup or constraints between actions.
   def set_request
     @patient = Patient.find(params[:patient_id])

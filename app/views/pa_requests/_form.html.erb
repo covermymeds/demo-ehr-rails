@@ -19,7 +19,7 @@
 
 <div class='form-group'>
   <%= f.label :prescriber_id, "Prescriber" %><br/>
-  <% if current_user.role_id == Role.doctor.id %>
+  <% if current_user && current_user.role == Role.doctor %>
     <%= text_field "prescriber", :id, disabled: true, value: "Dr. #{current_user.first_name} #{current_user.last_name}", class: 'form-control' %>
     <%= hidden_field_tag :prescriber, current_user.id %>
   <% else %>

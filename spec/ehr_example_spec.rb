@@ -2,10 +2,11 @@ require 'rails_helper'
 
 describe 'eHR Example App' do
   fixtures :all
+  let(:doctor_login) { "/login/#{User.doctors.first.id}" }
+  let(:staff_login) { "/login/#{User.where(role_id: Role.staff.id).first.id}" }
 
   # Test all of the nav links
   describe 'navigating the site via nav bar' do
-    fixtures :patients, :prescriptions
 
     before(:each) do
       visit '/logout'
@@ -64,7 +65,7 @@ describe 'eHR Example App' do
       expect(page).to have_content('Your Prior Auth Dashboard')
     end
 
-    it 'should navigate to the patient list from button' do 
+    it 'should navigate to the patient list from button' do
       click_link('Start e-Prescribing Workflow')
       expect(page).to have_content('Patients')
     end
@@ -73,7 +74,6 @@ describe 'eHR Example App' do
 
   # Test everything a user can do on the patients index
   describe 'patients index workflow' do
-    fixtures :patients, :prescriptions
 
     before(:each) do
       visit '/patients'
@@ -93,9 +93,30 @@ describe 'eHR Example App' do
       expect(page).to have_css('.table tr.patients', count: 10)
     end
 
-    it 'should navigate to new prescription form if patient is clicked with no prescriptions assigned', failed: true do
-      click_link('Mike Miller 10/01/1971 OH')
-      expect(page).to have_content('Prescription -')
+    describe 'clicking a patient' do
+      context 'user is doctor' do
+        before do
+          visit doctor_login
+          visit '/patients'
+        end
+
+        it "should navigate to the new prescription form if patient is clicked with no prescriptions assigned" do
+          click_link('Mike Miller 10/01/1971 OH')
+          expect(page).to have_content 'Prescription -'
+        end
+      end
+
+      context "user is staff" do
+        before do
+          visit staff_login
+          visit '/patients'
+        end
+
+        it "should navigate to the patient show page if patient is clicked with no prescriptions assigned" do
+          click_link('Mike Miller 10/01/1971 OH')
+          expect(page).to have_content 'Edit Patient'
+        end
+      end
     end
 
     it 'should delete a patient if remove button is clicked' do
@@ -133,43 +154,48 @@ describe 'eHR Example App' do
       expect(page).to have_content('Patient created successfully.')
     end
 
-    it 'should add a medication to a patient', js: true do
-      visit '/patients'
+    context 'user is a doctor' do
 
-      # Find the first patient and click on them
-      page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
-      click_link('Add Prescription')
+      before { visit doctor_login }
 
-      # Find a medication
-      find('#s2id_prescription_drug_number').click
-      find('.select2-input').set('Nexium')
-      expect(page).to have_selector('.select2-result-selectable')
-      within '.select2-results' do
-        find('li:first-child').click
+      it 'should add a medication to a patient', js: true do
+        visit '/patients'
+
+        # Find the first patient and click on them
+        page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
+        click_link('Add Prescription')
+
+        # Find a medication
+        find('#s2id_prescription_drug_number').click
+        find('.select2-input').set('Nexium')
+        expect(page).to have_selector('.select2-result-selectable')
+        within '.select2-results' do
+          find('li:first-child').click
+        end
+        select "CVS - 670 N. High St., Columbus, fax: 555-555-5555", from: "prescription_pharmacy_id"
+
+        click_on('Save')
+
+        # Back on the patient page
+        expect(page).to have_selector('#patient-show')
+
+        # start the prior auth
+        #      click_on('Start')
+
+        # check('request', match: :first)
+
+        # click_on('Next')
+
+        # # Should be on pharmacy list page
+        # expect(page).to have_selector('#pharmacies-list')
+        # click_on('Finish')
+
+        # expect(page).to have_content('Lets pretend that this is your EHR...')
       end
-      select "CVS - 670 N. High St., Columbus, fax: 555-555-5555", from: "prescription_pharmacy_id"
-
-      click_on('Save')
-
-      # Back on the patient page
-      expect(page).to have_selector('#patient-show')
-
-      # start the prior auth
-#      click_on('Start')
-
-      # check('request', match: :first)
-
-      # click_on('Next')
-
-      # # Should be on pharmacy list page
-      # expect(page).to have_selector('#pharmacies-list')
-      # click_on('Finish')
-
-      # expect(page).to have_content('Lets pretend that this is your EHR...')
     end
 
     it 'should navigate patient show if patient name is clicked and patient has prescription assigned', js: true do
-      visit '/'
+      visit doctor_login
       click_link('Patients')
       page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
 
@@ -209,7 +235,7 @@ describe 'eHR Example App' do
     click_link('Resources')
     click_link('Source Code')
     expect(page).to have_content('Reference implementation of an EHR integration with CoverMyMeds, written in Ruby on Rails.')
-  end    
+  end
 
 end
 

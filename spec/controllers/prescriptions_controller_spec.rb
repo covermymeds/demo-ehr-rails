@@ -25,11 +25,16 @@ RSpec.describe PrescriptionsController, type: :controller do
   # Prescription. As you add validations to Prescription, be sure to
   # adjust the attributes here as well.
   let(:patient) {
-    Patient.create!({first_name: 'Mark', last_name:'Harris', date_of_birth:'10/11/1971', state:'OH' }) 
+    Patient.create!({first_name: 'Mark', last_name:'Harris', date_of_birth:'10/11/1971', state:'OH' })
   }
 
+  let(:dr_role) { Role.create! description: Role::DOCTOR }
+  let(:staff_role) { Role.create! description: Role::STAFF }
+  let(:doctor) { User.create! first_name: SecureRandom.uuid, role_id: dr_role.id }
+  let(:staff) { User.create! first_name: SecureRandom.uuid, role_id: staff_role.id }
+
   let(:pharmacy) {
-    Pharmacy.create!({name:'cvs', 
+    Pharmacy.create!({name:'cvs',
       street:'670 N. High St.',
       city: 'Columbus',
       state: 'OH',
@@ -69,12 +74,13 @@ RSpec.describe PrescriptionsController, type: :controller do
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # PrescriptionsController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  let(:valid_session) { { user_id: doctor.id } }
+  let(:staff_session) { { user_id: staff.id } }
 
   describe "GET index" do
     it "assigns all prescriptions as @prescriptions", wip: true do
       prescription = Prescription.create! valid_attributes
-      get :index, {patient_id:patient.id}, valid_session
+      get :index, { patient_id:patient.id }, valid_session
       expect(assigns(:prescriptions)).to eq([prescription])
     end
   end
@@ -82,22 +88,30 @@ RSpec.describe PrescriptionsController, type: :controller do
   describe "GET show" do
     it "assigns the requested prescription as @prescription" do
       prescription = Prescription.create! valid_attributes
-      get :show, {id: prescription.to_param, patient_id: patient.id }, valid_session
+      get :show, { id: prescription.to_param, patient_id: patient.id }, valid_session
       expect(assigns(:prescription)).to eq(prescription)
     end
   end
 
   describe "GET new" do
-    it "assigns a new prescription as @prescription" do
-      get :new, {patient_id:patient.id}, valid_session
-      expect(assigns(:prescription)).to be_a_new(Prescription)
+    context "user is doctor" do
+      it "assigns a new prescription as @prescription" do
+        get :new, { patient_id:patient.id }, valid_session
+        expect(assigns(:prescription)).to be_a_new(Prescription)
+      end
+    end
+    context "user is not doctor" do
+      it "redirects to patient view" do
+        get :new, { patient_id:patient.id }, staff_session
+        expect(response).to redirect_to patient
+      end
     end
   end
 
   describe "GET edit" do
     it "assigns the requested prescription as @prescription" do
       prescription = Prescription.create! valid_attributes
-      get :edit, {id: prescription.to_param, patient_id: patient.id}, valid_session
+      get :edit, { id: prescription.to_param, patient_id: patient.id }, valid_session
       expect(assigns(:prescription)).to eq(prescription)
     end
   end

@@ -43,5 +43,5 @@
       <% end %>
     </table>
     <% end %>
-    <%= link_to "Add Prescription", new_patient_prescription_path(@patient), :class=>'btn btn-success' %>
+    <%= link_to "Add Prescription", new_patient_prescription_path(@patient), :class=>'btn btn-success' if current_user.role == Role.doctor %>
   </div>

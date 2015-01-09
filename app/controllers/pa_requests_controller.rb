@@ -77,7 +77,7 @@ class PaRequestsController < ApplicationController
 
     # call out to the request pages API to create a request with CMM, given
     # the information we have about the patient and prescription
-    new_request = RequestConfigurator.request(@prescription, @pa_request.form_id, User.find(params[:prescriber][:id] || User.find(params[:prescriber])))
+    new_request = RequestConfigurator.request(@prescription, @pa_request.form_id, User.find(params[:pa_request][:prescriber_id]))
 
     # create the request in the API
     # in your application, you will likely do this asynchronously, but
@@ -128,7 +128,7 @@ class PaRequestsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def pa_request_params
-    params.require(:pa_request).permit(:patient_id, :prescription_id, :form_id, :urgent, :state, :sent, :cmm_token, :cmm_link, :cmm_id, :cmm_workflow_status, :cmm_outcome)
+    params.require(:pa_request).permit(:patient_id, :prescription_id, :form_id, :prescriber_id, :urgent, :state, :sent, :cmm_token, :cmm_link, :cmm_id, :cmm_workflow_status, :cmm_outcome)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

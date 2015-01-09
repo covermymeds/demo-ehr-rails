@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :set_use_custom_ui
+  include ApplicationHelper
 
   def salutation
     if current_user and current_user.role_id == Role.doctor.id

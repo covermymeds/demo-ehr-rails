@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   STAFF = 2
 
   scope :doctors, -> { where(role_id: Role.doctor.id) }
+  scope :staff, -> { where(role_id: Role.staff.id) }
 
   validates :first_name, presence: true
   validates :role_id, presence: true

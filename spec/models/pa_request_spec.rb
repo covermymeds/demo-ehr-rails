@@ -8,7 +8,8 @@ RSpec.describe PaRequest, type: :model do
       cmm_workflow_status: 'New',
       cmm_token: 'kdksksdkfadkjadf',
       cmm_id: '123ABC',
-      form_id: 'this_is_a_form'
+      form_id: 'this_is_a_form',
+      prescriber_id: 1,
     }
   end
 
@@ -20,7 +21,4 @@ RSpec.describe PaRequest, type: :model do
       end
     end
   end
-
-  
-  
 end

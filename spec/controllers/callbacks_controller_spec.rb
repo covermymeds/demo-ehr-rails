@@ -10,11 +10,11 @@ RSpec.describe CallbacksController, type: :controller do
     let(:valid_session) { {} }
 
     let(:valid_request) do
-      JSON.parse(File.read("spec/fixtures/valid_request.json"))      
+      JSON.parse(File.read("spec/fixtures/valid_request.json"))
     end
 
     let(:delete_request) do
-      JSON.parse(File.read("spec/fixtures/delete_request.json"))      
+      JSON.parse(File.read("spec/fixtures/delete_request.json"))
     end
 
     it "adds a request when prompted from the callback" do

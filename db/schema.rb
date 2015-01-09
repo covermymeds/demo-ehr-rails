@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150107180151) do
+ActiveRecord::Schema.define(version: 20150109160756) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20150107180151) do
     t.string   "cmm_workflow_status"
     t.text     "request_pages_actions"
     t.string   "cmm_outcome"
+    t.integer  "prescriber_id"
   end
 
   add_index "pa_requests", ["prescription_id"], name: "index_pa_requests_on_prescription_id", using: :btree

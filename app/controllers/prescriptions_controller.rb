@@ -120,7 +120,7 @@ class PrescriptionsController < ApplicationController
 
     def doctors_only
       unless current_user.role == Role.doctor
-        flash_message('Only doctors may create new prescriptions')
+        flash_message('Only doctors may create new prescriptions.')
         redirect_to Patient.find(params[:patient_id])
       end
     end

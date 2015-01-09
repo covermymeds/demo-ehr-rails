@@ -13,7 +13,7 @@
     <a href="https://api.covermymeds.com/#quick-start" class="btn btn-primary btn-lg" role="button">
       API Docs &raquo;
     </a>
-    <h2>Start the Demonstration</h2>
-    <%= link_to "Start e-Prescribing Workflow", patients_path, :class => 'btn btn-success', :role=>'button'%>
-    <%= link_to "Start Task List Workflow", pa_requests_path, :class => 'btn btn-info', :role=>'button' %>
+    <h2>Start the Demonstration As...</h2>
+    <%= link_to "Dr. #{User.doctors.first.last_name}", login_path(User.doctors.first.id), :class => 'btn btn-success', :role=>'button'%>
+    <%= link_to "Staff", login_path(User.staff.first.id), :class => 'btn btn-info', :role=>'button' %>
 </div>

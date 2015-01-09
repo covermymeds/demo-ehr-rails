@@ -20,7 +20,7 @@ describe 'eHR Example App' do
     it 'should navigate to the Your EHR view', js: true do
       visit '/patients' # To test the home link visit another page besides the home page
       click_link('Your EHR')
-      expect(page).to have_content('Lets pretend that this is your EHR...')
+      expect(page).to have_content("Let's pretend that this is your EHR...")
     end
 
     it 'should navigate to the dashboard view', js: true do
@@ -190,7 +190,7 @@ describe 'eHR Example App' do
         # expect(page).to have_selector('#pharmacies-list')
         # click_on('Finish')
 
-        # expect(page).to have_content('Lets pretend that this is your EHR...')
+        # expect(page).to have_content("Let's pretend that this is your EHR...")
       end
     end
 
@@ -220,7 +220,7 @@ describe 'eHR Example App' do
 
   it 'should allow accessing the site root' do
     visit('/')
-    expect(page).to have_content("Lets pretend that this is your EHR...")
+    expect(page).to have_content("Let's pretend that this is your EHR...")
   end
 
   it 'should display a help view' do

@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "patients/show", type: :view do
+  let(:dr_role) { Role.create! description: Role::DOCTOR }
+  let(:staff_role) { Role.create! description: Role::STAFF }
+  let(:staff) { User.create! first_name: SecureRandom.uuid, role_id: staff_role.id }
+  let(:doctor) { User.create! first_name: SecureRandom.uuid, role_id: dr_role.id }
+
   before(:each) do
     @patient = assign(:patient, Patient.create!(
       first_name: "First Name",
@@ -32,5 +37,21 @@ RSpec.describe "patients/show", type: :view do
     expect(rendered).to match(/Last Name/)
     expect(rendered).to match(/10\/11\/1971/)
     expect(rendered).to match(/OH/)
+  end
+
+  context "user is doctor" do
+    it "shows the add prescription button" do
+      session[:user_id] = doctor.id
+      render
+      expect(rendered).to match(/Add Prescription/)
+    end
+  end
+
+  context "user is not a doctor" do
+    it "does not show the add prescription button" do
+      session[:user_id] = staff.id
+      render
+      expect(rendered).to_not match(/Add Prescription/)
+    end
   end
 end

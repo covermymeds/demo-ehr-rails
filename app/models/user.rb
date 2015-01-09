@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true
   validates :role_id, presence: true
   belongs_to :role
+  has_many :pa_requests
 
   def prescriber?
     valid_npi?

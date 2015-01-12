@@ -14,6 +14,6 @@
       API Docs &raquo;
     </a>
     <h2>Start the Demonstration As...</h2>
-    <%= link_to "Dr. #{User.doctors.first.last_name}", login_path(User.doctors.first.id), :class => 'btn btn-success', :role=>'button'%>
-    <%= link_to "Staff", login_path(User.staff.first.id), :class => 'btn btn-info', :role=>'button' %>
+    <%= link_to "Dr. #{User.doctors.first.last_name}", login_path(User.doctors.first.id), :id => 'dr_login', :class => 'btn btn-success', :role=>'button'%>
+    <%= link_to "Staff", login_path(User.staff.first.id), :id => 'staff_login', :class => 'btn btn-info', :role=>'button' %>
 </div>

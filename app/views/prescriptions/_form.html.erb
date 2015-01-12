@@ -63,15 +63,11 @@
 
     <div class="form-group">
       <%= f.label :pharmacy_id, "Filled By" %>
-      <%= f.collection_select :pharmacy_id, Pharmacy.all, :id, :display_name, {prompt: 'Select a Pharmacy'}, {class: 'form-control'} %> 
+      <%= f.collection_select :pharmacy_id, Pharmacy.all, :id, :display_name, {prompt: 'Select a Pharmacy'}, {class: 'form-control'} %>
     </div>
 
     <div class="actions">
-      <% if @patient.prescriptions.empty? %>
-      <%= link_to "Cancel", patients_path, :class=>'btn btn-default' %>
-      <% else %>
-      <%= link_to "Cancel", @patient, :class=>'btn btn-default' %>
-      <% end %>
+      <%= link_to "Cancel", :back, :class=>'btn btn-default' %>
       <%= f.submit "Save", :class => 'btn btn-primary create', :onsubmit => 'getDrugName' %>
     </div>
 

@@ -89,7 +89,7 @@ The Request Pages resource provides the ability to completely embed the CoverMyM
 
 Route: `/dashboard`
 
-This page demonstrates using the dashboard plugin to build a task list of PA requests with options for filtering, searching, and sorting. See `/app/assets/javascripts/pa_requests.js` for an example of using the dashbord plugin.
+This page demonstrates using the dashboard plugin to build a task list of PA requests with options for filtering, searching, and sorting. See `/app/assets/javascripts/pa_requests.js` for an example of using the dashboard plugin.
 
 #### Contact CoverMyMeds
 

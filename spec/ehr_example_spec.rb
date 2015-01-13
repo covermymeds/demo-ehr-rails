@@ -64,11 +64,18 @@ describe 'eHR Example App' do
       expect(page).to have_content('Your Prior Auth Dashboard')
     end
 
-    it 'should navigate to the patient list from button' do 
+    it 'should navigate to the patient list from button' do
       click_link('Start e-Prescribing Workflow')
       expect(page).to have_content('Patients')
     end
 
+    it 'should change api environments from the link', focus: true do
+      click_link('Resources')
+      expect(page).to have_content('currently using production')
+      click_link('change-api-env')
+      click_link('Resources')
+      expect(page).to have_content('currently using integration')
+    end
   end
 
   # Test everything a user can do on the patients index
@@ -209,7 +216,7 @@ describe 'eHR Example App' do
     click_link('Resources')
     click_link('Source Code')
     expect(page).to have_content('Reference implementation of an EHR integration with CoverMyMeds, written in Ruby on Rails.')
-  end    
+  end
 
 end
 

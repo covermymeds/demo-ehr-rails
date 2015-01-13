@@ -69,7 +69,7 @@ describe 'eHR Example App' do
       expect(page).to have_content('Patients')
     end
 
-    it 'should change api environments from the link', focus: true do
+    it 'should change api environments from the link' do
       click_link('Resources')
       expect(page).to have_content('currently using production')
       click_link('change-api-env')

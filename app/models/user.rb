@@ -3,8 +3,8 @@ class User < ActiveRecord::Base
   FLEMING = 1
   STAFF = 2
 
-  scope :doctors, -> { where(role_id: Role.doctor.id) }
-  scope :staff, -> { where(role_id: Role.staff.id) }
+  scope :doctors, -> { where(role: Role.doctor) }
+  scope :staff, -> { where(role: Role.staff) }
 
   validates :first_name, presence: true
   validates :role_id, presence: true

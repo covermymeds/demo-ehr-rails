@@ -7,7 +7,7 @@ class RequestPagesController < ApplicationController
 
   def show
     # get the request-page for our current request
-    @request_page_json = RequestConfigurator.api_client.get_request_page @pa_request.cmm_id, @pa_request.cmm_token
+    @request_page_json = RequestConfigurator.api_client(session[:use_integration]).get_request_page @pa_request.cmm_id, @pa_request.cmm_token
 
     if is_error_form? @request_page_json
       # show the error page
@@ -41,8 +41,8 @@ class RequestPagesController < ApplicationController
 
     # build an HTTP connection
     conn = RestClient::Resource.new(action[:href], {
-        user: Rails.application.secrets.cmm_api_id, 
-        password: 'x-no-pass', 
+        user: Rails.application.secrets.cmm_api_id,
+        password: 'x-no-pass',
         headers: headers
         })
 
@@ -51,7 +51,7 @@ class RequestPagesController < ApplicationController
     method = action[:method].downcase
 
     # call out to get the next request page
-    response = conn.send method, (form_data || {}) 
+    response = conn.send method, (form_data || {})
 
     # make sure we get a success code
     if [200, 201].include? response.code
@@ -65,8 +65,8 @@ class RequestPagesController < ApplicationController
       if is_pa_request_form? @request_page
         redirect_to pa_request_request_pages_path(@pa_request)
       else
-        # otherwise, render the action 
-        replace_actions @request_page, @pa_request 
+        # otherwise, render the action
+        replace_actions @request_page, @pa_request
         @forms = @request_page[:forms]
         @data = @request_page[:data]
         render :show
@@ -101,7 +101,7 @@ class RequestPagesController < ApplicationController
 
     # proxy actions through this controller, keeping tokens in the server
     def replace_actions request_page, pa_request
-      # keep track of actions, so we can execute actions 
+      # keep track of actions, so we can execute actions
       actions = request_page[:actions]
       pa_request.update_attributes request_pages_actions: actions.to_json
 

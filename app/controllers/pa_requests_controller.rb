@@ -64,7 +64,7 @@ class PaRequestsController < ApplicationController
 
     # set the pharmacy in our PA request
     pharmacy_id = (params[:pharmacy][:id] == "") ? Pharmacy.first.id : params[:pharmacy][:id]
-    @pharmacy = Pharmacy.find(pharmacy_id) 
+    @pharmacy = Pharmacy.find(pharmacy_id)
     @prescription.pharmacy = @pharmacy
 
     @prescription.date_prescribed = DateTime.now
@@ -77,12 +77,12 @@ class PaRequestsController < ApplicationController
 
     # call out to the request pages API to create a request with CMM, given
     # the information we have about the patient and prescription
-    new_request = RequestConfigurator.request(@prescription, @pa_request.form_id)
+    new_request = RequestConfigurator.request(@prescription, @pa_request.form_id, session[:use_integration])
 
     # create the request in the API
     # in your application, you will likely do this asynchronously, but
     # we are doing this inline for brevity
-    response = RequestConfigurator.api_client.create_request new_request
+    response = RequestConfigurator.api_client(session[:use_integration]).create_request new_request
     flash_message "Your prior authorization request was successfully started."
 
     # stash away the token, id, link, and workflow status from the return
@@ -103,7 +103,7 @@ class PaRequestsController < ApplicationController
   # DELETE /pa_request/:pa_request_id/pa_requests/1.json
   def destroy
     # first, delete the PA request from our CMM dashboard
-    client = RequestConfigurator.api_client
+    client = RequestConfigurator.api_client(session[:use_integration])
     client.revoke_access_token? @pa_request.cmm_token
     @pa_request.update_attributes(cmm_token: nil)
 
@@ -118,7 +118,7 @@ class PaRequestsController < ApplicationController
   end
 
   private
-  
+
   # Use callbacks to share common setup or constraints between actions.
   def set_request
     @patient = Patient.find(params[:patient_id])

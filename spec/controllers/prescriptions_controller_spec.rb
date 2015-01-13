@@ -19,7 +19,7 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe PrescriptionsController, type: :controller do
-
+  fixtures :users, :roles
 
   # This should return the minimal set of attributes required to create a valid
   # Prescription. As you add validations to Prescription, be sure to
@@ -27,11 +27,6 @@ RSpec.describe PrescriptionsController, type: :controller do
   let(:patient) {
     Patient.create!({first_name: 'Mark', last_name:'Harris', date_of_birth:'10/11/1971', state:'OH' })
   }
-
-  let(:dr_role) { Role.create! description: Role::DOCTOR }
-  let(:staff_role) { Role.create! description: Role::STAFF }
-  let(:doctor) { User.create! first_name: SecureRandom.uuid, role_id: dr_role.id }
-  let(:staff) { User.create! first_name: SecureRandom.uuid, role_id: staff_role.id }
 
   let(:pharmacy) {
     Pharmacy.create!({name:'cvs',
@@ -74,8 +69,8 @@ RSpec.describe PrescriptionsController, type: :controller do
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # PrescriptionsController. Be sure to keep this updated too.
-  let(:valid_session) { { user_id: doctor.id } }
-  let(:staff_session) { { user_id: staff.id } }
+  let(:valid_session) { { user_id: users(:doctor).id } }
+  let(:staff_session) { { user_id: users(:staff).id } }
 
   describe "GET index" do
     it "assigns all prescriptions as @prescriptions", wip: true do

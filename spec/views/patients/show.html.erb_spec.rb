@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "patients/show", type: :view do
-  let(:dr_role) { Role.create! description: Role::DOCTOR }
-  let(:staff_role) { Role.create! description: Role::STAFF }
-  let(:staff) { User.create! first_name: SecureRandom.uuid, role_id: staff_role.id }
-  let(:doctor) { User.create! first_name: SecureRandom.uuid, role_id: dr_role.id }
+  fixtures :users, :roles
 
   before(:each) do
     @patient = assign(:patient, Patient.create!(
@@ -41,7 +38,7 @@ RSpec.describe "patients/show", type: :view do
 
   context "user is doctor" do
     it "shows the add prescription button" do
-      session[:user_id] = doctor.id
+      session[:user_id] = users(:doctor).id
       render
       expect(rendered).to match(/Add Prescription/)
     end
@@ -49,7 +46,7 @@ RSpec.describe "patients/show", type: :view do
 
   context "user is not a doctor" do
     it "does not show the add prescription button" do
-      session[:user_id] = staff.id
+      session[:user_id] = users(:staff).id
       render
       expect(rendered).to_not match(/Add Prescription/)
     end

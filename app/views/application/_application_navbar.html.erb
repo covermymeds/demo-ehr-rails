@@ -53,6 +53,7 @@
             <ul class='dropdown-menu'>
               <li><%= link_to "API Documentation", api_documentation_path %></li>
               <li><%= link_to "Source Code", source_code_path %></li>
+              <li><%= link_to "Switch to #{session[:use_integration] ? "production API (currently using integration)" : "integration API (currently using production)"}", home_change_api_env_path, method: :put, id: 'change-api-env' %>
             </ul>
           </li>
           <li>

@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'eHR Example App' do
   fixtures :all
-  let(:doctor_login) { "/login/#{User.doctors.first.id}" }
-  let(:staff_login) { "/login/#{User.where(role_id: Role.staff.id).first.id}" }
+  let(:doctor_login) { "/login/#{users(:doctor).id}" }
+  let(:staff_login) { "/login/#{users(:staff).id}" }
 
   # Test all of the nav links
   describe 'navigating the site via nav bar' do

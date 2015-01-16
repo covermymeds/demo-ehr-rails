@@ -29,10 +29,13 @@
         <%= f.label :formulary_status, "Formulary Status" %>
         <%= f.text_field :formulary_status, :class=>'form-control', :readonly => true %>
       </div>
-      <div class='checkbox col-md-4'>
+      <div class='checkbox col-md-2'>
         <%= label_tag :start_pa do %>
         <%= check_box_tag :start_pa, 1, false, :class=>'checkbox' %><b>Start PA?</b>
         <% end %>
+      </div>
+      <div id='pa_required_alert' class='alert alert-info col-md-6 hidden' role='alert'>
+        This medication will require a prior authorization.
       </div>
     </div>
 

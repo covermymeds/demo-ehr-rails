@@ -57,6 +57,11 @@ $(function () {
           contentType: 'application/json',
           data: JSON.stringify(data),
           success: function(data) {
+            if (data.prescriptions[0].autostart) {
+              $('#pa_required_alert').removeClass('hidden');
+            } else {
+              $('#pa_required_alert').addClass('hidden');
+            }
             $('#start_pa').prop('checked', data.prescriptions[0].autostart);
           }
         });

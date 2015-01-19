@@ -47,9 +47,8 @@ $(function () {
       });
       // if we're on the add prescription page, check if we need to start a PA
       if(document.URL.indexOf('prescription') != -1) {
-        data = {};
-        data.prescriptions = [];
-        data.prescriptions.push({ 'name': $('#prescription_drug_name').val(), 'drug_id': $('#prescription_drug_number').val() });
+        data = { prescriptions: [{ 'name': $('#prescription_drug_name').val(),
+                                'drug_id': $('#prescription_drug_number').val() }] };
         $.ajax({
           type: "POST",
           url: '/pa_required',

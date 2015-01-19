@@ -1,5 +1,5 @@
-class DbSeeder
-  def self.seed
+class DbResetter
+  def self.reset
     ActiveRecord::Base.transaction do
       Patient.destroy_all
 

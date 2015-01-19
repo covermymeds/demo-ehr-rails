@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DbSeeder do
+describe DbResetter do
   let(:first_name) { SecureRandom.uuid }
   let(:last_name) { SecureRandom.uuid }
   let(:pharmacy_name) { SecureRandom.uuid }
@@ -11,7 +11,7 @@ describe DbSeeder do
     Pharmacy.create! name: pharmacy_name
     User.create! name: first_name
     PaRequest.create! cmm_token: token
-    DbSeeder.seed
+    DbResetter.reset
   end
 
   it 'destroys new records' do

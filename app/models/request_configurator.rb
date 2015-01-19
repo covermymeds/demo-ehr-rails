@@ -7,7 +7,7 @@ class RequestConfigurator
     new_request = client.request_data
 
     # we don't know the form yet, so remove it from the hash
-    if form_id == nil || form_id == ""
+    if form_id.blank?
       new_request.delete('form_id')
     else
       new_request.form_id = form_id

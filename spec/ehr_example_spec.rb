@@ -3,9 +3,13 @@ require 'rails_helper'
 describe 'eHR Example App' do
   fixtures :all
 
+  it 'should allow accessing the site root' do
+    visit('/')
+    expect(page).to have_content("Lets pretend that this is your EHR...")
+  end
+
   # Test all of the nav links
   describe 'navigating the site via nav bar' do
-    fixtures :patients, :prescriptions
 
     before(:each) do
       visit '/logout'
@@ -71,7 +75,6 @@ describe 'eHR Example App' do
         Capybara.page.execute_script  'window.confirm = function () { return true }'
         expect(page).to have_content('Database has been reset')
       end
-
     end
 
     it 'should navigate to the dashboard view from button' do
@@ -95,7 +98,6 @@ describe 'eHR Example App' do
 
   # Test everything a user can do on the patients index
   describe 'patients index workflow' do
-    fixtures :patients, :prescriptions
 
     before(:each) do
       visit '/patients'
@@ -121,18 +123,14 @@ describe 'eHR Example App' do
     end
 
     it 'should delete a patient if remove button is clicked' do
-
       within '.table' do
         click_link('X', match: :first)
       end
       expect(page).to have_css('.table tr.patients', count: 9)
     end
-
   end
 
   describe 'patients add workflow' do
-    fixtures :patients, :prescriptions
-
     it 'should create a patient' do
       visit '/patients/new'
 
@@ -154,49 +152,17 @@ describe 'eHR Example App' do
       click_on('Create')
       expect(page).to have_content('Patient created successfully.')
     end
+  end
 
-    it 'should add a medication to a patient', js: true do
-      visit '/patients'
-
-      # Find the first patient and click on them
-      page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
-      click_link('Add Prescription')
-
-      # Find a medication
-      find('#s2id_prescription_drug_number').click
-      find('.select2-input').set('Nexium')
-      expect(page).to have_selector('.select2-result-selectable')
-      within '.select2-results' do
-        find('li:first-child').click
-      end
-      select 'CVS - 670 N. High St., Columbus, fax: 555-555-5555', from: 'prescription_pharmacy_id'
-
-      click_on('Save')
-
-      # Back on the patient page
-      expect(page).to have_selector('#patient-show')
-
-      # start the prior auth
-#      click_on('Start')
-
-      # check('request', match: :first)
-
-      # click_on('Next')
-
-      # # Should be on pharmacy list page
-      # expect(page).to have_selector('#pharmacies-list')
-      # click_on('Finish')
-
-      # expect(page).to have_content('Lets pretend that this is your EHR...')
-    end
-
-    it 'should navigate patient show if patient name is clicked and patient has prescription assigned', js: true do
+  describe 'adding a prescription' do
+    before do
       visit '/'
       click_link('Patients')
       page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
-
       click_link('Add Prescription')
+    end
 
+    it 'should add a medication to a patient', js: true do
       # Find a drug
       find('#s2id_prescription_drug_number').click
       find('.select2-input').set('Nexium')
@@ -209,14 +175,33 @@ describe 'eHR Example App' do
 
       visit '/patients'
       page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
-      expect(page).to have_content('Add Prescription')
+      expect(page).to have_selector('#patient-show')
     end
 
-  end
+    describe 'formulary service' do
+      before do
+        find('#s2id_prescription_drug_number').click
+        find('.select2-input').set(search_term)
+        expect(page).to have_selector('.select2-result-selectable')
+        within '.select2-results' do
+          find('li:first-child').click
+        end
+      end
 
-  it 'should allow accessing the site root' do
-    visit '/'
-    expect(page).to have_content('Lets pretend that this is your EHR...')
+      context 'drug is a banana' do
+        let (:search_term) { 'banana' }
+        it 'requires a PA', js: true do
+          expect(find('#start_pa')).to be_checked
+        end
+      end
+
+      context 'drug is not a banana' do
+        let (:search_term) { 'apple' }
+        it 'does not require a PA', js: true do
+          expect(find('#start_pa')).to_not be_checked
+        end
+      end
+    end
   end
 
   it 'should display a help view' do

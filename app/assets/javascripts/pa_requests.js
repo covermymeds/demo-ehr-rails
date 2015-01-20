@@ -25,7 +25,7 @@ $(function () {
 
   // drug search for the "new pa" form
   $('#prescription_drug_number').drugSearch(options);
-  
+
   // if we got here from choosing a patient, the drug will already be filled in
   if ($('#prescription_drug_number').val()) {
     $('#pa_request_form_id').formSearch({
@@ -45,6 +45,26 @@ $(function () {
         drugId: $('#prescription_drug_number').val(),
         state: $('#pa_request_state').val()
       });
+      // if we're on the add prescription page, check if we need to start a PA
+      if(document.URL.indexOf('prescription') != -1) {
+        data = { prescriptions: [{ 'name': $('#prescription_drug_name').val(),
+                                'drug_id': $('#prescription_drug_number').val() }] };
+        $.ajax({
+          type: "POST",
+          url: '/pa_required',
+          dataType: 'json',
+          contentType: 'application/json',
+          data: JSON.stringify(data),
+          success: function(data) {
+            if (data.prescriptions[0].autostart) {
+              $('#pa_required_alert').removeClass('hidden');
+            } else {
+              $('#pa_required_alert').addClass('hidden');
+            }
+            $('#start_pa').prop('checked', data.prescriptions[0].autostart);
+          }
+        });
+      }
     });
   }
 

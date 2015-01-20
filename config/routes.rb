@@ -40,4 +40,6 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
+  post '/pa_required' => 'formularies#pa_required'
+
 end

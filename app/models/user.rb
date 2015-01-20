@@ -11,6 +11,10 @@ class User < ActiveRecord::Base
   belongs_to :role
   has_many :pa_requests
 
+  def display_name
+    "#{role == Role.doctor ? 'Dr. ' : ''}#{first_name} #{last_name}"
+  end
+
   def prescriber?
     valid_npi?
   end

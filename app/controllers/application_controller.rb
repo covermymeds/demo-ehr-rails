@@ -6,13 +6,7 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
 
   def salutation
-    if current_user and current_user.role_id == Role.doctor.id
-      "Welcome, Dr. #{current_user.last_name}"
-    elsif current_user and current_user.role_id == Role.staff.id
-      "Welcome, #{current_user.first_name}"
-    else
-      "Sign in..."
-    end
+    current_user ? current_user.display_name : "Sign in..."
   end
   helper_method :salutation
 

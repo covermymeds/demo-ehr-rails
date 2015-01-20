@@ -21,4 +21,10 @@ class HomeController < ApplicationController
     session[:use_integration] = !session[:use_integration]
     redirect_to root_url
   end
+
+  def reset_database
+    DbResetter.reset
+    flash_message 'Database has been reset.'
+    redirect_to root_url
+  end
 end

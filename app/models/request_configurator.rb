@@ -1,5 +1,5 @@
 class RequestConfigurator
-  def self.request(prescription, form_id, prescriber,  use_integration)
+  def self.request(prescription, form_id, prescriber, use_integration)
 
     client = self.api_client use_integration
 

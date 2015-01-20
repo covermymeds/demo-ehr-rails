@@ -216,12 +216,21 @@ describe 'eHR Example App' do
         it 'requires a PA', js: true do
           expect(find('#start_pa')).to be_checked
         end
+
+        it 'starts a PA', js: true do
+          click_on('Save')
+          expect(page).to have_content("Your prior authorization request was successfully started.")
+        end
       end
 
       context 'drug is not a banana' do
         let (:search_term) { 'apple' }
         it 'does not require a PA', js: true do
           expect(find('#start_pa')).to_not be_checked
+        end
+        it 'does not create a PA' do
+          click_on('Save')
+          expect(page).to have_content("Not Started - Unknown")
         end
       end
     end

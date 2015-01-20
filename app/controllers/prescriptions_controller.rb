@@ -98,7 +98,7 @@ class PrescriptionsController < ApplicationController
     def start_pa(prescription)
       # call out to the request pages API to create a request, given
       # the information we have about the patient and prescription
-      new_request = RequestConfigurator.request(prescription, nil, session[:use_integration])
+      new_request = RequestConfigurator.request(prescription, nil, current_user, session[:use_integration])
 
       # create the request in the API
       # in your application, you will likely do this asynchronously, but

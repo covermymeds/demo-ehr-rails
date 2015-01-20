@@ -3,17 +3,13 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :set_use_custom_ui
-
-  def current_user
-    @current_user ||= User.find_by_id(session["user_id"])
-    @current_user
-  end
-  helper_method :current_user
-
+  include ApplicationHelper
 
   def salutation
-    if current_user
-      "Welcome, #{current_user.name}"
+    if current_user and current_user.role_id == Role.doctor.id
+      "Welcome, Dr. #{current_user.last_name}"
+    elsif current_user and current_user.role_id == Role.staff.id
+      "Welcome, #{current_user.first_name}"
     else
       "Sign in..."
     end
@@ -32,7 +28,7 @@ class ApplicationController < ActionController::Base
   def cmm_request_link_for(request)
     params = {
       remote_user: {
-        display_name: 'James Kirk',
+        display_name: current_user ? "#{current_user.first_name} #{current_user.last_name}" : 'James Kirk',
         phone_number: '614-555-1212',
         fax_number: '614-444-4444'
       }

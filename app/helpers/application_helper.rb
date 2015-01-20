@@ -1,5 +1,10 @@
 module ApplicationHelper
-  
+
+  def current_user
+    @current_user ||= User.find_by_id(session["user_id"])
+    @current_user
+  end
+
   def flash_class(key)
     case key
     when :notice then
@@ -15,20 +20,20 @@ module ApplicationHelper
 
   def ehr_error_messages(flash)
     html = "<div class='row'>"
-    flash.each do |key, value| 
+    flash.each do |key, value|
       Array(value).each do |message|
         html += <<-HTML
         <div class="#{flash_class(key.parameterize.underscore.to_sym)}" id="flash_#{key}">
           <button type='button' class='close' data-dismiss='alert'>&times;</button>
           #{message.strip}
-        </div>      
+        </div>
         HTML
       end
     end
     html += "</div>"
     html.html_safe
   end
-  
+
   def cmm_request_link_for(request)
     params = {
       api_id: Rails.application.secrets.api_id,
@@ -46,10 +51,10 @@ module ApplicationHelper
   end
 
   def pa_request_edit_link(request, title = "View")
-    if @_use_custom_ui 
+    if @_use_custom_ui
       link_to title, pa_request_request_pages_path(request), id: 'edit_pa_request'
-    else 
-      link_to title, patient_prescription_pa_request_path(request.prescription.patient, request.prescription, request), id: 'edit_pa_request' 
+    else
+      link_to title, patient_prescription_pa_request_path(request.prescription.patient, request.prescription, request), id: 'edit_pa_request'
     end
   end
 

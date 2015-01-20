@@ -2,10 +2,12 @@ require 'rails_helper'
 
 describe 'eHR Example App' do
   fixtures :all
+  let(:doctor_login) { "/login/#{users(:doctor).id}" }
+  let(:staff_login) { "/login/#{users(:staff).id}" }
 
   it 'should allow accessing the site root' do
     visit('/')
-    expect(page).to have_content("Lets pretend that this is your EHR...")
+    expect(page).to have_content("Let's pretend that this is your EHR...")
   end
 
   # Test all of the nav links
@@ -23,7 +25,7 @@ describe 'eHR Example App' do
     it 'should navigate to the Your EHR view', js: true do
       visit '/patients' # To test the home link visit another page besides the home page
       click_link('Your EHR')
-      expect(page).to have_content('Lets pretend that this is your EHR...')
+      expect(page).to have_content("Let's pretend that this is your EHR...")
     end
 
     it 'should navigate to the dashboard view', js: true do
@@ -77,13 +79,13 @@ describe 'eHR Example App' do
       end
     end
 
-    it 'should navigate to the dashboard view from button' do
-      click_link('Start Task List Workflow')
+    it 'should navigate to the dashboard view from staff login' do
+      click_link('staff_login')
       expect(page).to have_content('Your Prior Auth Dashboard')
     end
 
-    it 'should navigate to the patient list from button' do
-      click_link('Start e-Prescribing Workflow')
+    it 'should navigate to the patient list from doctor login' do
+      click_link('dr_login')
       expect(page).to have_content('Patients')
     end
 
@@ -117,9 +119,30 @@ describe 'eHR Example App' do
       expect(page).to have_css('.table tr.patients', count: 10)
     end
 
-    it 'should navigate to new prescription form if patient is clicked with no prescriptions assigned', failed: true do
-      click_link('Mike Miller 10/01/1971 OH')
-      expect(page).to have_content('Prescription -')
+    describe 'clicking a patient' do
+      context 'user is doctor' do
+        before do
+          visit doctor_login
+          visit '/patients'
+        end
+
+        it "should navigate to the new prescription form if patient is clicked with no prescriptions assigned" do
+          click_link('Mike Miller 10/01/1971 OH')
+          expect(page).to have_content 'Prescription -'
+        end
+      end
+
+      context "user is staff" do
+        before do
+          visit staff_login
+          visit '/patients'
+        end
+
+        it "should navigate to the patient show page if patient is clicked with no prescriptions assigned" do
+          click_link('Mike Miller 10/01/1971 OH')
+          expect(page).to have_content 'Edit Patient'
+        end
+      end
     end
 
     it 'should delete a patient if remove button is clicked' do
@@ -156,7 +179,7 @@ describe 'eHR Example App' do
 
   describe 'adding a prescription' do
     before do
-      visit '/'
+      visit doctor_login
       click_link('Patients')
       page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
       click_link('Add Prescription')
@@ -202,12 +225,5 @@ describe 'eHR Example App' do
         end
       end
     end
-  end
-
-  it 'should display a help view' do
-    visit '/'
-    click_link('Prior Authorizations')
-    click_link('Contact CoverMyMeds')
-    expect(page).to have_content('For assistance using CoverMyMeds')
   end
 end

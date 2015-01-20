@@ -31,10 +31,12 @@ RSpec.describe PatientsController, type: :controller do
     {first_name:'', last_name:'', date_of_birth:'October 11, 1971', state:'OH'}
   }
 
+  let(:user) { User.create! first_name: SecureRandom.uuid, role_id: 1 }
+
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # PatientsController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  let(:valid_session) { { user_id: user.id } }
 
   describe "GET index" do
     it "assigns all patients as @patients" do

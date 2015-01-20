@@ -9,7 +9,7 @@ describe DbResetter do
   before do
     Patient.create! first_name: first_name, last_name: last_name, date_of_birth: '10/01/1971', state: 'OH'
     Pharmacy.create! name: pharmacy_name
-    User.create! name: first_name
+    User.create! first_name: first_name, role_id: 1
     PaRequest.create! cmm_token: token
     DbResetter.reset
   end
@@ -17,7 +17,7 @@ describe DbResetter do
   it 'destroys new records' do
     expect(Patient.where(first_name: first_name)).to_not exist
     expect(Pharmacy.where(name: pharmacy_name)).to_not exist
-    expect(User.where(name: first_name)).to_not exist
+    expect(User.where(first_name: first_name)).to_not exist
     expect(PaRequest.where(cmm_token: token)).to_not exist
   end
 

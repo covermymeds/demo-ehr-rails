@@ -2,8 +2,11 @@ class DbResetter
   def self.reset
     ActiveRecord::Base.transaction do
       Patient.destroy_all
-
       PaRequest.destroy_all
+      Role.destroy_all
+
+      Role.create!(description: Role::DOCTOR)
+      Role.create!(description: Role::STAFF)
 
       patients = [
         {first_name:'Autopick', last_name:'Smith',    gender:'f', date_of_birth:'10/01/1971', street_1:'221 Baker St.', street_2:'Apt B', city:'London', state:'OH', zip:'43210', phone_number:'614-555-1212', email:'test@covermymeds.com', bin:'111111', pcn:'SAMP001', group_id:'NOTREAL'},
@@ -41,8 +44,8 @@ class DbResetter
 
       User.destroy_all
 
-      User.new(name: 'Dr. Alexander Fleming', npi: '1234567890').tap {|u| u[:id] = 1}.save!
-      User.new(name: 'Staff', npi: nil).tap {|u| u[:id] = 2}.save!
+      User.new(first_name: 'Alexander', last_name: 'Fleming', role: Role.doctor, npi: '1234567890').tap {|u| u[:id] = 1}.save!
+      User.new(first_name: 'Staff', role: Role.staff, npi: nil).tap {|u| u[:id] = 2}.save!
     end
   end
 end

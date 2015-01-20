@@ -1,0 +1,11 @@
+doctor:
+  first_name: Albert
+  last_name: Wily
+  npi: 1234567890
+  role: doctor
+
+staff:
+  first_name: Staff
+  last_name:
+  npi:
+  role: staff

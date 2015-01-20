@@ -12,12 +12,20 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <%= f.label :first_name %><br>
+    <%= f.text_field :first_name %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %><br>
+    <%= f.text_field :last_name %>
   </div>
   <div class="field">
     <%= f.label :npi %><br>
     <%= f.text_field :npi %>
+  </div>
+  <div class="field">
+    <%= f.label :role %><br>
+    <%= f.select :role_id, Role.all.collect { |r| [r.description, r.id] }, include_blank: true %>
   </div>
   <div class="actions">
     <%= f.submit %>

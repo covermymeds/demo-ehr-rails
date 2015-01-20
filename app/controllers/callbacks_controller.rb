@@ -17,10 +17,10 @@ class CallbacksController < ApplicationController
       # if it's there, must be an update callback
       if @pa
         @pa.update_from_callback(@callback)
-        
+
       else
         # couldn't find it in our db, must be a retrospective
-        @pa = PaRequest.new 
+        @pa = PaRequest.new
         @pa.init_from_callback(@callback)
       end
 
@@ -28,7 +28,7 @@ class CallbacksController < ApplicationController
     end
 
     respond_to do |format|
-      format.html 
+      format.html
     end
 
   end

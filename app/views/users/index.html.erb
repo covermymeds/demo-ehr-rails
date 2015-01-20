@@ -3,7 +3,9 @@
 <table>
   <thead>
     <tr>
-      <th>Name</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Role</th>
       <th>Npi</th>
       <th colspan="3"></th>
     </tr>
@@ -12,7 +14,9 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= user.name %></td>
+        <td><%= user.first_name %></td>
+        <td><%= user.last_name %></td>
+        <td><%= user.role.description %></td>
         <td><%= user.npi %></td>
         <td><%= link_to 'Show', user %></td>
         <td><%= link_to 'Edit', edit_user_path(user) %></td>

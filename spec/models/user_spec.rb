@@ -6,6 +6,16 @@ describe User, type: :model do
   it { should respond_to(:last_name) }
   it { should respond_to(:role_id) }
 
+  it { should validate_presence_of(:role_id) }
+  it { should validate_presence_of(:first_name) }
+  context 'is a prescriber' do
+    before { allow(subject).to receive(:prescriber?).and_return(true) }
+    it { should validate_presence_of(:last_name).with_message(/Prescribers must have a last name/) }
+    it { should validate_presence_of(:npi).with_message(/Prescribers must have an npi/) }
+    it { should allow_value(npi).for(:npi) }
+  end
+
+
   let(:npi) { "1234512345" }
   let(:first_name) { SecureRandom.uuid }
   let(:last_name) { SecureRandom.uuid }
@@ -26,7 +36,7 @@ describe User, type: :model do
   end
 
   describe "#prescriber?" do
-    context "when user has a valid NPI number" do
+    context "when user's role is doctor" do
       it "returns true" do
         expect(doctor).to be_prescriber
       end

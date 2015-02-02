@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141216201920) do
+ActiveRecord::Schema.define(version: 20150109160756) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20141216201920) do
     t.string   "cmm_workflow_status"
     t.text     "request_pages_actions"
     t.string   "cmm_outcome"
+    t.integer  "prescriber_id"
   end
 
   add_index "pa_requests", ["prescription_id"], name: "index_pa_requests_on_prescription_id", using: :btree
@@ -84,14 +85,21 @@ ActiveRecord::Schema.define(version: 20141216201920) do
   add_index "prescriptions", ["patient_id"], name: "index_prescriptions_on_patient_id", using: :btree
   add_index "prescriptions", ["pharmacy_id"], name: "index_prescriptions_on_pharmacy_id", using: :btree
 
+  create_table "roles", force: true do |t|
+    t.string "description", null: false
+  end
+
   create_table "users", force: true do |t|
-    t.string   "name"
+    t.string   "first_name"
     t.string   "npi"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "last_name"
+    t.integer  "role_id"
   end
 
-  add_index "users", ["name"], name: "index_users_on_name", unique: true, using: :btree
+  add_index "users", ["first_name"], name: "index_users_on_first_name", unique: true, using: :btree
   add_index "users", ["npi"], name: "index_users_on_npi", unique: true, using: :btree
+  add_index "users", ["role_id"], name: "index_users_on_role_id", using: :btree
 
 end

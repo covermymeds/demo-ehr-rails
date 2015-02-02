@@ -41,7 +41,7 @@ class PaRequest < ActiveRecord::Base
 
     # look up the patient & prescription, if they exist
     patient_data = cb_data['patient']
-    patient = Patient.where(first_name: patient_data['first_name'], 
+    patient = Patient.where(first_name: patient_data['first_name'],
       last_name: patient_data['last_name'],
       date_of_birth: patient_data['date_of_birth']).first
 

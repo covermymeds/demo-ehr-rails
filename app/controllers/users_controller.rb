@@ -11,8 +11,8 @@ class UsersController < ApplicationController
     session["user_id"] = nil
     @current_user = nil
     redirect_to root_url
-  end    
-  
+  end
+
   # GET /users/1/edit
   def edit
   end
@@ -39,6 +39,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :npi)
+      params.require(:user).permit(:first_name, :last_name, :npi, :role_id)
     end
 end

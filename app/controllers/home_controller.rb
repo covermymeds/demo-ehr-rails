@@ -16,4 +16,15 @@ class HomeController < ApplicationController
     session[:use_custom_ui] = (not session[:use_custom_ui])
     redirect_to params[:return]
   end
+
+  def change_api_env
+    session[:use_integration] = !session[:use_integration]
+    redirect_to root_url
+  end
+
+  def reset_database
+    DbResetter.reset
+    flash_message 'Database has been reset.'
+    redirect_to root_url
+  end
 end

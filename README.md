@@ -30,7 +30,7 @@ Run `bundle install` if you have not installed the gem dependencies. The applica
 
     bundle exec rake db:setup
 
-You'll need to obtain your own unique API keys, which must be stored in environment variables that the server can access. You can obtain your API keys at [api.covermymeds.com/your-account](https://api.covermymeds.com/your-account). You'll have to set the `api_id` as `CMM_API_KEY` and `api_secret` as `CMM_API_SECRET`.
+You'll need to obtain your own unique API keys, which must be stored in environment variables that the server can access. You can obtain your API keys at [api.covermymeds.com/your-account](https://api.covermymeds.com/your-account). You'll have to set the `api_id` as `CMM_API_KEY` and `api_secret` as `CMM_API_SECRET`. Additionally, in order to use the [integration API environment](https://master-api.integration.covermymeds.com) you'll have to set your integration `api_id` as `INTEGRATION_CMM_API_KEY` and your integration `api_secret` as `INTEGRATION_CMM_API_SECRET`.
 
 Once your API keys are set in the environment, you can run `bundle exec rspec` to run through the tests.
 
@@ -89,11 +89,12 @@ The Request Pages resource provides the ability to completely embed the CoverMyM
 
 Route: `/dashboard`
 
-This page demonstrates using the dashboard plugin to build a task list of PA requests with options for filtering, searching, and sorting. See `/app/assets/javascripts/pa_requests.js` for an example of using the dashbord plugin.
+This page demonstrates using the dashboard plugin to build a task list of PA requests with options for filtering, searching, and sorting. See `/app/assets/javascripts/pa_requests.js` for an example of using the dashboard plugin.
 
 #### Contact CoverMyMeds
 
 Under the menu "Resources" are links to the resources you might need to build your own application.  You can find documentation, contacts at CoverMyMeds, and a link to the source code.
 
 If you decide to integrate your EHR with CoverMyMeds' PA functionality, please contact us before you go live so we can discuss business terms.
+
 

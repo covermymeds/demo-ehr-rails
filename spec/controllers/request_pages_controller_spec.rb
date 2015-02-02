@@ -10,10 +10,10 @@ describe RequestPagesController, type: :controller do
     }
   end
   let(:patient) { Patient.create! patient_attributes }
-  let(:pharmacy_attributes) do 
+  let(:pharmacy_attributes) do
     {
       name:           'CVS',
-      street:        '123 Easy St.' 
+      street:        '123 Easy St.'
     }
   end
   let(:pharmacy) { Pharmacy.create! pharmacy_attributes }
@@ -32,6 +32,7 @@ describe RequestPagesController, type: :controller do
   let(:prescription) { Prescription.create! prescription_attributes }
   let(:pa_request_attributes) do
     { prescription_id: prescription.id,
+      prescriber_id: 1,
       form_id: '123',
       urgent: false,
       state: 'OH',
@@ -82,6 +83,4 @@ describe RequestPagesController, type: :controller do
       end
     end
   end
-
-  
 end

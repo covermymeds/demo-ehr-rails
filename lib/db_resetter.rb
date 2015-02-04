@@ -46,6 +46,30 @@ class DbResetter
 
       User.new(first_name: 'Alexander', last_name: 'Fleming', role: Role.doctor, npi: '1234567890').tap {|u| u[:id] = 1}.save!
       User.new(first_name: 'Staff', role: Role.staff, npi: nil).tap {|u| u[:id] = 2}.save!
+
+      Patient.first.prescriptions.create!(drug_number: "061882", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true, drug_name: "Banana Concentrate liquids", formulary_status: "Tier 1", active: true).tap do |prescription|
+        prescription.pa_requests.create!(state: "OH")
+      end
+      create_pa(Patient.first.prescriptions.first)
+      #Patient.first.prescriptions
+      #Patient.first.prescriptions.create! drug_number: "091955", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: false, drug_name: "Ham Flavor liquids", formulary_status: "Off formulary", active: true
     end
+  end
+
+  def self.create_pa(prescription)
+    pa_request = prescription.pa_requests.new
+
+    # call out to the request pages API to create a request with CMM, given
+    # the information we have about the patient and prescription
+    new_request = RequestConfigurator.request(prescription, "", User.doctors.first, false)
+
+    # create the request in the API
+    # in your application, you will likely do this asynchronously, but
+    # we are doing this inline for brevity
+    response = RequestConfigurator.api_client(false).create_request new_request
+
+    # stash away the token, id, link, and workflow status from the return
+    pa_request.set_cmm_values(response)
+    pa_request.save!
   end
 end

@@ -16,7 +16,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_use_custom_ui
-    @_use_custom_ui = session[:use_custom_ui] || true
+    session[:use_custom_ui] = true unless session.has_key? :use_custom_ui
+    @_use_custom_ui = session[:use_custom_ui]
   end
 
   def cmm_request_link_for(request)

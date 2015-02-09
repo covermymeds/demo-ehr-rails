@@ -19,7 +19,7 @@ module ApplicationHelper
   end
 
   def ehr_error_messages(flash)
-    html = "<div class='row'>"
+    html = ""
     flash.each do |key, value|
       Array(value).each do |message|
         html += <<-HTML
@@ -30,7 +30,6 @@ module ApplicationHelper
         HTML
       end
     end
-    html += "</div>"
     html.html_safe
   end
 

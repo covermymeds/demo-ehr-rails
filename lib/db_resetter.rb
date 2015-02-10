@@ -4,6 +4,10 @@ class DbResetter
       Patient.destroy_all
       PaRequest.destroy_all
       Role.destroy_all
+      Prescription.destroy_all
+      Pharmacy.destroy_all
+      User.destroy_all
+
 
       Role.create!(description: Role::DOCTOR)
       Role.create!(description: Role::STAFF)
@@ -48,7 +52,6 @@ class DbResetter
         Patient.create(patient)
       end
 
-      Pharmacy.destroy_all
       pharmacies = [
         {name:'CVS Pharmacy', street:'759 Neil Ave.', city:'Columbus', state:'OH',
           fax:'555-555-5555', phone:'555-555-1212', zip:'43201'},
@@ -69,8 +72,6 @@ class DbResetter
       pharmacies.each do |pharmacy|
         Pharmacy.create(pharmacy)
       end
-
-      User.destroy_all
 
       User.new(first_name: 'Alexander', last_name: 'Fleming', role: Role.doctor, npi: '1234567890').tap {|u| u[:id] = 1}.save!
       User.new(first_name: 'Staff', role: Role.staff, npi: nil).tap {|u| u[:id] = 2}.save!

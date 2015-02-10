@@ -17,6 +17,10 @@ describe 'eHR Example App' do
       visit '/logout'
     end
 
+    it 'defaults to the custom UI' do
+      expect( find(:css, 'select#change_view').value ).to eq('Custom UI')
+    end
+
     it 'should navigate to the patients view', js: true do
       click_link('Patients')
       expect(page).to have_content('Patients')

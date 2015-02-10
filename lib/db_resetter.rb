@@ -1,5 +1,5 @@
 class DbResetter
-  def self.reset
+  def self.reset(use_integration = false)
     ActiveRecord::Base.transaction do
       Patient.destroy_all
       PaRequest.destroy_all
@@ -87,16 +87,16 @@ class DbResetter
           drug_name: "Bacon Flavor", formulary_status: "Tier 1", active: true },
       ]
       Patient.first(drugs.count).zip(drugs).each do |patient, drug|
-        create_pa(patient.prescriptions.new(drug.merge(date_prescribed: rand(1.year).seconds.ago)))
+        create_pa(patient.prescriptions.new(drug.merge(date_prescribed: rand(1.year).seconds.ago)), use_integration)
       end
 
     end
   end
 
-  def self.create_pa(prescription)
+  def self.create_pa(prescription, use_integration)
     pa_request = prescription.pa_requests.new
-    new_request = RequestConfigurator.request(prescription, "", User.doctors.first, false)
-    response = RequestConfigurator.api_client(false).create_request new_request
+    new_request = RequestConfigurator.request(prescription, "", User.doctors.first, use_integration)
+    response = RequestConfigurator.api_client(use_integration).create_request new_request
     pa_request.set_cmm_values(response)
     pa_request.save!
   end

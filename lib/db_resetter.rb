@@ -76,37 +76,6 @@ class DbResetter
       User.new(first_name: 'Alexander', last_name: 'Fleming', role: Role.doctor, npi: '1234567890').tap {|u| u[:id] = 1}.save!
       User.new(first_name: 'Staff', role: Role.staff, npi: nil).tap {|u| u[:id] = 2}.save!
 
-      #hawaiian = [
-        #{drug_number: "091833", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          #drug_name: "Bacon Flavor", formulary_status: "Tier 1", active: true },
-        #{drug_number: "093319", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          #drug_name: "Pineapple Flavor liquids", formulary_status: "Tier 1", active: true },
-        #{drug_number: "095585", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          #drug_name: "Cinnamon", formulary_status: "Tier 1", active: true },
-      #]
-      #clothes = [
-        #{drug_number: "059478", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          #drug_name: "Cotton Snap Pants", formulary_status: "Tier 1", active: true },
-        #{drug_number: "176451", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          #drug_name: "Activa Casual Socks Medium", formulary_status: "Tier 1", active: true },
-      #]
-      #pbj = [
-        #{drug_number: "096241", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          #drug_name: "Peanut Butter Flavor", formulary_status: "Tier 1", active: true },
-        #{drug_number: "066367", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          #drug_name: "Petroleum Jelly", formulary_status: "Tier 1", active: true },
-      #]
-      #cartoons = [
-        #{drug_number: "175366", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          #drug_name: "SpongeBob SquarePants Gummies", formulary_status: "Tier 1", active: true },
-        #{drug_number: "122704", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          #drug_name: "Flintstones Gummies", formulary_status: "Tier 1", active: true },
-        #{drug_number: "003485", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          #drug_name: "Bugs Bunny Vitamins/Minerals", formulary_status: "Tier 1", active: true },
-      #]
-
-      #drug_sets = [hawaiian, clothes, pbj, cartoons]
-
       drugs = [
         {drug_number: "175366", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
           drug_name: "SpongeBob SquarePants Gummies", formulary_status: "Tier 1", active: true },
@@ -120,10 +89,6 @@ class DbResetter
       Patient.first(drugs.count).zip(drugs).each do |patient, drug|
         create_pa(patient.prescriptions.new(drug.merge(date_prescribed: rand(1.year).seconds.ago)))
       end
-
-      #Patient.first(drug_sets.count).zip(drug_sets).each do |patient, drugs|
-        #drugs.each { |drug| create_pa(patient.prescriptions.new(drug.merge(date_prescribed: rand(1.year).seconds.ago))) }
-      #end
 
     end
   end

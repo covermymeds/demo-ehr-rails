@@ -108,7 +108,7 @@ class DbResetter
       drug_sets = [hawaiian, clothes, pbj, cartoons]
 
       Patient.first(drug_sets.count).zip(drug_sets).each do |patient, drugs|
-        drugs.each { |drug| create_pa(patient.prescriptions.create!(drug.merge(date_prescribed: rand(1.year).seconds.ago))) }
+        drugs.each { |drug| create_pa(patient.prescriptions.new(drug.merge(date_prescribed: rand(1.year).seconds.ago))) }
       end
 
     end

@@ -1,15 +1,13 @@
 require 'rails_helper'
 
 describe DbResetter do
-  let(:first_name) { SecureRandom.uuid }
-  let(:last_name) { SecureRandom.uuid }
-  let(:pharmacy_name) { SecureRandom.uuid }
-  let(:token) { SecureRandom.uuid }
+  junklet :first_name, :last_name, :pharmacy_name, :token
 
   before do
     Patient.create! first_name: first_name, last_name: last_name, date_of_birth: '10/01/1971', state: 'OH'
     Pharmacy.create! name: pharmacy_name
-    User.create! first_name: first_name, role_id: 1
+    Role.create! description: Role::DOCTOR
+    User.create! first_name: first_name, last_name: last_name, role: Role.doctor, npi: junk(:int, size: 10).to_s
     PaRequest.create! cmm_token: token
     DbResetter.reset
   end

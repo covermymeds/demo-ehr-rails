@@ -16,12 +16,12 @@ class PaRequestsController < ApplicationController
     if @_use_custom_ui
       respond_to do |format|
         format.html { redirect_to pa_request_request_pages_path(@pa_request) }
-        format.json { render :show, status: :ok, location: @pa_request}
+        format.json { render :show, status: :ok, location: @pa_request }
       end
     else
       respond_to do |format|
         format.html { redirect_to cmm_request_link_for(@pa_request) }
-        format.json { render :show, status: :ok, location: @pa_request}
+        format.json { render :show, status: :ok, location: @pa_request }
       end
     end
   end

@@ -53,6 +53,7 @@ gem 'spring',        group: :development
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'junklet'
 end
 
 group :development, :test do

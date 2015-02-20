@@ -12,13 +12,13 @@ class PatientsController < ApplicationController
   def show
     if @patient.prescriptions.count == 0 && current_user && current_user.role == Role.doctor
       respond_to do |format|
-        format.html {redirect_to new_patient_prescription_path(@patient)}
+        format.html { redirect_to new_patient_prescription_path(@patient) }
         format.json { render :show, status: :ok, location: @patient }
       end
     else
       respond_to do |format|
-        format.html {render :show}
-        format.json {render :show, status: :ok, location: @patient}
+        format.html { render :show }
+        format.json { render :show, status: :ok, location: @patient }
       end
     end
   end
@@ -35,11 +35,12 @@ class PatientsController < ApplicationController
   # POST /patients
   # POST /patients.json
   def create
-    @patient = Patient.new(patient_params)
+    @patient = Patient.new patient_params
 
     respond_to do |format|
       if @patient.save
-        format.html { redirect_to patients_url, notice: "Patient created successfully." }
+        flash_message 'Patient created successfully.'
+        format.html { redirect_to patients_url }
         format.json { render :show, status: :created, location: @patient }
       else
         format.html { render :new }
@@ -53,7 +54,8 @@ class PatientsController < ApplicationController
   def update
     respond_to do |format|
       if @patient.update(patient_params)
-        format.html { redirect_to patients_url, notice: 'Patient was successfully updated.' }
+        flash_message 'Patient was successfully updated.'
+        format.html { redirect_to patients_url }
         format.json { render :show, status: :ok, location: @patient }
       else
         format.html { render :edit }
@@ -67,7 +69,8 @@ class PatientsController < ApplicationController
   def destroy
     @patient.destroy
     respond_to do |format|
-      format.html { redirect_to patients_url, notice: 'Patient was successfully destroyed.' }
+      flash_message 'Patient was successfully destroyed.'
+      format.html { redirect_to patients_url }
       format.json { head :no_content }
     end
   end
@@ -75,7 +78,7 @@ class PatientsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_patient
-      @patient = Patient.find(params[:id])
+      @patient = Patient.find params[:id]
       @prescriptions = @patient.prescriptions.active
     end
 

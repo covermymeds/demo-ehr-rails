@@ -5,8 +5,8 @@ class DbResetter
       PaRequest.destroy_all
       Role.destroy_all
 
-      Role.create!(description: Role::DOCTOR)
-      Role.create!(description: Role::STAFF)
+      Role.create! description: Role::DOCTOR
+      Role.create! description: Role::STAFF
 
       patients = [
         {first_name:'Autopick', last_name:'Smith',    gender:'f', date_of_birth:'10/01/1971', street_1:'221 Baker St.', street_2:'Apt B', city:'London', state:'OH', zip:'43210', phone_number:'614-555-1212', email:'test@covermymeds.com', bin:'111111', pcn:'SAMP001', group_id:'NOTREAL'},
@@ -24,7 +24,7 @@ class DbResetter
       ]
 
       patients.each do |patient|
-        Patient.create(patient)
+        Patient.create! patient
       end
 
       Pharmacy.destroy_all
@@ -39,13 +39,13 @@ class DbResetter
       ]
 
       pharmacies.each do |pharmacy|
-        Pharmacy.create(pharmacy)
+        Pharmacy.create! pharmacy
       end
 
       User.destroy_all
 
-      User.new(first_name: 'Alexander', last_name: 'Fleming', role: Role.doctor, npi: '1234567890').tap {|u| u[:id] = 1}.save!
-      User.new(first_name: 'Staff', role: Role.staff, npi: nil).tap {|u| u[:id] = 2}.save!
+      User.create!(first_name: 'Alexander', last_name: 'Fleming', role: Role.doctor, npi: '1234567890')
+      User.create!(first_name: 'Staff', role: Role.staff, npi: nil)
     end
   end
 end

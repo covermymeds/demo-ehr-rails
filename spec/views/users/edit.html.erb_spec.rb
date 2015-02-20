@@ -1,12 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe "users/edit", type: :view do
+  junklet :first, :last
+
   before(:each) do
     @user = assign(:user, User.create!(
-      first_name: "MyString",
-      last_name: "MyString",
+      first_name: first,
+      last_name: last,
       role_id: 1,
-      npi: "MyString"
+      npi: junk(10),
     ))
   end
 

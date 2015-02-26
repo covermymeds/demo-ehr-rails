@@ -12,7 +12,7 @@
         value="<%= option[:choice_id] %>"
         data-default-next-id="<%= massage(question[:default_next_question_id], form_name) %>"
         data-next-question-id="<%= massage(option[:next_question_id], form_name) if option[:next_question_id] %>"
-        <%= multiple_checked_if(option[:choice_id], data[question[:question_id]]) %>
+        <%= multiple_checked_if(option[:choice_id], data[question[:question_id].to_sym]) %>
         />
         <%= option[:choice_text] %>
       </label>
@@ -31,8 +31,9 @@
     <% question[:choices].each do |option| %>
       <option class="option"
       value="<%= option[:choice_id] %>"
+      <% binding.pry %>
       data-next-question-id="<%= massage(option[:next_question_id], form_name) if option[:next_question_id] %>"
-      <%= selected_if(option[:choice_id], data[question[:question_id]]) %>
+      <%= selected_if(option[:choice_id], data[question[:question_id].to_sym]) %>
       >
       <%= option[:choice_text] %>
       </option>

@@ -9,7 +9,7 @@
   data-validation="<%=question[:validations][0]%>"
   data-next-question-id="<%= massage(question[:next_question_id], form_name)%>"
   data-default-next-id="<%= massage(question[:default_next_question_id], form_name) %>"
-  <%= checked_if(data[question[:question_id]]) %>
+  <%= checked_if(data[question[:question_id].to_sym]) %>
   <%= require_if(question[:flag]) %>
   />
 </div>

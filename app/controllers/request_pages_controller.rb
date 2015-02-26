@@ -25,6 +25,7 @@ class RequestPagesController < ApplicationController
   end
 
   def do_action
+    binding.pry
     bad_request unless params[:button_title]
 
     # look up the action from our list of saved actions for this PA

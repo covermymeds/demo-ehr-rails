@@ -14,7 +14,7 @@ This application demonstrates what a typical web-based EHR can do to automate pr
 * Ruby version 2.0.0-p481
 * Rails version 4.1.1
 * Bundler
-* phantom.js (`brew install phantomjs homebrew/versions/phantomjs182`, or whichever version is required by our current version of poltergeist)
+* phantom.js (Use homebrew to install phantomjs 1.8.1, or whichever version is required by our current version of poltergeist.  Installing older versions is not exactly straightforward, so [this](http://effectif.com/mac-os-x/installing-specific-version-of-homebrew-formula) may be helpful to you.)
 
 Run `bundle install` to install all of the gem dependencies.  The application is written for Rails 4.1.1. 
 

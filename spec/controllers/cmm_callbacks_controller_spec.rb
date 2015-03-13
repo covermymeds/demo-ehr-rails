@@ -1,8 +1,9 @@
 require 'rails_helper'
+require 'spec_helper'
 
-RSpec.describe CallbacksController, type: :controller do
+RSpec.describe CmmCallbacksController, type: :controller do
 
-  describe "POST handle" do
+  describe "POST create" do
 
     # This should return the minimal set of values that should be in the session
     # in order to pass any filters (e.g. authentication) defined in
@@ -17,14 +18,14 @@ RSpec.describe CallbacksController, type: :controller do
       JSON.parse(File.read("spec/fixtures/delete_request.json"))
     end
 
+    subject { post :create, valid_request, valid_session }
+
     it "adds a request when prompted from the callback" do
-      post :handle, valid_request, valid_session
-      expect(response).to be_success
+      expect(subject).to redirect_to(action: :show), id: 1
     end
 
     it "deletes a request when asked to do so" do
-      post :handle, delete_request, valid_session
-      expect(response).to be_success
+      expect(subject).to redirect_to(action: :show), id: 1
     end
 
   end

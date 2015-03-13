@@ -1,34 +1,34 @@
 require "rails_helper"
 
-RSpec.describe CallbacksController, :type => :routing do
+RSpec.describe CmmCallbacksController, :type => :routing do
   describe "routing" do
 
     it "routes to #index" do
-      expect(:get => "/callbacks").to route_to("callbacks#index")
+      expect(:get => "/cmm_callbacks").to route_to("cmm_callbacks#index")
     end
 
-    it "routes to #new" do
-      expect(:get => "/callbacks/new").to route_to("callbacks#new")
+    it "does not route to #new" do
+      expect(:get => "/cmm_callbacks/new").not_to route_to("cmm_callbacks#new")
     end
 
     it "routes to #show" do
-      expect(:get => "/callbacks/1").to route_to("callbacks#show", :id => "1")
+      expect(:get => "/cmm_callbacks/1").to route_to("cmm_callbacks#show", :id => "1")
     end
 
-    it "routes to #edit" do
-      expect(:get => "/callbacks/1/edit").to route_to("callbacks#edit", :id => "1")
+    it "does not route to #edit" do
+      expect(:get => "/cmm_callbacks/1/edit").not_to route_to("cmm_callbacks#edit", :id => "1")
     end
 
     it "routes to #create" do
-      expect(:post => "/callbacks").to route_to("callbacks#create")
+      expect(:post => "/cmm_callbacks").to route_to("cmm_callbacks#create")
     end
 
-    it "routes to #update" do
-      expect(:put => "/callbacks/1").to route_to("callbacks#update", :id => "1")
+    it "does not route to #update" do
+      expect(:put => "/cmm_callbacks/1").not_to route_to("cmm_callbacks#update", :id => "1")
     end
 
-    it "routes to #destroy" do
-      expect(:delete => "/callbacks/1").to route_to("callbacks#destroy", :id => "1")
+    it "does not route to #destroy" do
+      expect(:delete => "/cmm_callbacks/1").not_to route_to("cmm_callbacks#destroy", :id => "1")
     end
 
   end

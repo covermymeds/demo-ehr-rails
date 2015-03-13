@@ -81,6 +81,11 @@ describe 'eHR Example App' do
         Capybara.page.execute_script  'window.confirm = function () { return true }'
         expect(page).to have_content('Database has been reset')
       end
+
+      it 'should navigate to the callbacks view' do
+        click_link('Callbacks')
+        expect(page).to have_content('Listing callbacks')
+      end
     end
 
     it 'should navigate to the dashboard view from staff login' do

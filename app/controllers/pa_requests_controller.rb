@@ -80,12 +80,12 @@ class PaRequestsController < ApplicationController
     new_request = RequestConfigurator.request(@prescription,
                                               @pa_request.form_id,
                                               User.find(params[:pa_request][:prescriber_id]),
-                                              session[:use_integration])
+                                              false)
 
     # create the request in the API
     # in your application, you will likely do this asynchronously, but
     # we are doing this inline for brevity
-    response = RequestConfigurator.api_client(session[:use_integration]).create_request new_request
+    response = RequestConfigurator.api_client(false).create_request new_request
     flash_message "Your prior authorization request was successfully started."
 
     # stash away the token, id, link, and workflow status from the return
@@ -106,7 +106,7 @@ class PaRequestsController < ApplicationController
   # DELETE /pa_request/:pa_request_id/pa_requests/1.json
   def destroy
     # first, delete the PA request from our CMM dashboard
-    client = RequestConfigurator.api_client(session[:use_integration])
+    client = RequestConfigurator.api_client(false)
     client.revoke_access_token? @pa_request.cmm_token
     @pa_request.update_attributes(cmm_token: nil)
 
@@ -124,9 +124,15 @@ class PaRequestsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_request
-    @patient = Patient.find(params[:patient_id])
-    @prescription = @patient.prescriptions.find(params[:prescription_id])
-    @pa_request = @prescription.pa_requests.find(params[:id])
+    if params[:patient_id]
+      @patient = Patient.find(params[:patient_id])
+      @prescription = @patient.prescriptions.find(params[:prescription_id])
+      @pa_request = @prescription.pa_requests.find(params[:id])
+    else
+      @pa_request = PaRequest.find(params[:id])
+      @prescription = @pa_request.prescription
+      @patient = @pa_request.prescription.patient
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

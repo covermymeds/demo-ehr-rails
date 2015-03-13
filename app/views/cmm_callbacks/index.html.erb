@@ -16,7 +16,9 @@
       <%= link_to callback.created_at, callback %>
     </div>
     <div class='col-md-9'>
-      <%= callback.content %>
+      <code>
+        <%= json_pp(callback.content) %>
+      </code>
     </div>
   </div>
 <% end %>

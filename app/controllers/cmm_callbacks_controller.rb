@@ -23,7 +23,7 @@ class CmmCallbacksController < ApplicationController
     @json = params.fetch(:request)
 
     # receive information about a request & handle it
-    @callback = CmmCallback.new content:params['request'].to_s
+    @callback = CmmCallback.new content:@json.to_json
 
     # find the request in our local database
     @pa = PaRequest.find_by_cmm_id(@json['id'])
@@ -51,8 +51,10 @@ class CmmCallbacksController < ApplicationController
     respond_to do |format|
       if @pa.save
         format.html { redirect_to cmm_callback_url(@callback) }
+        format.json { render json: @pa}
       else
         format.html { render :error }
+        format.json { render json: @callback }
       end
     end
 

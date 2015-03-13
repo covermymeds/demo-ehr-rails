@@ -1,7 +1,7 @@
 <h3>Success</h3>
 <h4>ID: <%= link_to @callback.pa_request.cmm_id, pa_request_url(@callback.pa_request) %></h4>
 
-<p>
-  <strong>Content:</strong>
-  <%= @callback.content %>
-</p>
+<h4>Content:</h4>
+<code class='json'>
+  <%= json_pp(@callback.content) %>
+</code>

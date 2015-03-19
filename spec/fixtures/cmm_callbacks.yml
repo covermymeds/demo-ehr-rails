@@ -1,2 +1,2 @@
 callback_one:
-    content: {"content" : "This is content for my callback"}
+    content: "{\"content\" : \"This is content for my callback\"}"

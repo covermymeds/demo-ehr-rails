@@ -7,7 +7,7 @@ class RequestPagesController < ApplicationController
 
   def show
     # get the request-page for our current request
-    @request_page_json = RequestConfigurator.api_client(false).get_request_page @pa_request.cmm_id, @pa_request.cmm_token
+    @request_page_json = RequestConfigurator.api_client(session[:use_integration]).get_request_page @pa_request.cmm_id, @pa_request.cmm_token
 
     if is_error_form? @request_page_json
       # show the error page

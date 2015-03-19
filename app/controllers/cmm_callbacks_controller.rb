@@ -1,5 +1,5 @@
 class CmmCallbacksController < ApplicationController
-  skip_before_filter :verify_authenticity_token, only: [:index, :show, :create]
+  skip_before_filter :verify_authenticity_token, only: [:create]
 
   before_action :set_callback, only: [:show]
 
@@ -14,18 +14,19 @@ class CmmCallbacksController < ApplicationController
   def show
     respond_to do |format|
       format.html { render :show }
-      format.json { render :show, status: :ok, location: @callback }
+      format.json { render json: @callback }
     end
   end
 
   # POST /callbacks.json {JSON body}
   def create
-    @json = params.fetch(:request)
+    # pull the pa request out of the JSON
+    @json = request_params
 
-    # receive information about a request & handle it
+    # create a callback object to log that we received this callback
     @callback = CmmCallback.new content:@json.to_json
 
-    # find the request in our local database
+    # see if the PA exists already in our local database
     @pa = PaRequest.find_by_cmm_id(@json['id'])
 
     if @pa.nil?
@@ -50,7 +51,7 @@ class CmmCallbacksController < ApplicationController
 
     respond_to do |format|
       if @pa.save
-        format.html { redirect_to cmm_callback_url(@callback) }
+        format.html { redirect_to @pa }
         format.json { render json: @pa}
       else
         format.html { render :error }
@@ -67,7 +68,8 @@ class CmmCallbacksController < ApplicationController
   end
 
   def request_params
-    params.require(:request)
+    json_params = ActionController::Parameters.new( JSON.parse(request.body.read) )
+    return json_params.require(:request)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

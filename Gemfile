@@ -68,6 +68,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'rspec-rails', '~> 3.0.0'
   gem 'selenium-webdriver'
+  gem 'pry-rails'
 end
 
 # Use ActiveModel has_secure_password

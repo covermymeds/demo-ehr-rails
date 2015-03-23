@@ -83,6 +83,9 @@ GEM
     columnize (0.8.9)
     debugger-linecache (1.2.0)
     diff-lcs (1.2.5)
+    dotenv (2.0.0)
+    dotenv-rails (2.0.0)
+      dotenv (= 2.0.0)
     erubis (2.7.0)
     execjs (2.2.1)
     ffi (1.9.3)
@@ -268,6 +271,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   cover_my_api (~> 0.3.1)!
   database_cleaner!
+  dotenv-rails
   guard
   guard-rspec
   jbuilder (~> 2.0)

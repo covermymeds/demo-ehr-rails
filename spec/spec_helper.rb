@@ -96,9 +96,3 @@ Capybara.configure do |config|
 
   config.server_port = 3001
 end
-
-# New users will crash in random specs if they're missing their
-# CMM_API environment keys
-%w(CMM_API_KEY CMM_API_SECRET).each do |required_env_key|
-  ENV[required_env_key] or fail "YOU MUST SPECIFY #{required_env_key} IN YOUR ENVIRONMENT"
-end

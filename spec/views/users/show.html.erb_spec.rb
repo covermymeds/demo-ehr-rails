@@ -4,10 +4,10 @@ RSpec.describe "users/show", type: :view do
   before(:each) do
     role = Role.create! description: Role::DOCTOR
     @user = assign(:user, User.create!(
-      first_name: "First",
-      last_name: "Last",
-      npi: "Npi",
-      role_id: role.id
+                     first_name: "First",
+                     last_name: "Last",
+                     npi: junk(:int, size: 10).to_s,
+                     role_id: role.id
     ))
   end
 

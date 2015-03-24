@@ -52,14 +52,14 @@ class RequestConfigurator
     # for now, just hard code doctor information.  Technically, this would come from the
     # currently logged in user, or some other way of selecting the physician.
     physician = {npi: prescriber ? prescriber.npi : "1234567890",
-      first_name: prescriber ? prescriber.first_name : "James",
-      last_name: prescriber ? prescriber.last_name : "Kirk",
-      clinic: "The Enterprise Clinic",
-      fax_number: "555-555-5555",
-      street: "1 Starship Way",
-      city: "Riverside",
-      state: "OH",
-      zip: "52327" }
+                 first_name: prescriber ? prescriber.first_name : "James",
+                 last_name: prescriber ? prescriber.last_name : "Kirk",
+                 clinic: "The Enterprise Clinic",
+                 fax_number: "555-555-5555",
+                 street: "1 Starship Way",
+                 city: "Riverside",
+                 state: "OH",
+                 zip: "52327" }
 
     new_request.prescriber.npi = physician[:npi]
     new_request.prescriber.first_name = physician[:first_name]

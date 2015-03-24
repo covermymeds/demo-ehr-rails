@@ -19,46 +19,54 @@ class CmmCallbacksController < ApplicationController
   end
 
   # POST /callbacks.json {JSON body}
+  # this is the method that is called directly by CoverMyMeds when a PA is created
+  # retrospectively by a pharmacist. This method needs to create a new PA record in
+  # the demo system, and respond appropriately, if it can match the PA to a prescription
+  # that we created previously.
+
+  # this method is also called whenever the status or a value of a property in the PA
+  # changes. In that case, we need to update the PA record in our system with the
+  # new values in the callback.
   def create
     # pull the pa request out of the JSON
-    @json = request_params
+    @request = request_params
 
     # create a callback object to log that we received this callback
-    @callback = CmmCallback.new content:@json.to_json
+    @callback = CmmCallback.new content: @request.to_json
 
     # see if the PA exists already in our local database
-    @pa = PaRequest.find_by_cmm_id(@json['id'])
+    @pa = PaRequest.find_by_cmm_id(@request['id'])
 
     if @pa.nil?
       # couldn't find it in our db, must be a retrospective
       @pa = PaRequest.new
-      @pa.init_from_callback(@json)
-      
+      @pa.init_from_callback(@request)
     else
       # if we have a record of the PA, delete it if appropriate
-      if is_delete?(@json)
+      if is_delete?(@request)
         @pa.update_attributes(cmm_token: nil)
       else
         # if it's not a delete, then it's an update
-        @pa.update_from_callback(@json)
+        @pa.update_from_callback(@request)
       end
     end
-    
+
+    # save our updated PA, and keep track of the callback that spawned it
     @pa.save
     @callback.pa_request = @pa
     @pa.cmm_callbacks << @callback
     @callback.save!
 
+    # send our response back to CMM
     respond_to do |format|
       if @pa.save
         format.html { redirect_to @pa }
-        format.json { render json: @pa}
+        format.json { render json: @pa }
       else
         format.html { render :error }
         format.json { render json: @callback }
       end
     end
-
   end
 
   private
@@ -68,8 +76,8 @@ class CmmCallbacksController < ApplicationController
   end
 
   def request_params
-    json_params = ActionController::Parameters.new( JSON.parse(request.body.read) )
-    return json_params.require(:request)
+    #json_params = ActionController::Parameters.new(JSON.parse(request.body.read))
+    return params.require(:request)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

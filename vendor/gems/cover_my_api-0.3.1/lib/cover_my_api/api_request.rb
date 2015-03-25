@@ -14,14 +14,20 @@ module CoverMyApi
       elsif auth_type == :bearer
         rest_resource = RestClient::Resource.new(uri.to_s, headers: { "Authorization" => "Bearer #@username+x-no-pass" })
       end
-      response = call_api http_method, rest_resource, &block
-      return nil if response.body.empty?
-      return JSON.parse(response.body)
+      call_api http_method, rest_resource, &block
     end
 
     def call_api http_method, rest_resource
       body = block_given? ? yield : {}
-      rest_resource.send http_method, body
+      begin
+        response = rest_resource.send http_method, body
+        return nil if response.body.empty?
+      rescue Exception => e
+        # catch errors & return them as JSON also
+        # this is really helpful for request-pages, so that we can render the erorrs appropriately
+        response = e.response
+      end
+      return JSON.parse(response)
     end
 
     def api_uri host, path, params

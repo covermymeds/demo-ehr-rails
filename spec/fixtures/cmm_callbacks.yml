@@ -1,0 +1,3 @@
+callback_one:
+    content: "{\"content\" : \"This is content for my callback\"}"
+    pa_request: pa_request_one

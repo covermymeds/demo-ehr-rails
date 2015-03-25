@@ -1,5 +1,6 @@
 class PaRequest < ActiveRecord::Base
   belongs_to :prescription
+  has_many :cmm_callbacks
   default_scope { where('cmm_token IS NOT NULL') }
 
   def set_cmm_values(response)
@@ -72,13 +73,12 @@ class PaRequest < ActiveRecord::Base
         drug_name: cb_data['prescription']['name'],
         quantity: cb_data['prescription']['quantity'],
         frequency: cb_data['prescription']['frequency'],
-        dispense_as_written: false
+        dispense_as_written: false,
+        patient: patient
         })
-      prescription.patient = patient
     end
 
     self.prescription = prescription
-
   end
 
 end

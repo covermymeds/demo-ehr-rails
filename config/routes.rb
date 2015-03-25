@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   get '/code' => redirect("https://github.com/covermymeds/demo-ehr-rails"),
     as: :source_code
 
-  post 'callbacks/handle'
+  resources :cmm_callbacks, only: [:create, :index, :show]
 
   get '/home' => 'home#home', as: :home
   put '/home/change_api_env' => 'home#change_api_env'

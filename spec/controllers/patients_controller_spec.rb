@@ -31,7 +31,7 @@ RSpec.describe PatientsController, type: :controller do
     {first_name:'', last_name:'', date_of_birth:'October 11, 1971', state:'OH'}
   }
 
-  let(:user) { User.create! first_name: SecureRandom.uuid, role_id: 1 }
+  let(:user) { User.create! first_name: SecureRandom.uuid, last_name: SecureRandom.uuid, role_id: 1 }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in

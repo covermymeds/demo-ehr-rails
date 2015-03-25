@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
   get '/help' => 'home#help'
 
-  get '/api' => redirect("https://api.covermymeds.com/#overview"),
+  get '/api' => redirect("https://developers.covermymeds.com/#overview"),
     as: :api_documentation
 
   get '/code' => redirect("https://github.com/covermymeds/demo-ehr-rails"),

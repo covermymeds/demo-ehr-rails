@@ -68,7 +68,7 @@ describe 'eHR Example App' do
 
       it 'should navigate to the api documentation' do
         click_link('API Documentation')
-        expect(page).to have_title('API Reference')
+        expect(page).to have_title('CoverMyMeds Developer Resources')
       end
 
       it 'should display the source code when asked' do

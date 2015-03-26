@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'eHR Example App' do
   fixtures :all
-  let(:doctor_login) { "/login/#{users(:doctor).id}" }
-  let(:staff_login) { "/login/#{users(:staff).id}" }
+  let(:doctor_login) { "/login/doctor" }
+  let(:staff_login) { "/login/staff" }
 
   it 'should allow accessing the site root' do
     visit('/')

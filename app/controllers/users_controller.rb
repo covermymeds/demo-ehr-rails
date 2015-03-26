@@ -2,9 +2,11 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update]
 
   def login
-    session["user_id"] = params["id"]
-    @current_user ||= User.find_by_id(session["user_id"])
-    redirect_to home_url
+    if params[:id]
+      login_with_id!
+    elsif params[:role_description]
+      login_with_role!
+    end
   end
 
   def logout
@@ -40,5 +42,18 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:first_name, :last_name, :npi, :role_id)
+    end
+
+    def login_with_id!
+      session["user_id"] = params["id"]
+      @current_user ||= User.find_by_id(session["user_id"])
+      redirect_to home_url
+    end
+
+    def login_with_role!
+      @user = User.find_demo_user_by_role(params[:role_description])
+      session["user_id"] = @user.id
+      @current_user ||= User.find_by_id(session["user_id"])
+      redirect_to home_url
     end
 end

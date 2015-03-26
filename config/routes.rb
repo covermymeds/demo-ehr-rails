@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   resources :users
 
+  get '/login/:role_description' => 'users#login', as: :demo_login, constraints: { role_description: /(doctor|staff)/ }
   get '/login/:id' => 'users#login', as: :login
 
   get '/logout' => 'users#logout'

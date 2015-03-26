@@ -1,8 +1,4 @@
 class User < ActiveRecord::Base
-  # this is a demo app; you probably don't want to hard-code YOUR user ids.
-  FLEMING = 1
-  STAFF = 2
-
   scope :doctors, -> { where(role: Role.doctor) }
   scope :staff, -> { where(role: Role.staff) }
 
@@ -15,6 +11,16 @@ class User < ActiveRecord::Base
   belongs_to :role
   has_many :pa_requests
 
+  def self.find_demo_user_by_role(role_description)
+    if role_description == Role::DOCTOR
+      demo_doctor
+    elsif role_description == Role::STAFF
+      demo_staff
+    else
+      raise ActiveRecord::RecordNotFound
+    end
+  end
+
   def display_name
     "#{role == Role.doctor ? 'Dr. ' : ''}#{first_name} #{last_name}"
   end
@@ -23,11 +29,19 @@ class User < ActiveRecord::Base
     role == Role.doctor
   end
 
+  private
+
   def valid_npi?
     unless npi && npi.size == 10 && npi =~ /^\d+$/
       errors.add(:valid_npi, "must be 10 digits")
     end
   end
-  private :valid_npi?
 
+  def self.demo_doctor
+    User.joins(:role).where(last_name: 'Fleming').where('roles.description = ?', Role::DOCTOR).first
+  end
+
+  def self.demo_staff
+    User.joins(:role).where(first_name: 'Staff').where('roles.description = ?', Role::STAFF).first
+  end
 end

@@ -42,4 +42,26 @@ describe User, type: :model do
       end
     end
   end
+
+  describe ".find_demo_user_by_role" do
+    let!(:demo_doctor) { User.where(last_name: 'Fleming').first }
+    let!(:demo_staff)  { User.where(first_name: 'Staff').first }
+
+    context "when the role is doctor" do
+      it 'returns Dr. Flemming' do
+        expect(User.find_demo_user_by_role('doctor')).to eq(demo_doctor)
+      end
+    end
+    context "when the role is staff" do
+      it 'returns the Staff Demo user' do
+        expect(User.find_demo_user_by_role('staff')).to eq(demo_staff)
+      end
+    end
+    context "when the role is not valid" do
+      it 'raises an error' do
+        expect { User.find_demo_user_by_role(nil) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { User.find_demo_user_by_role('plumber') }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
 end

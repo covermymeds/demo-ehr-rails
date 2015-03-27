@@ -49,7 +49,7 @@ class UsersController < ApplicationController
       if user && login_user!(user)
         redirect_to home_url, notice: "Logged in as #{user.display_name}"
       else
-        redirect_to home_url, notice: "Logged failed.  User not found"
+        redirect_to home_url, notice: "Logged failed.  User not found."
       end
     end
 
@@ -58,7 +58,7 @@ class UsersController < ApplicationController
       if user && login_user!(user)
         redirect_to home_url, notice: "Logged in as #{user.display_name}"
       else
-        redirect_to home_url, notice: "Demo account not found.  Try resetting the database"
+        redirect_to home_url, notice: "Demo account not found.  Try resetting the database."
       end
     end
 

@@ -12,9 +12,10 @@ class User < ActiveRecord::Base
   has_many :pa_requests
 
   def self.find_demo_user_by_role(role_description)
-    if role_description == Role::DOCTOR
+    case role_description.to_s.downcase
+    when Role::DOCTOR
       demo_doctor
-    elsif role_description == Role::STAFF
+    when Role::STAFF
       demo_staff
     else
       raise ActiveRecord::RecordNotFound

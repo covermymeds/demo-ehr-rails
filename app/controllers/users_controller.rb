@@ -45,15 +45,25 @@ class UsersController < ApplicationController
     end
 
     def login_with_id!
-      session["user_id"] = params["id"]
-      @current_user ||= User.find_by_id(session["user_id"])
-      redirect_to home_url
+      user = User.find_by_id(params[:id])
+      if user && login_user!(user)
+        redirect_to home_url, notice: "Logged in as #{user.display_name}"
+      else
+        redirect_to home_url, notice: "Logged failed.  User not found"
+      end
     end
 
     def login_with_role!
-      @user = User.find_demo_user_by_role(params[:role_description])
-      session["user_id"] = @user.id
-      @current_user ||= User.find_by_id(session["user_id"])
-      redirect_to home_url
+      user = User.find_demo_user_by_role(params[:role_description])
+      if user && login_user!(user)
+        redirect_to home_url, notice: "Logged in as #{user.display_name}"
+      else
+        redirect_to home_url, notice: "Demo account not found.  Try resetting the database"
+      end
+    end
+
+    def login_user!(user)
+      session["user_id"] = user.id
+      @current_user ||= user
     end
 end

@@ -45,6 +45,7 @@ class UsersController < ApplicationController
     end
 
     def login_with_id!
+      # todo: use flash_message helper
       user = User.find_by_id(params[:id])
       if user && login_user!(user)
         redirect_to home_url, notice: "Logged in as #{user.display_name}"
@@ -54,7 +55,7 @@ class UsersController < ApplicationController
     end
 
     def login_with_role!
-      user = User.find_demo_user_by_role(params[:role_description])
+      user = User.joins(:role).where("roles.description = ?", params[:role_description]).first
       if user && login_user!(user)
         redirect_to home_url, notice: "Logged in as #{user.display_name}"
       else

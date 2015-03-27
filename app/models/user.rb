@@ -11,17 +11,6 @@ class User < ActiveRecord::Base
   belongs_to :role
   has_many :pa_requests
 
-  def self.find_demo_user_by_role(role_description)
-    case role_description.to_s.downcase
-    when Role::DOCTOR
-      demo_doctor
-    when Role::STAFF
-      demo_staff
-    else
-      raise ActiveRecord::RecordNotFound
-    end
-  end
-
   def display_name
     "#{role == Role.doctor ? 'Dr. ' : ''}#{first_name} #{last_name}"
   end
@@ -36,13 +25,5 @@ class User < ActiveRecord::Base
     unless npi && npi.size == 10 && npi =~ /^\d+$/
       errors.add(:valid_npi, "must be 10 digits")
     end
-  end
-
-  def self.demo_doctor
-    User.joins(:role).where(last_name: 'Fleming').where('roles.description = ?', Role::DOCTOR).first
-  end
-
-  def self.demo_staff
-    User.joins(:role).where(first_name: 'Staff').where('roles.description = ?', Role::STAFF).first
   end
 end

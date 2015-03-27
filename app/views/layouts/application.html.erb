@@ -25,11 +25,13 @@
 
     <div class="container theme-showcase" role="main">
     <section class='error-row'>
-      <% flash.each do |key, message| %>
-        <div class="<%= flash_class(key) %>" id="flash_<%= key %>">
-          <button type='button' class='close' data-dismiss='alert'>&times;</button>
-          <%= message %>
-        </div>
+      <% flash.each do |key, messages| %>
+        <% messages.each do |message| %>
+          <div class="<%= flash_class(key) %>" id="flash_<%= key %>">
+            <button type='button' class='close' data-dismiss='alert'>&times;</button>
+            <%= message %>
+          </div>
+        <% end %>
       <% end %>
     </section>
 

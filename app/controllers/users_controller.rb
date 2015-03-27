@@ -48,18 +48,22 @@ class UsersController < ApplicationController
       # todo: use flash_message helper
       user = User.find_by_id(params[:id])
       if user && login_user!(user)
-        redirect_to home_url, notice: "Logged in as #{user.display_name}"
+        flash_message("Logged in as #{user.display_name}")
+        redirect_to home_url
       else
-        redirect_to home_url, notice: "Logged failed.  User not found."
+        flash_message("Login failed.  User not found")
+        redirect_to home_url
       end
     end
 
     def login_with_role!
       user = User.joins(:role).where("roles.description = ?", params[:role_description]).first
       if user && login_user!(user)
-        redirect_to home_url, notice: "Logged in as #{user.display_name}"
+        flash_message("Logged in as #{user.display_name}")
+        redirect_to home_url
       else
-        redirect_to home_url, notice: "Demo account not found.  Try resetting the database."
+        flash_message("Demo account not found.  Try resetting the database.")
+        redirect_to home_url
       end
     end
 

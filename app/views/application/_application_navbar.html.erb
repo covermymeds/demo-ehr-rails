@@ -35,7 +35,7 @@
               <% if current_user %>
               <li><%= link_to "Account Settings", edit_user_path(current_user) %></li>
               <% end %>
-              <li><%= link_to "Sign in as Dr. Alexander Fleming", demo_login_path(Role::DOCTOR) %></li>
+              <li><%= link_to "Sign in as #{@demo_doctor.display_name}", demo_login_path(Role::DOCTOR) %></li>
               <li><%= link_to "Sign in as Staff", login_path(Role::STAFF) %></li>
               <% if current_user %>
               <li><%= link_to "Sign out", logout_path %></li>

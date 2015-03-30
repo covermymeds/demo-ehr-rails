@@ -45,7 +45,6 @@ class UsersController < ApplicationController
     end
 
     def login_with_id!
-      # todo: use flash_message helper
       user = User.find_by_id(params[:id])
       if user && login_user!(user)
         flash_message("Logged in as #{user.display_name}")

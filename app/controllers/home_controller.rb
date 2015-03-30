@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
   def index
+    @demo_doctor = User.doctors.first
+    @demo_staff = User.staff.first
   end
 
   def home

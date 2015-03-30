@@ -67,13 +67,11 @@ describe 'eHR Example App' do
       before { click_link ('Resources') }
 
       it 'should navigate to the api documentation' do
-        click_link('API Documentation')
-        expect(page).to have_title('CoverMyMeds Developer Resources')
+        expect(page).to have_link("API Documentation", href: '/api')
       end
 
       it 'should display the source code when asked' do
-        click_link('Source Code')
-        expect(page).to have_content('Reference implementation of an EHR integration with CoverMyMeds, written in Ruby on Rails.')
+        expect(page).to have_link('Source Code', href: '/code')
       end
 
       it 'should reset the database when asked', js: true do

@@ -31,7 +31,6 @@ RSpec.describe PatientsController, type: :controller do
     {first_name:'', last_name:'', date_of_birth:'October 11, 1971', state:'OH'}
   }
 
-  # lets switch to factory_girl in a future PR
   let(:role) { Role.create! description: 'staff' }
   let(:user) { User.create! first_name: SecureRandom.uuid, last_name: SecureRandom.uuid, role: role }
 

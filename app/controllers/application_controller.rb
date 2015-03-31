@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :set_use_custom_ui
+  before_action :set_demo_users
   include ApplicationHelper
 
   def salutation
@@ -18,6 +19,11 @@ class ApplicationController < ActionController::Base
   def set_use_custom_ui
     session[:use_custom_ui] = true unless session.has_key? :use_custom_ui
     @_use_custom_ui = session[:use_custom_ui]
+  end
+
+  def set_demo_users
+    @demo_doctor = User.doctors.first
+    @demo_staff = User.staff.first
   end
 
   def cmm_request_link_for(request)

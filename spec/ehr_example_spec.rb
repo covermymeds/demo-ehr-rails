@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'eHR Example App' do
   fixtures :all
-  let(:doctor_login) { "/login/#{users(:doctor).id}" }
-  let(:staff_login) { "/login/#{users(:staff).id}" }
+  let(:doctor_login) { "/login/doctor" }
+  let(:staff_login) { "/login/staff" }
 
   it 'should allow accessing the site root' do
     visit('/')
@@ -67,13 +67,11 @@ describe 'eHR Example App' do
       before { click_link ('Resources') }
 
       it 'should navigate to the api documentation' do
-        click_link('API Documentation')
-        expect(page).to have_title('API Reference')
+        expect(page).to have_link("API Documentation", href: '/api')
       end
 
       it 'should display the source code when asked' do
-        click_link('Source Code')
-        expect(page).to have_content('Reference implementation of an EHR integration with CoverMyMeds, written in Ruby on Rails.')
+        expect(page).to have_link('Source Code', href: '/code')
       end
 
       it 'should reset the database when asked', js: true do

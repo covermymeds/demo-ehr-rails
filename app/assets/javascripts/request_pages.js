@@ -15,6 +15,7 @@ $(function() {
   if ($("[data-coded-reference='CoverMyMeds:form-search:1']").size()) {
     $("[data-coded-reference='CoverMyMeds:form-search:1']").formSearch({
       apiId: window.config.apiId,
+      apiUrl: window.config.apiUrl,
       version: 1,
       drugId: $('#drug_id').val(),
       state: $('#patient_state').val()
@@ -26,7 +27,7 @@ $(function() {
   $(formSelector).questionVisibility({
     last: $(formSelector).attr('id')+"[END]"
   })
-  
+
   // on change hide/show questions
   var decision = ".question select, .question input[type='checkbox']"
   $(decision).on("change", function(){

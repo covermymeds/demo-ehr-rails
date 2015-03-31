@@ -9,6 +9,7 @@ $(function () {
 
   var dashboard_options = {
     apiId: options.apiId,
+    apiUrl: options.apiUrl,
     version: 1,
     tokenIds: $('#dashboard').data('tokens'),
     folders: {
@@ -28,6 +29,7 @@ $(function () {
   if ($('#prescription_drug_number').val()) {
     $('#pa_request_form_id').formSearch({
         apiId: options.apiId,
+        apiUrl: options.apiUrl,
         version: 1,
         drugId: $('#prescription_drug_number').val(),
         state: $('#pa_request_state').val()
@@ -39,6 +41,7 @@ $(function () {
       $('#prescription_drug_name').val($('#prescription_drug_number').select2('data').text);
       $('#pa_request_form_id').formSearch({
         apiId: options.apiId,
+        apiUrl: options.apiUrl,
         version: 1,
         drugId: $('#prescription_drug_number').val(),
         state: $('#pa_request_state').val()

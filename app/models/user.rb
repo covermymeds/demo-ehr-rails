@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   has_many :pa_requests
 
   def display_name
-    "#{salutation} #{first_name} #{last_name}"
+    "#{salutation}#{first_name} #{last_name}"
   end
 
   def salutation

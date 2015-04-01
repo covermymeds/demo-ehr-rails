@@ -1,13 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "users/new", type: :view do
+  junklet :first, :last
+
+  let(:npi)    { rand.to_s[2..11] } # junk(:int, size: 10) was returning 8 digits
+  let!(:roles) { [Role.create(description: 'Doctor')] }
+  let!(:user)  { User.create!(first_name: first, last_name: last, role: roles.first, npi: npi ) }
+
   before(:each) do
-    assign(:user, User.new(
-      first_name: "MyString",
-      last_name: "MyString",
-      role_id: 1,
-      npi: "MyString"
-    ))
+    @user = assign(:user, User.new)
+    @roles = assign(:roles, roles)
   end
 
   it "renders new user form" do

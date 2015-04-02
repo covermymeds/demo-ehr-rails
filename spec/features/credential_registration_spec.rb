@@ -25,6 +25,8 @@ describe 'Registering Credentials with CMM' do
 
       # now user may opt-out/unregister
       click_link 'Cancel Registration'
+      expect(page).to_not have_checked_field('Register with CMM', disabled: true)
+      expect(page).to have_no_link('Cancel Registration')
     end
   end
 end

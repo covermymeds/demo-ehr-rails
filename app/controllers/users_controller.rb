@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:edit, :update]
+  before_action :set_user, only: [:edit, :update, :cancel_registration]
   before_action :set_roles, only: [:new, :edit, :update]
 
   def login
@@ -32,6 +32,12 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def cancel_registration
+    @user.update_attributes(:registered_with_cmm => false)
+    #CoverMyApi::Client.new
+    redirect_to edit_user_path(@user)
   end
 
   private

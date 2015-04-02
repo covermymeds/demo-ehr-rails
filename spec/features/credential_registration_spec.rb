@@ -19,8 +19,12 @@ describe 'Registering Credentials with CMM' do
       check('Register with CMM')
       click_button('Update User')
 
+      # assert
       visit edit_user_path(user)
       expect(page).to have_checked_field('Register with CMM', disabled: true)
+
+      # now user may opt-out/unregister
+      click_link 'Cancel Registration'
     end
   end
 end

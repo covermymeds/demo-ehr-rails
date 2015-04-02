@@ -1,16 +1,5 @@
 <%= form_for @pa_request do |f| %>
-<% if @pa_request.errors.any? %>
-
-<div id="error_explanation">
-  <h2><%= pluralize(@pa_request.errors.count, "error") %> prohibited this prescription from being saved:</h2>
-  <ul>
-    <% @pa_request.errors.full_messages.each do |message| %>
-    <li><%= message %></li>
-    <% end %>
-  </ul>
-</div>
-<% end %>
-
+  <%= render 'shared/errors', object: f.object %>
 <div class='form-group'>
   <%= f.label :patient_id, "Patient" %><br/>
   <%= select :patient, :id, Patient.all.collect {|p| [p.description, p.id]}, {prompt:'Select a Patient'}, class: 'form-control' %>

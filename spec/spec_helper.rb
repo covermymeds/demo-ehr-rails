@@ -1,6 +1,7 @@
 require 'capybara/rspec'
 require 'capybara/poltergeist'
 require 'capybara/webkit'
+require 'rack_session_access/capybara'
 
 
 RSpec.configure do |config|

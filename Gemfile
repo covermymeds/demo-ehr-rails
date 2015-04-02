@@ -70,6 +70,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'
   gem 'selenium-webdriver'
   gem 'pry-rails'
+  gem 'rack_session_access'
 end
 
 # Use ActiveModel has_secure_password

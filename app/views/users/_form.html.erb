@@ -2,30 +2,46 @@
   <%= render 'shared/errors', object: f.object %>
   <div class="form-group">
     <%= f.label :first_name, class: 'control-label col-sm-2' %>
-    <div class="col-sm-10">
+    <div class="col-sm-5">
     <%= f.text_field :first_name, class: 'form-control' %>
     </div>
   </div>
   <div class="form-group">
     <%= f.label :last_name, class: 'control-label col-sm-2' %>
-    <div class="col-sm-10">
+    <div class="col-sm-5">
     <%= f.text_field :last_name, class: 'form-control' %>
     </div>
   </div>
   <div class="form-group">
     <%= f.label :npi, class: 'control-label col-sm-2' %>
-    <div class="col-sm-10">
+    <div class="col-sm-5">
     <%= f.text_field :npi, class: 'form-control' %>
     </div>
   </div>
   <div class="form-group">
+    <%= f.label :fax, class: 'control-label col-sm-2' %>
+    <div class="col-sm-5">
+    <%= f.text_field :fax, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :registered_with_cmm, "Register with CMM", class: 'control-label col-sm-2' %>
+    <div class="col-sm-5">
+      <div class="checkbox">
+        <label>
+          <%= f.check_box :registered_with_cmm, title: 'Check to register NPI and Fax with CoverMyMeds' %>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
     <%= f.label :role, class: 'control-label col-sm-2' %>
-    <div class="col-sm-10">
+    <div class="col-sm-5">
     <%= f.select :role_id, options_from_collection_for_select(@roles, 'id', 'description', @user.role_id), { include_blank: true }, { class: 'form-control' } %>
     </div>
   </div>
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
+    <div class="col-sm-offset-2 col-sm-5">
       <%= f.submit class: 'btn btn-primary' %> or <%= link_to 'Back', :back %>
     </div>
   </div>

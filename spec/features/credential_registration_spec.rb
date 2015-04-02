@@ -17,7 +17,7 @@ describe 'Registering Credentials with CMM' do
       fill_in('Npi', with: '1234567890')
       fill_in('Fax', with: '1-800-555-5555')
       check('Register with CMM')
-      click_button('Submit')
+      click_button('Update User')
     end
   end
 end

@@ -36,7 +36,7 @@ class UsersController < ApplicationController
 
   def cancel_registration
     @user.update_attributes(:registered_with_cmm => false)
-    #CoverMyApi::Client.new
+    client = ApiClientFactory.build(session[:use_integration])
     redirect_to edit_user_path(@user)
   end
 

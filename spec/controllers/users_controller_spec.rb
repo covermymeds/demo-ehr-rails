@@ -52,27 +52,38 @@ describe UsersController, type: :controller do
 
   describe "PUT update" do
     describe "with valid params" do
-      let(:new_attributes) {
-        { first_name: 'Dr. Robert Liston', npi: '4242424242' }
-      }
+      context "when not registering with CMM" do
+        let(:new_attributes) do
+          { first_name: 'Dr. Robert Liston', npi: '4242424242', fax: '18001234567', registered_with_cmm: false  }
+        end
 
-      it "updates the requested user" do
-        user = User.create! valid_attributes
-        put :update, {id: user.to_param, user: new_attributes}, valid_session
-        user.reload
-        expect(assigns(:user)).to eq(user)
+        it "updates the requested user" do
+          user = User.create! valid_attributes
+          put :update, {id: user.to_param, user: new_attributes}, valid_session
+          user.reload
+          expect(assigns(:user)).to eq(user)
+        end
+
+        it "assigns the requested user as @user" do
+          user = User.create! valid_attributes
+          put :update, {id: user.to_param, user: valid_attributes}, valid_session
+          expect(assigns(:user)).to eq(user)
+        end
+
+        it "redirects to the root" do
+          user = User.create! valid_attributes
+          put :update, {id: user.to_param, user: valid_attributes}, valid_session
+          expect(response).to redirect_to(root_path)
+        end
       end
+      context "when registering with CMM" do
+        let(:new_attributes) do
+          { first_name: 'Dr. Robert Liston', npi: '4242424242', fax: '18001234567', registered_with_cmm: true  }
+        end
 
-      it "assigns the requested user as @user" do
-        user = User.create! valid_attributes
-        put :update, {id: user.to_param, user: valid_attributes}, valid_session
-        expect(assigns(:user)).to eq(user)
-      end
+        it "calls the credentials api" do
 
-      it "redirects to the root" do
-        user = User.create! valid_attributes
-        put :update, {id: user.to_param, user: valid_attributes}, valid_session
-        expect(response).to redirect_to(root_path)
+        end
       end
     end
 

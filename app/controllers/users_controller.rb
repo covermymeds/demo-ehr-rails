@@ -25,6 +25,10 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
+        if @user.registered_with_cmm
+          client = ApiClientFactory.build(use_integration: !!session[:use_integration])
+          client.create_credential(@user.npi, @user.fax)
+        end
         format.html { redirect_to root_url, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
@@ -36,7 +40,7 @@ class UsersController < ApplicationController
 
   def cancel_registration
     @user.update_attributes(:registered_with_cmm => false)
-    client = ApiClientFactory.build(session[:use_integration])
+    #client = ApiClientFactory.build(session[:use_integration])
     redirect_to edit_user_path(@user)
   end
 

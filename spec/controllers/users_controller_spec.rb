@@ -56,33 +56,38 @@ describe UsersController, type: :controller do
         let(:new_attributes) do
           { first_name: 'Dr. Robert Liston', npi: '4242424242', fax: '18001234567', registered_with_cmm: false  }
         end
+        let!(:user) {User.create! valid_attributes}
 
         it "updates the requested user" do
-          user = User.create! valid_attributes
           put :update, {id: user.to_param, user: new_attributes}, valid_session
           user.reload
           expect(assigns(:user)).to eq(user)
         end
 
         it "assigns the requested user as @user" do
-          user = User.create! valid_attributes
           put :update, {id: user.to_param, user: valid_attributes}, valid_session
           expect(assigns(:user)).to eq(user)
         end
 
         it "redirects to the root" do
-          user = User.create! valid_attributes
           put :update, {id: user.to_param, user: valid_attributes}, valid_session
           expect(response).to redirect_to(root_path)
+        end
+
+        it 'should not call the credentials api' do
+          expect_any_instance_of(CoverMyApi::Client).to_not receive(:create_credential)
+          put :update, {id: user.to_param, user: valid_attributes}, valid_session
         end
       end
       context "when registering with CMM" do
         let(:new_attributes) do
           { first_name: 'Dr. Robert Liston', npi: '4242424242', fax: '18001234567', registered_with_cmm: true  }
         end
+        let(:user) {User.create! valid_attributes}
 
         it "calls the credentials api" do
-
+          expect_any_instance_of(CoverMyApi::Client).to receive(:create_credential).with('4242424242', '18001234567')
+          put :update, {id: user.to_param, user:new_attributes}, valid_session
         end
       end
     end

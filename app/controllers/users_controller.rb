@@ -24,8 +24,9 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
+      register = !@user.registered_with_cmm? && params[:user][:registered_with_cmm] == true
       if @user.update(user_params)
-        if @user.registered_with_cmm
+        if register
           client = ApiClientFactory.build(use_integration: !!session[:use_integration])
           client.create_credential(@user.npi, @user.fax)
         end

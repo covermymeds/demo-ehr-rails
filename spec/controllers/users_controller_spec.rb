@@ -83,11 +83,22 @@ describe UsersController, type: :controller do
         let(:new_attributes) do
           { first_name: 'Dr. Robert Liston', npi: '4242424242', fax: '18001234567', registered_with_cmm: true  }
         end
-        let(:user) {User.create! valid_attributes}
+        let!(:user) {User.create! valid_attributes}
 
         it "calls the credentials api" do
           expect_any_instance_of(CoverMyApi::Client).to receive(:create_credential).with('4242424242', '18001234567')
           put :update, {id: user.to_param, user:new_attributes}, valid_session
+        end
+
+        context "when the user has already registered their NPI" do
+          let(:valid_attributes) {
+            { first_name: "Test", last_name: "McTester", npi: "3141592654", role_id: 1, registered_with_cmm: true}
+          }
+
+          it 'should not call the credentials API' do
+            expect_any_instance_of(CoverMyApi::Client).to_not receive(:create_credential)
+            put :update, {id: user.to_param, user: valid_attributes}, valid_session
+          end
         end
       end
     end

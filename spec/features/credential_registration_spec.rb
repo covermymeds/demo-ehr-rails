@@ -11,6 +11,10 @@ describe 'Registering Credentials with CMM' do
     login_user(user)
   end
 
+  after do
+    logout_user(user)
+  end
+
   context 'from the user edit page' do
     it 'allows the prescriber to register their credentials' do
       visit edit_user_path(user)

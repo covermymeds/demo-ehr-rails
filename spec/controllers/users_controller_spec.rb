@@ -122,8 +122,8 @@ describe UsersController, type: :controller do
     let!(:user) {User.create! valid_attributes}
 
     # pending until delete_credential can be implemented in covermymeds_api
-    xit 'should call the credentials API' do
-      expect_any_instance_of(CoverMyApi::Client).to receive(:delete_credential).with('4242424242', '18001234567')
+    it 'should call the credentials API' do
+      expect_any_instance_of(CoverMyApi::Client).to receive(:delete_credential).with(valid_attributes[:npi])
       post :cancel_registration, id: user.id
     end
   end

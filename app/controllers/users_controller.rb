@@ -41,7 +41,8 @@ class UsersController < ApplicationController
 
   def cancel_registration
     @user.update_attributes(:registered_with_cmm => false)
-    #client = ApiClientFactory.build(session[:use_integration])
+    client = ApiClientFactory.build(use_integration: session[:use_integration])
+    client.delete_credential(@user.npi)
     redirect_to edit_user_path(@user)
   end
 

@@ -54,6 +54,7 @@ gem 'spring',        group: :development
 group :test do
   gem 'shoulda-matchers'
   gem 'junklet'
+  gem 'webmock'
 end
 
 group :development, :test do

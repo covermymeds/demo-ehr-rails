@@ -220,8 +220,10 @@ describe 'eHR Example App' do
         end
 
         it 'starts a PA', js: true do
+          WebMock.disable!
           click_on('Save')
           expect(page).to have_content("Your prior authorization request was successfully started.")
+          WebMock.enable!
         end
       end
 

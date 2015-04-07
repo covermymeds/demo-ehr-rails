@@ -81,7 +81,7 @@ describe UsersController, type: :controller do
       end
       context "when registering with CMM" do
         let(:new_attributes) do
-          { first_name: 'Dr. Robert Liston', npi: '4242424242', fax: '18001234567', registered_with_cmm: true  }
+          { first_name: 'Dr. Robert Liston', npi: '4242424242', fax: '18001234567', registered_with_cmm: '1'  }
         end
         let!(:user) {User.create! valid_attributes}
 

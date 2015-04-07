@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      register = !@user.registered_with_cmm? && params[:user][:registered_with_cmm] == true
+      register = !@user.registered_with_cmm? && params[:user][:registered_with_cmm] == '1'
       if @user.update(user_params)
         if register
           client = ApiClientFactory.build(use_integration: !!session[:use_integration])

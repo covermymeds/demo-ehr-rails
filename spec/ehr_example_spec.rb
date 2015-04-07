@@ -222,7 +222,7 @@ describe 'eHR Example App' do
         it 'starts a PA', js: true do
           response = JSON.parse(File.read('spec/fixtures/created_pa.json'))
           stub_request(:post, /https:\/\/(\S*):(\S*)@api.covermymeds.com\/requests\/\?v=1/ )
-            .to_return(:body => response.to_json)
+            .to_return(body: response.to_json)
           click_on('Save')
           expect(page).to have_content("Your prior authorization request was successfully started.")
         end

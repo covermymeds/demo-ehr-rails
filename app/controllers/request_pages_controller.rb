@@ -11,7 +11,7 @@ class RequestPagesController < ApplicationController
 
     if is_error_form? @request_page_json
       # show the error page
-      @request_page = @request_page_json.errors
+      @request_page = @request_page_json[:errors]
       render :error
     else
       @request_page = @request_page_json.request_page
@@ -25,7 +25,6 @@ class RequestPagesController < ApplicationController
   end
 
   def do_action
-    binding.pry
     bad_request unless params[:button_title]
 
     # look up the action from our list of saved actions for this PA
@@ -42,10 +41,10 @@ class RequestPagesController < ApplicationController
 
     # build an HTTP connection
     conn = RestClient::Resource.new(action[:href], {
-        user: Rails.application.secrets.cmm_api_id,
-        password: 'x-no-pass',
-        headers: headers
-        })
+                                      user: Rails.application.secrets.cmm_api_id,
+                                      password: 'x-no-pass',
+                                      headers: headers
+    })
 
     # important: look up the form data to be included
     form_data = params[action[:ref]] if action[:ref]
@@ -88,47 +87,47 @@ class RequestPagesController < ApplicationController
 
   private
 
-    def bad_request
-      raise ActionController::BadRequest.new('Bad Request')
-    end
-
-    def is_pa_request_form?(request_page)
-      request_page[:forms].has_key?(:pa_request)
-    end
-
-    def is_error_form?(request_page)
-      request_page.has_key?(:errors)
-    end
-
-    # proxy actions through this controller, keeping tokens in the server
-    def replace_actions request_page, pa_request
-      # keep track of actions, so we can execute actions
-      actions = request_page[:actions]
-      pa_request.update_attributes request_pages_actions: actions.to_json
-
-      # replace actions in json (don't send tokens to browser)
-      actions.each do |action|
-        action[:orig_href] = action[:href] # save this so we see it in the JSON source
-        action[:orig_method] = action[:method]
-        action[:href] = pa_request_request_pages_action_path(@pa_request, action[:title])
-        action[:method] = "GET"
-      end
-    end
-
-    # before actions to set up instance vars & do a redirect
-    def set_request_pages
-      # pa_request is passed in with the URL
-      @pa_request = PaRequest.find(params[:pa_request_id])
-
-      # patient & prescription are used for debugging mostly
-      @patient = @pa_request.prescription.patient
-      @prescription = @pa_request.prescription
-    end
-
-    def redirect_if_using_cmm
-      if @_use_custom_ui == false
-        redirect_to @pa_request.cmm_link
-      end
-    end
-
+  def bad_request
+    raise ActionController::BadRequest.new('Bad Request')
   end
+
+  def is_pa_request_form?(request_page)
+    request_page[:forms].has_key?(:pa_request)
+  end
+
+  def is_error_form?(request_page)
+    request_page.has_key?(:errors)
+  end
+
+  # proxy actions through this controller, keeping tokens in the server
+  def replace_actions request_page, pa_request
+    # keep track of actions, so we can execute actions
+    actions = request_page[:actions]
+    pa_request.update_attributes request_pages_actions: actions.to_json
+
+    # replace actions in json (don't send tokens to browser)
+    actions.each do |action|
+      action[:orig_href] = action[:href] # save this so we see it in the JSON source
+      action[:orig_method] = action[:method]
+      action[:href] = pa_request_request_pages_action_path(@pa_request, action[:title])
+      action[:method] = "GET"
+    end
+  end
+
+  # before actions to set up instance vars & do a redirect
+  def set_request_pages
+    # pa_request is passed in with the URL
+    @pa_request = PaRequest.find(params[:pa_request_id])
+
+    # patient & prescription are used for debugging mostly
+    @patient = @pa_request.prescription.patient
+    @prescription = @pa_request.prescription
+  end
+
+  def redirect_if_using_cmm
+    if @_use_custom_ui == false
+      redirect_to @pa_request.cmm_link
+    end
+  end
+
+end

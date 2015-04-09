@@ -6,7 +6,7 @@ describe UsersController, type: :controller do
   # User. As you add validations to User, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    { first_name: "Dr. Test McTester", npi: "3141592654", role_id: 1}
+    { first_name: "Test", last_name: "McTester", npi: "3141592654", role_id: 1}
   }
 
   let(:invalid_attributes) {

@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'eHR Example App' do
   fixtures :all
-  let(:doctor_login) { "/login/#{users(:doctor).id}" }
-  let(:staff_login) { "/login/#{users(:staff).id}" }
+  let(:doctor_login) { "/login/doctor" }
+  let(:staff_login) { "/login/staff" }
 
   it 'should allow accessing the site root' do
     visit('/')
@@ -78,6 +78,11 @@ describe 'eHR Example App' do
         click_link('Reset Database')
         Capybara.page.execute_script  'window.confirm = function () { return true }'
         expect(page).to have_content('Database has been reset')
+      end
+
+      it 'should navigate to the callbacks view' do
+        click_link('Callbacks')
+        expect(page).to have_content('Listing callbacks')
       end
     end
 

@@ -1,0 +1,5 @@
+pa_request_one:
+    prescription: prescriptions_Amber4
+    cmm_id: "ABC123"
+    cmm_token: "random_token"
+    cmm_workflow_status: "New"

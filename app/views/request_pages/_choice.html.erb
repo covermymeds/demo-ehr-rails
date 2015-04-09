@@ -31,7 +31,6 @@
     <% question[:choices].each do |option| %>
       <option class="option"
       value="<%= option[:choice_id] %>"
-      <% binding.pry %>
       data-next-question-id="<%= massage(option[:next_question_id], form_name) if option[:next_question_id] %>"
       <%= selected_if(option[:choice_id], data[question[:question_id].to_sym]) %>
       >

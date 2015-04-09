@@ -4,6 +4,7 @@ describe "home/index.html.erb", type: :view do
   fixtures :roles, :users
 
   before do
+    @demo_doctor = assign(:demo_doctor, User.doctors.first)
     render
   end
 

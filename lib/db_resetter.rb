@@ -4,6 +4,7 @@ class DbResetter
       Patient.destroy_all
       PaRequest.destroy_all
       Role.destroy_all
+      CmmCallback.destroy_all
 
       Role.create! description: Role::DOCTOR
       Role.create! description: Role::STAFF

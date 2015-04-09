@@ -83,6 +83,9 @@ GEM
     columnize (0.8.9)
     debugger-linecache (1.2.0)
     diff-lcs (1.2.5)
+    dotenv (2.0.0)
+    dotenv-rails (2.0.0)
+      dotenv (= 2.0.0)
     erubis (2.7.0)
     execjs (2.2.1)
     ffi (1.9.3)
@@ -143,6 +146,8 @@ GEM
     pry-byebug (2.0.0)
       byebug (~> 3.4)
       pry (~> 0.10)
+    pry-rails (0.3.3)
+      pry (>= 0.9.10)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -266,6 +271,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   cover_my_api (~> 0.3.1)!
   database_cleaner!
+  dotenv-rails
   guard
   guard-rspec
   jbuilder (~> 2.0)
@@ -277,6 +283,7 @@ DEPENDENCIES
   poltergeist
   pry
   pry-byebug
+  pry-rails
   rails (= 4.1.1)
   rails_12factor
   rest_client

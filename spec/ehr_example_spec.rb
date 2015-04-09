@@ -17,10 +17,6 @@ describe 'eHR Example App' do
       visit '/logout'
     end
 
-    it 'defaults to the custom UI' do
-      expect( find(:css, 'select#change_view').value ).to eq('Custom UI')
-    end
-
     it 'should navigate to the patients view', js: true do
       click_link('Patients')
       expect(page).to have_content('Patients')
@@ -66,12 +62,16 @@ describe 'eHR Example App' do
     context 'Resources' do
       before { click_link ('Resources') }
 
+      it 'defaults to the custom UI' do
+        expect(find_link('Use CoverMyMeds Request Page')[:href]).to match(/toggle_ui/)
+      end
+
       it 'should navigate to the api documentation' do
-        expect(page).to have_link("API Documentation", href: '/api')
+        expect(find_link('API Documentation')[:href]).to match("/api")
       end
 
       it 'should display the source code when asked' do
-        expect(page).to have_link('Source Code', href: '/code')
+        expect(find_link('Source Code')[:href]).to match("/code")
       end
 
       it 'should reset the database when asked', js: true do

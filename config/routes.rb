@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     to: 'request_pages#do_action',
     as: :pa_request_request_pages_action
 
-  post '/toggle_ui', to: 'home#toggle_custom_ui'
+  get '/toggle_ui', to: 'home#toggle_custom_ui'
 
   get '/dashboard' => 'pa_requests#index'
 

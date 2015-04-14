@@ -16,6 +16,15 @@ ActiveRecord::Schema.define(version: 20150429150952) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "alerts", force: true do |t|
+    t.integer  "user_id"
+    t.text     "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "alerts", ["user_id"], name: "index_alerts_on_user_id", using: :btree
+
   create_table "cmm_callbacks", force: true do |t|
     t.text     "content"
     t.datetime "created_at"
@@ -121,6 +130,7 @@ ActiveRecord::Schema.define(version: 20150429150952) do
     t.string   "practice_state"
     t.string   "practice_zip"
     t.boolean  "registered_with_cmm",   default: false
+    t.boolean  "registered_with_cmm"
   end
 
   add_index "users", ["npi"], name: "index_users_on_npi", unique: true, using: :btree

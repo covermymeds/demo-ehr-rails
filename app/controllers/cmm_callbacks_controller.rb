@@ -38,7 +38,20 @@ class CmmCallbacksController < ApplicationController
     # see if the PA exists already in our local database
     @pa = PaRequest.find_by_cmm_id(@request['id'])
 
-    if @pa.nil?
+    users = User.where(npi: @request['prescriber']['npi'])
+    # see if we have the prescriptions in the EHR
+    found_prescription = Prescription.where(drug_number: @request['prescription']['drug_id']).any?
+    found_npi = User.where(npi: @request['prescriber']['npi']).any?
+    found_pa = @pa.present?
+
+    if found_npi && !found_prescription
+      users.each do |u|
+        u.alerts.create(message: "Your NPI was found, but the prescription didn't match")
+      end
+      render status: 404, text: 'prescription not found' and return
+    end
+
+    if !found_pa
       # couldn't find it in our db, must be a retrospective
       @pa = PaRequest.new
       @pa.init_from_callback(@request)

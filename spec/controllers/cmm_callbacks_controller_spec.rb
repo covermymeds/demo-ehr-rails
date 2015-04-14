@@ -39,9 +39,32 @@ RSpec.describe CmmCallbacksController, type: :controller do
     context "when the NPI is recognized" do
       junklet :first_name, :last_name
       let(:npi)        { valid_request['request']['prescriber']['npi'] }
+      let(:request_id) { valid_request['request']['id'] }
       let(:role)       { Role.doctor }
       let!(:user)      { User.create!(npi: npi, first_name: first_name, last_name: last_name, role_id: role.id) }
       let(:do_request) { post :create, valid_request, format: :json }
+      let!(:pa_request) { PaRequest.create!(cmm_id: request_id) }
+
+      context 'when a prescription exists' do
+        before do
+          Prescription.create!(drug_number: '085705')
+        end
+        # in both of these tests (adds.. and deletes...) the controller redirects to show the
+        # request that was created by the callback, or that was updated by the callback.
+        it "adds a request when prompted from the callback" do
+          post :create, valid_request, format: :json
+          expect(response.status).to eq(302)
+        end
+
+        it "deletes a request when asked to do so" do
+          post :create, delete_request, valid_session
+          expect(response.status).to eq(302)
+        end
+
+        it "updates a PaRequest and alerts the prescriber" do
+          expect{ do_request }.to change{ user.reload.alerts.count }.from(0).to(1)
+        end
+      end
 
       context "when the EHR doesn't have the prescription" do
         it "ignores the PA" do
@@ -58,19 +81,13 @@ RSpec.describe CmmCallbacksController, type: :controller do
           expect(response.status).to eq(404)
         end
       end
-
-      context "when the EHR does have the prescription" do
-        it "creates a PaRequest and alerts the prescriber" do
-
-        end
-      end
     end
 
     context "when the NPI is not recognized" do
       it "responds with a 410" do
-
+        post :create, valid_request, format: :json
+        expect(response.status).to eq(410)
       end
     end
   end
-
 end

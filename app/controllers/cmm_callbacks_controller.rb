@@ -44,6 +44,10 @@ class CmmCallbacksController < ApplicationController
     found_npi = User.where(npi: @request['prescriber']['npi']).any?
     found_pa = @pa.present?
 
+    if !found_npi
+      render status: 410, text: 'NPI not found' and return
+    end
+
     if found_npi && !found_prescription
       users.each do |u|
         u.alerts.create(message: "Your NPI was found, but the prescription didn't match")
@@ -59,9 +63,15 @@ class CmmCallbacksController < ApplicationController
       # if we have a record of the PA, delete it if appropriate
       if is_delete?(@request)
         @pa.update_attributes(cmm_token: nil)
+        users.each do |u|
+          u.alerts.create(message: "A PA was deleted.")
+        end
       else
         # if it's not a delete, then it's an update
         @pa.update_from_callback(@request)
+        users.each do |u|
+          u.alerts.create(message: "A PA was updated")
+        end
       end
     end
 

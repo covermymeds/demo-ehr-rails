@@ -60,7 +60,7 @@ class CmmCallbacksController < ApplicationController
     # send our response back to CMM
     respond_to do |format|
       if @pa.save
-        format.html { redirect_to @pa }
+        format.html { render @pa }
         format.json { render json: @pa }
       else
         format.html { render :error }

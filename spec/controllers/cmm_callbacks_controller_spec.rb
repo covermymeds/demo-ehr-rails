@@ -38,11 +38,11 @@ RSpec.describe CmmCallbacksController, type: :controller do
 
     context "when the NPI is recognized" do
       junklet :first_name, :last_name
-      let(:npi)        { valid_request['request']['prescriber']['npi'] }
-      let(:request_id) { valid_request['request']['id'] }
-      let(:role)       { Role.doctor }
-      let!(:user)      { User.create!(npi: npi, first_name: first_name, last_name: last_name, role_id: role.id) }
-      let(:do_request) { post :create, valid_request, format: :json }
+      let(:npi)         { valid_request['request']['prescriber']['npi'] }
+      let(:request_id)  { valid_request['request']['id'] }
+      let(:role)        { Role.doctor }
+      let!(:user)       { User.create!(npi: npi, first_name: first_name, last_name: last_name, role_id: role.id) }
+      let(:do_request)  { post :create, valid_request, format: :json }
       let!(:pa_request) { PaRequest.create!(cmm_id: request_id, cmm_token: 'foo') }
 
       context 'when a prescription exists' do

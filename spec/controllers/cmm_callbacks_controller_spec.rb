@@ -4,7 +4,7 @@ require 'spec_helper'
 RSpec.describe CmmCallbacksController, type: :controller do
 
   describe "POST create" do
-    fixtures :roles
+    fixtures :roles, :users
 
     # This should return the minimal set of values that should be in the session
     # in order to pass any filters (e.g. authentication) defined in
@@ -41,7 +41,7 @@ RSpec.describe CmmCallbacksController, type: :controller do
       let(:npi)         { valid_request['request']['prescriber']['npi'] }
       let(:request_id)  { valid_request['request']['id'] }
       let(:role)        { Role.doctor }
-      let!(:user)       { User.create!(npi: npi, first_name: first_name, last_name: last_name, role_id: role.id) }
+      let!(:user)       { User.find_by_npi(npi) }
       let(:do_request)  { post :create, valid_request, format: :json }
       let!(:pa_request) { PaRequest.create!(cmm_id: request_id, cmm_token: 'foo') }
 

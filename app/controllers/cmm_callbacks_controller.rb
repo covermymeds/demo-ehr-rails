@@ -56,12 +56,11 @@ class CmmCallbacksController < ApplicationController
     @callback.pa_request = @pa
     @pa.cmm_callbacks << @callback
     @callback.save!
-    @pa_request = @pa
 
     # send our response back to CMM
     respond_to do |format|
       if @pa.save
-        format.html { render 'pa_requests/show'}
+        format.html { render status: 200, nothing: true }
         format.json { render json: @pa }
       else
         format.html { render :error }

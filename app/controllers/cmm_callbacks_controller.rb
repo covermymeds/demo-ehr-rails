@@ -34,39 +34,30 @@ class CmmCallbacksController < ApplicationController
 
     handler = PaHandler.new(cmm_id: request_params['id'], npi: request_params['prescriber']['npi'], drug_number: request_params['prescription']['drug_id'])
 
-    users = User.where(npi: request_params['prescriber']['npi'])
+    user = User.find_by_npi(request_params['prescriber']['npi'])
     # see if we have the prescriptions in the EHR
-    found_prescription = Prescription.where(drug_number: request_params['prescription']['drug_id']).any?
     pa = PaRequest.find_by_cmm_id(request_params['id'])
-    found_pa = pa.present?
 
-    case handler.brussel_sprouts.status
+    case handler.call.status
     when :npi_not_found
       render(status: 410, text: 'NPI not found') and return
     when :prescription_not_found
-      users.each do |u|
-        u.alerts.create(message: "Your NPI was found, but the prescription didn't match")
-      end
+      create_alert(user, "Your NPI was found, but the prescription didn't match")
       render(status: 404, text: 'prescription not found') and return
     when :new_retrospective
       # couldn't find it in our db, must be a retrospective
       pa = PaRequest.new
       pa.init_from_callback(request_params)
     when :pa_found
-  # if we have a record of the PA, delete it if appropriate
+      # if we have a record of the PA, delete it if appropriate
       if is_delete_request?(request_params)
         pa.update_attributes(cmm_token: nil)
-        users.each do |u|
-          u.alerts.create(message: 'A PA was deleted.')
-        end
+        create_alert(user, 'A PA was deleted.')
       else
         # if it's not a delete, then it's an update
         pa.update_from_callback(request_params)
-        users.each do |u|
-          u.alerts.create(message: 'A PA was updated')
-        end
+        create_alert(user, 'A PA was updated')
       end
-
     end
 
     # save our updated PA, and keep track of the callback that spawned it
@@ -104,5 +95,9 @@ class CmmCallbacksController < ApplicationController
 
   def set_callback
     @callback = CmmCallback.find(params[:id])
+  end
+
+  def create_alert(user, message)
+    user.alerts.create(message: message)
   end
 end

@@ -11,7 +11,7 @@ class PaHandler
     OpenStruct.new(status: status)
   end
 
-  def brussel_sprouts
+  def call
     if !npi_found?
       pa_status(:npi_not_found)
     elsif !found_prescription?

@@ -85,7 +85,7 @@ RSpec.describe CmmCallbacksController, type: :controller do
 
     context "when the NPI is not recognized" do
       it "responds with a 410" do
-        post :create, valid_request, format: :json
+        post :create, valid_request.deep_merge('request' => { 'prescriber' => {'npi' => 'unrecognized_npi'} }), format: :json
         expect(response.status).to eq(410)
       end
     end

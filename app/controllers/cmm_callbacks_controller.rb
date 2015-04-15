@@ -30,16 +30,16 @@ class CmmCallbacksController < ApplicationController
   # new values in the callback.
   def create
     # create a callback object to log that we received this callback
-    @callback = CmmCallback.new content: request_params.to_json
+    callback = CmmCallback.new content: request_params.to_json
 
     # see if the PA exists already in our local database
-    @pa = PaRequest.find_by_cmm_id(request_params['id'])
+    pa = PaRequest.find_by_cmm_id(request_params['id'])
 
     users = User.where(npi: request_params['prescriber']['npi'])
     # see if we have the prescriptions in the EHR
     found_prescription = Prescription.where(drug_number: request_params['prescription']['drug_id']).any?
     found_npi = User.where(npi: request_params['prescriber']['npi']).any?
-    found_pa = @pa.present?
+    found_pa = pa.present?
 
     if !found_npi
       render status: 410, text: 'NPI not found' and return
@@ -54,18 +54,18 @@ class CmmCallbacksController < ApplicationController
 
     if !found_pa
       # couldn't find it in our db, must be a retrospective
-      @pa = PaRequest.new
-      @pa.init_from_callback(request_params)
+      pa = PaRequest.new
+      pa.init_from_callback(request_params)
     else
       # if we have a record of the PA, delete it if appropriate
       if is_delete?(request_params)
-        @pa.update_attributes(cmm_token: nil)
+        pa.update_attributes(cmm_token: nil)
         users.each do |u|
           u.alerts.create(message: "A PA was deleted.")
         end
       else
         # if it's not a delete, then it's an update
-        @pa.update_from_callback(request_params)
+        pa.update_from_callback(request_params)
         users.each do |u|
           u.alerts.create(message: "A PA was updated")
         end
@@ -73,19 +73,19 @@ class CmmCallbacksController < ApplicationController
     end
 
     # save our updated PA, and keep track of the callback that spawned it
-    @pa.save
-    @callback.pa_request = @pa
-    @pa.cmm_callbacks << @callback
-    @callback.save!
+    pa.save
+    callback.pa_request = pa
+    pa.cmm_callbacks << callback
+    callback.save!
 
     # send our response back to CMM
     respond_to do |format|
-      if @pa.save
-        format.html { render status: 200, nothing: true }
-        format.json { render json: @pa }
+      if pa.save
+        format.html { redirect_to pa }
+        format.json { render json: pa }
       else
         format.html { render :error }
-        format.json { render json: @callback }
+        format.json { render json: callback }
       end
     end
   end

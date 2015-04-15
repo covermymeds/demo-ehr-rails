@@ -27,7 +27,7 @@ RSpec.describe CmmCallbacksController, type: :controller do
 
     it "deletes a request when asked to do so" do
       post :create, delete_request, valid_session
-      expect(response.status).to eq(302)
+      expect(response.status).to eq(200)
     end
 
   end

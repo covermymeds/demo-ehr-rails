@@ -22,7 +22,7 @@ RSpec.describe CmmCallbacksController, type: :controller do
     # request that was created by the callback, or that was updated by the callback.
     it "adds a request when prompted from the callback" do
       post :create, valid_request, format: :json
-      expect(response.status).to eq(302)
+      expect(response.status).to eq(200)
     end
 
     it "deletes a request when asked to do so" do

@@ -2,6 +2,7 @@ class CmmCallbacksController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:create]
 
   before_action :set_callback, only: [:show]
+  before_action :set_user, :set_pa, only: [:create]
 
 
   # GET /callbacks
@@ -29,48 +30,25 @@ class CmmCallbacksController < ApplicationController
   # changes. In that case, we need to update the PA record in our system with the
   # new values in the callback.
   def create
-    # create a callback object to log that we received this callback
-    callback = CmmCallback.new content: request_params.to_json
-
-    handler = PaHandler.new(cmm_id: request_params['id'], npi: request_params['prescriber']['npi'], drug_number: request_params['prescription']['drug_id'])
-
-    user = User.find_by_npi(request_params['prescriber']['npi'])
-    # see if we have the prescriptions in the EHR
-    pa = PaRequest.find_by_cmm_id(request_params['id'])
+    handler = PaHandler.new(pa: @pa, npi: request_params['prescriber']['npi'], drug_number: request_params['prescription']['drug_id'])
 
     case handler.call.status
     when :npi_not_found
       render(status: 410, text: 'NPI not found') and return
     when :prescription_not_found
-      create_alert(user, "Your NPI was found, but the prescription didn't match")
+      create_alert(@user, "Your NPI was found, but the prescription didn't match")
       render(status: 404, text: 'prescription not found') and return
     when :new_retrospective
-      # couldn't find it in our db, must be a retrospective
-      pa = PaRequest.new
       pa.init_from_callback(request_params)
     when :pa_found
-      # if we have a record of the PA, delete it if appropriate
-      if is_delete_request?(request_params)
-        pa.update_attributes(cmm_token: nil)
-        create_alert(user, 'A PA was deleted.')
-      else
-        # if it's not a delete, then it's an update
-        pa.update_from_callback(request_params)
-        create_alert(user, 'A PA was updated')
-      end
+      delete_or_update_pa!
     end
+    callback = @pa.cmm_callbacks.build(content: request_params.to_json)
 
-    # save our updated PA, and keep track of the callback that spawned it
-    pa.save
-    callback.pa_request = pa
-    pa.cmm_callbacks << callback
-    callback.save!
-
-    # send our response back to CMM
     respond_to do |format|
-      if pa.save
-        format.html { redirect_to pa }
-        format.json { render json: pa }
+      if @pa.save
+        format.html { render status: 200, nothing: true }
+        format.json { render json: @pa }
       else
         format.html { render :error }
         format.json { render json: callback }
@@ -99,5 +77,25 @@ class CmmCallbacksController < ApplicationController
 
   def create_alert(user, message)
     user.alerts.create(message: message)
+  end
+
+  def set_user
+    @user ||= User.find_by_npi(request_params['prescriber']['npi'])
+  end
+
+  def set_pa
+    @pa ||= PaRequest.find_or_initialize_by(cmm_id: request_params['id'])
+  end
+
+  def delete_or_update_pa!
+    # if we have a record of the PA, delete it if appropriate
+    if is_delete_request?(request_params)
+      @pa.update_attributes(cmm_token: nil)
+      create_alert(@user, 'A PA was deleted.')
+    else
+      # if it's not a delete, then it's an update
+      @pa.update_from_callback(request_params)
+      create_alert(@user, 'A PA was updated')
+    end
   end
 end

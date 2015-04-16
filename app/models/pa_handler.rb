@@ -1,9 +1,8 @@
 class PaHandler
 
-  def initialize(cmm_id: cmm_id, npi: npi, drug_number: drug_number)
+  def initialize(pa: pa, npi: npi, drug_number: drug_number)
     @npi = npi
-    # see if the PA exists already in our local database
-    @pa = PaRequest.find_by_cmm_id(cmm_id)
+    @pa = pa
     @drug_number = drug_number
   end
 
@@ -16,7 +15,7 @@ class PaHandler
       pa_status(:npi_not_found)
     elsif !found_prescription?
       pa_status(:prescription_not_found)
-    elsif !@pa.present?
+    elsif @pa.new_record?
       pa_status(:new_retrospective)
     else
       pa_status(:pa_found)

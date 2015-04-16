@@ -1,5 +1,4 @@
 class PaHandler
-
   def initialize(pa: pa, user: user, prescription: prescription)
     @user = user
     @pa = pa
@@ -23,6 +22,7 @@ class PaHandler
   end
 
   private
+
   def npi_found?
     @user.present?
   end
@@ -30,5 +30,4 @@ class PaHandler
   def found_prescription?
     npi_found? && @prescription.present?
   end
-
 end

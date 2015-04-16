@@ -32,7 +32,7 @@ class CmmCallbacksController < ApplicationController
   def create
     handler = PaHandler.new(pa: @pa, user: @user, prescription: @prescription)
 
-    case handler.call.status
+    case handler.call
     when :npi_not_found
       render(status: 410, text: 'NPI not found') and return
     when :prescription_not_found

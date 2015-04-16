@@ -5,19 +5,15 @@ class PaHandler
     @prescription = prescription
   end
 
-  def pa_status(status)
-    OpenStruct.new(status: status)
-  end
-
   def call
     if !npi_found?
-      pa_status(:npi_not_found)
+      :npi_not_found
     elsif !found_prescription?
-      pa_status(:prescription_not_found)
+      :prescription_not_found
     elsif @pa.new_record?
-      pa_status(:new_retrospective)
+      :new_retrospective
     else
-      pa_status(:pa_found)
+      :pa_found
     end
   end
 

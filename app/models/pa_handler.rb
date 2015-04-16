@@ -1,9 +1,9 @@
 class PaHandler
 
-  def initialize(pa: pa, npi: npi, drug_number: drug_number)
-    @npi = npi
+  def initialize(pa: pa, user: user, prescription: prescription)
+    @user = user
     @pa = pa
-    @drug_number = drug_number
+    @prescription = prescription
   end
 
   def pa_status(status)
@@ -24,11 +24,11 @@ class PaHandler
 
   private
   def npi_found?
-    User.where(npi: @npi).any?
+    @user.present?
   end
 
   def found_prescription?
-    npi_found? && Prescription.where(drug_number: @drug_number).any?
+    npi_found? && @prescription.present?
   end
 
 end

@@ -2,7 +2,7 @@ class CmmCallbacksController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:create]
 
   before_action :set_callback, only: [:show]
-  before_action :set_user, :set_pa, only: [:create]
+  before_action :set_user, :set_pa, :set_prescription, only: [:create]
 
 
   # GET /callbacks
@@ -30,7 +30,7 @@ class CmmCallbacksController < ApplicationController
   # changes. In that case, we need to update the PA record in our system with the
   # new values in the callback.
   def create
-    handler = PaHandler.new(pa: @pa, npi: request_params['prescriber']['npi'], drug_number: request_params['prescription']['drug_id'])
+    handler = PaHandler.new(pa: @pa, user: @user, prescription: @prescription)
 
     case handler.call.status
     when :npi_not_found
@@ -85,6 +85,10 @@ class CmmCallbacksController < ApplicationController
 
   def set_pa
     @pa ||= PaRequest.find_or_initialize_by(cmm_id: request_params['id'])
+  end
+
+  def set_prescription
+    @prescription ||= Prescription.find_by(drug_number: request_params['prescription']['drug_id'])
   end
 
   def delete_or_update_pa!

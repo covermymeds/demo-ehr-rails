@@ -187,7 +187,7 @@ describe 'eHR Example App' do
   describe 'adding a prescription' do
     before do
       visit doctor_login
-      click_link('Patients')
+      visit '/patients'
       page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
       click_link('Add Prescription')
     end

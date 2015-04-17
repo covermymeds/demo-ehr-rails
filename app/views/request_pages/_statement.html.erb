@@ -8,7 +8,7 @@
     name="<%= massage(question[:question_id], form_name) %>"
     <%= render_coded_reference(question[:coded_reference]) %>
   >
-  <%= (question[:content_html] || "").html_safe %>
+  <%= (question[:content_html]).html_safe if question[:content_html] %>
   </div>
 </div>
 <%  else  %>
@@ -18,7 +18,7 @@
     name="<%= massage(question[:question_id], form_name) %>"
   <%= render_coded_reference(question[:coded_reference]) %>
   >
-  <%= (question[:content_html] || "").html_safe %>
+  <%= (question[:content_html]).html_safe if question[:content_html] %>
   </div>
 </div>
 <% end %>

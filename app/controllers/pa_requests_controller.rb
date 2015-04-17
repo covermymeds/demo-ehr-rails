@@ -16,12 +16,12 @@ class PaRequestsController < ApplicationController
     if @_use_custom_ui
       respond_to do |format|
         format.html { redirect_to pa_request_request_pages_path(@pa_request) }
-        format.json { render :show, status: :ok, location: @pa_request}
+        format.json { render :show, status: :ok, location: @pa_request }
       end
     else
       respond_to do |format|
         format.html { redirect_to cmm_request_link_for(@pa_request) }
-        format.json { render :show, status: :ok, location: @pa_request}
+        format.json { render :show, status: :ok, location: @pa_request }
       end
     end
   end
@@ -122,11 +122,18 @@ class PaRequestsController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_request
-    @patient = Patient.find(params[:patient_id])
-    @prescription = @patient.prescriptions.find(params[:prescription_id])
-    @pa_request = @prescription.pa_requests.find(params[:id])
+    if params[:patient_id]
+      # sometimes we send the patient & prescription information
+      @patient = Patient.find(params[:patient_id])
+      @prescription = @patient.prescriptions.find(params[:prescription_id])
+      @pa_request = @prescription.pa_requests.find(params[:id])
+    else
+      # sometimes we just show the request from ID alone
+      @pa_request = PaRequest.find(params[:id])
+      @prescription = @pa_request.prescription
+      @patient = @pa_request.prescription.patient
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

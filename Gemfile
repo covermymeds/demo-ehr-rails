@@ -53,12 +53,14 @@ gem 'spring',        group: :development
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'junklet'
 end
 
 group :development, :test do
   gem 'capybara'
   gem 'capybara-webkit'
   gem 'database_cleaner', :git => 'git://github.com/bmabey/database_cleaner.git'
+  gem 'dotenv-rails'
   gem 'guard'
   gem 'guard-rspec'
   gem 'launchy'
@@ -67,6 +69,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'rspec-rails', '~> 3.0.0'
   gem 'selenium-webdriver'
+  gem 'pry-rails'
 end
 
 # Use ActiveModel has_secure_password

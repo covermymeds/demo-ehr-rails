@@ -1,6 +1,6 @@
 <div>
   <span> <%= question[:question_text] %> </span>
   <input type="hidden" name="<%= massage(question[:question_id], form_name) %>"
-    value="<%= data[question[:question_id]] %>"
+    value="<%= data[question[:question_id].to_sym] %>"
    />
 </div>

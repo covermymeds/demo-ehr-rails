@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   resources :users
 
+  get '/login/:role_description' => 'users#login', as: :demo_login, constraints: { role_description: /(doctor|staff)/ }
   get '/login/:id' => 'users#login', as: :login
 
   get '/logout' => 'users#logout'
@@ -20,19 +21,19 @@ Rails.application.routes.draw do
     to: 'request_pages#do_action',
     as: :pa_request_request_pages_action
 
-  post '/toggle_ui', to: 'home#toggle_custom_ui'
+  get '/toggle_ui', to: 'home#toggle_custom_ui'
 
   get '/dashboard' => 'pa_requests#index'
 
   get '/help' => 'home#help'
 
-  get '/api' => redirect("https://api.covermymeds.com/#overview"),
+  get '/api' => redirect("https://developers.covermymeds.com/#overview"),
     as: :api_documentation
 
   get '/code' => redirect("https://github.com/covermymeds/demo-ehr-rails"),
     as: :source_code
 
-  post 'callbacks/handle'
+  resources :cmm_callbacks, only: [:create, :index, :show]
 
   get '/home' => 'home#home', as: :home
   put '/home/change_api_env' => 'home#change_api_env'

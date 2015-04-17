@@ -5,7 +5,7 @@
   <input type="text"
   class="form-control <%= require_if(question[:flag]) %>"
   name="<%= massage(question[:question_id], form_name) %>"
-  value="<%= data[question[:question_id]] %>"
+  value="<%= data[question[:question_id].to_sym] %>"
   <% question[:validations].each do |valid| %>
     <%= render_validation(valid, @validations) %>
   <% end %>

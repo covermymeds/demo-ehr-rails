@@ -1,10 +1,13 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update]
+  before_action :set_roles, only: [:new, :edit, :update]
 
   def login
-    session["user_id"] = params["id"]
-    @current_user ||= User.find_by_id(session["user_id"])
-    redirect_to home_url
+    if params[:id]
+      login_with_id!
+    elsif params[:role_description]
+      login_with_role!
+    end
   end
 
   def logout
@@ -37,8 +40,39 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
     end
 
+    def set_roles
+      @roles = Role.all
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:first_name, :last_name, :npi, :role_id)
+    end
+
+    def login_with_id!
+      user = User.find_by_id(params[:id])
+      if user && login_user!(user)
+        flash_message("Logged in as #{user.display_name}")
+        redirect_to home_url
+      else
+        flash_message("Login failed.  User not found")
+        redirect_to home_url
+      end
+    end
+
+    def login_with_role!
+      user = User.joins(:role).where("roles.description = ?", params[:role_description]).first
+      if user && login_user!(user)
+        flash_message("Logged in as #{user.display_name}")
+        redirect_to home_url
+      else
+        flash_message("Demo account not found.  Try resetting the database.")
+        redirect_to home_url
+      end
+    end
+
+    def login_user!(user)
+      session["user_id"] = user.id
+      @current_user ||= user
     end
 end

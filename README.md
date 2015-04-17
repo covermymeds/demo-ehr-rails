@@ -32,6 +32,8 @@ Run `bundle install` if you have not installed the gem dependencies. The applica
 
 You'll need to obtain your own unique API keys, which must be stored in environment variables that the server can access. You can obtain your API keys at [api.covermymeds.com/your-account](https://api.covermymeds.com/your-account). You'll have to set the `api_id` as `CMM_API_KEY` and `api_secret` as `CMM_API_SECRET`. Additionally, in order to use the [integration API environment](https://master-api.integration.covermymeds.com) you'll have to set your integration `api_id` as `INTEGRATION_CMM_API_KEY` and your integration `api_secret` as `INTEGRATION_CMM_API_SECRET`.
 
+For convenience, you may optionally set these enviroment variables by copying the file `.env.sample` to `.env` and entering your appropriate key and secret.  This is for `development` and `test` environments only and does not affect production.
+
 Once your API keys are set in the environment, you can run `bundle exec rspec` to run through the tests.
 
 To start the server, run `bundle exec rails server`.

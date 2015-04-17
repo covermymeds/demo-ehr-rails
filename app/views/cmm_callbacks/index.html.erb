@@ -1,0 +1,26 @@
+<div id="callbacks-list" class="template">
+<h1>Listing callbacks</h1>
+
+<div class='row'>
+  <div class='col-md-3'>
+    <strong>Created</strong>
+  </div>
+  <div class='col-md-9'>
+    <strong>Content</strong>
+  </div>
+</div>
+<hr/>
+<% @callbacks.each do |callback| %>
+  <div class='row'>
+    <div class='col-md-3'>
+      <%= link_to callback.created_at, callback %>
+    </div>
+    <div class='col-md-9'>
+      <code>
+        <%= json_pp(callback.content) %>
+      </code>
+    </div>
+  </div>
+<% end %>
+
+</div>

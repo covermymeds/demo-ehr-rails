@@ -7,10 +7,10 @@ class DbResetter
       Prescription.destroy_all
       Pharmacy.destroy_all
       User.destroy_all
+      CmmCallback.destroy_all
 
-
-      Role.create!(description: Role::DOCTOR)
-      Role.create!(description: Role::STAFF)
+      Role.create! description: Role::DOCTOR
+      Role.create! description: Role::STAFF
 
       patients = [
         {first_name:'Autopick', last_name:'Smith', gender:'f', date_of_birth:'10/01/1971',
@@ -49,7 +49,7 @@ class DbResetter
       ]
 
       patients.each do |patient|
-        Patient.create(patient)
+        Patient.create! patient
       end
 
       pharmacies = [
@@ -70,11 +70,11 @@ class DbResetter
       ]
 
       pharmacies.each do |pharmacy|
-        Pharmacy.create(pharmacy)
+        Pharmacy.create! pharmacy
       end
 
-      User.new(first_name: 'Alexander', last_name: 'Fleming', role: Role.doctor, npi: '1234567890').tap {|u| u[:id] = 1}.save!
-      User.new(first_name: 'Staff', role: Role.staff, npi: nil).tap {|u| u[:id] = 2}.save!
+      User.create!(first_name: 'Alexander', last_name: 'Fleming', role: Role.doctor, npi: '1234567890')
+      User.create!(first_name: 'Staff', role: Role.staff, npi: nil)
 
       drugs = [
         {drug_number: "175366", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
@@ -89,7 +89,6 @@ class DbResetter
       Patient.first(drugs.count).zip(drugs).each do |patient, drug|
         create_pa(patient.prescriptions.new(drug.merge(date_prescribed: rand(1.year).seconds.ago)), use_integration)
       end
-
     end
   end
 

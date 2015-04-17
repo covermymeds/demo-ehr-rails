@@ -35,26 +35,26 @@
               <% if current_user %>
               <li><%= link_to "Account Settings", edit_user_path(current_user) %></li>
               <% end %>
-              <li><%= link_to "Sign in as Dr. Alexander Fleming", login_path(User::FLEMING) %></li>
-              <li><%= link_to "Sign in as Staff", login_path(User::STAFF) %></li>
+              <li><%= link_to "Sign in as #{@demo_doctor.display_name}", demo_login_path(Role::DOCTOR) %></li>
+              <li><%= link_to "Sign in as Staff", login_path(Role::STAFF) %></li>
               <% if current_user %>
               <li><%= link_to "Sign out", logout_path %></li>
               <% end %>
             </ul>
-          </li>
-          <li>
-            <%= form_tag('/toggle_ui', :method=>'post', :class=>'navbar-form navbar-left', :id=>'custom_ui_form') do |f| %>
-              <%= hidden_field_tag "return", request.original_url %>
-              <%= select_tag "change_view", options_for_select(['Custom UI', 'CMM UI'], (@_use_custom_ui ? 'Custom UI' : 'CMM UI')), :class=>'form-control' %>
-            <% end %>
           </li>
           <li class='dropdown'>
             <a href='#' class='dropdown-toggle' data-toggle='dropdown'>Resources<b class='caret'></b></a>
             <ul class='dropdown-menu'>
               <li><%= link_to "API Documentation", api_documentation_path %></li>
               <li><%= link_to "Source Code", source_code_path %></li>
+              <% if @_use_custom_ui %>
+              <li><%= link_to "Use CoverMyMeds Request Page", toggle_ui_path(return: request.original_url) %></li>
+              <% else %>
+              <li><%= link_to "Use Request-Pages", toggle_ui_path(return: request.original_url) %></li>
+              <% end %>
               <li><%= link_to "Switch to #{session[:use_integration] ? "production API (currently using integration)" : "integration API (currently using production)"}", home_change_api_env_path, method: :put, id: 'change-api-env' %>
               <li><%= link_to "Reset Database", reset_db_path, method: :put, data: { confirm: "Are you sure? \nThis will remove any newly created data. \nThis cannot be undone." } %></li>
+              <li><%= link_to "Callbacks", cmm_callbacks_path %></li>
             </ul>
           </li>
           <li>

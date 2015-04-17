@@ -6,32 +6,9 @@ module ApplicationHelper
   end
 
   def flash_class(key)
-    case key
-    when :notice then
-      'alert alert-info'
-    when :success then
-      'alert alert-success'
-    when :error then
-      'alert alert-danger'
-    when :alert then
-      'alert alert-danger'
-    end
-  end
-
-  def ehr_error_messages(flash)
-    html = "<div class='row'>"
-    flash.each do |key, value|
-      Array(value).each do |message|
-        html += <<-HTML
-        <div class="#{flash_class(key.parameterize.underscore.to_sym)}" id="flash_#{key}">
-          <button type='button' class='close' data-dismiss='alert'>&times;</button>
-          #{message.strip}
-        </div>
-        HTML
-      end
-    end
-    html += "</div>"
-    html.html_safe
+    return 'alert alert-info' if key == 'notice'
+    return 'alert alert-success' if key == 'success'
+    return 'alert alert-danger' if key == 'error' || key == 'alert'
   end
 
   def cmm_request_link_for(request)
@@ -58,5 +35,8 @@ module ApplicationHelper
     end
   end
 
+  def json_pp(json)
+    JSON.pretty_generate(JSON.parse(json))
+  end
 
 end

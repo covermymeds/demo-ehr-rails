@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'eHR Example App' do
   fixtures :all
-  let(:doctor_login) { "/login/#{users(:doctor).id}" }
-  let(:staff_login) { "/login/#{users(:staff).id}" }
+  let(:doctor_login) { "/login/doctor" }
+  let(:staff_login) { "/login/staff" }
 
   it 'should allow accessing the site root' do
     visit('/')
@@ -15,10 +15,6 @@ describe 'eHR Example App' do
 
     before(:each) do
       visit '/logout'
-    end
-
-    it 'defaults to the custom UI' do
-      expect( find(:css, 'select#change_view').value ).to eq('Custom UI')
     end
 
     it 'should navigate to the patients view', js: true do
@@ -66,20 +62,27 @@ describe 'eHR Example App' do
     context 'Resources' do
       before { click_link ('Resources') }
 
+      it 'defaults to the custom UI' do
+        expect(find_link('Use CoverMyMeds Request Page')[:href]).to match(/toggle_ui/)
+      end
+
       it 'should navigate to the api documentation' do
-        click_link('API Documentation')
-        expect(page).to have_title('API Reference')
+        expect(find_link('API Documentation')[:href]).to match("/api")
       end
 
       it 'should display the source code when asked' do
-        click_link('Source Code')
-        expect(page).to have_content('Reference implementation of an EHR integration with CoverMyMeds, written in Ruby on Rails.')
+        expect(find_link('Source Code')[:href]).to match("/code")
       end
 
       it 'should reset the database when asked', js: true do
         click_link('Reset Database')
         Capybara.page.execute_script  'window.confirm = function () { return true }'
         expect(page).to have_content('Database has been reset')
+      end
+
+      it 'should navigate to the callbacks view' do
+        click_link('Callbacks')
+        expect(page).to have_content('Listing callbacks')
       end
     end
 

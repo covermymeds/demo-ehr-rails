@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :set_use_custom_ui
   before_action :set_demo_users
+  before_action :set_use_integration
   include ApplicationHelper
 
   def salutation
@@ -19,6 +20,10 @@ class ApplicationController < ActionController::Base
   def set_use_custom_ui
     session[:use_custom_ui] = true unless session.has_key? :use_custom_ui
     @_use_custom_ui = session[:use_custom_ui]
+  end
+
+  def set_use_integration
+    session[:use_integration] ||= ENV['STAGING'].present?
   end
 
   def set_demo_users

@@ -221,6 +221,7 @@ describe 'eHR Example App' do
       context 'drug is a banana' do
         let (:search_term) { 'banana' }
         it 'requires a PA', js: true do
+          sleep 1
           expect(find('#start_pa')).to be_checked
         end
 

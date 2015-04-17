@@ -192,8 +192,6 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rest_client (1.8.3)
-      netrc (~> 0.7.7)
     rspec (3.0.0)
       rspec-core (~> 3.0.0)
       rspec-expectations (~> 3.0.0)
@@ -302,7 +300,7 @@ DEPENDENCIES
   pry-rails
   rails (= 4.1.1)
   rails_12factor
-  rest_client
+  rest-client
   rspec-rails (~> 3.0.0)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)

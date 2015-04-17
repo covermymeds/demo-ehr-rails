@@ -95,14 +95,6 @@ describe 'eHR Example App' do
       click_link('dr_login')
       expect(page).to have_content('Patients')
     end
-
-    it 'should change api environments from the link' do
-      click_link('Resources')
-      expect(page).to have_content('currently using production')
-      click_link('change-api-env')
-      click_link('Resources')
-      expect(page).to have_content('currently using integration')
-    end
   end
 
   # Test everything a user can do on the patients index

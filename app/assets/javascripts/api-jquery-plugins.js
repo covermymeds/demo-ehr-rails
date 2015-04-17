@@ -414,7 +414,7 @@ return __p
             return this.each(function () {
                 var defaultUrl;
 
-                defaultUrl = 'https://' + (options.debug ? 'staging.' : '') + 'api.covermymeds.com/forms?v=' + options.version;
+                defaultUrl = options.apiUrl + '/forms?v=' + options.version;
 
                 // Initialize select2
                 $(this).select2({
@@ -496,7 +496,7 @@ return __p
             return this.each(function () {
                 var defaultUrl;
 
-                defaultUrl = 'https://' + (options.debug ? 'staging.' : '') + 'api.covermymeds.com/drugs?v=' + options.version;
+                defaultUrl = options.apiUrl + '/drugs?v=' + options.version;
 
                 // Initialize select2
                 $(this).select2({
@@ -567,7 +567,7 @@ return __p
                     button,
                     active;
 
-                defaultUrl = 'https://' + (options.debug ? 'staging.' : '') + 'api.covermymeds.com/requests?v=' + options.version;
+                defaultUrl = options.apiUrl + '/requests?v=' + options.version;
 
                 button = $(this);
                 active = false;
@@ -727,7 +727,7 @@ return __p
 
         this.elem = options.elem;   // jQuery object to draw into
         this.url = options.url;
-        this.defaultUrl = 'https://' + (options.debug ? 'staging.' : '') + 'api.covermymeds.com/requests/search?v=' + options.version;
+        this.defaultUrl = options.apiUrl + '/requests/search?v=' + options.version;
 
         this.tokenIds = options.tokenIds || [];
         this.apiId = options.apiId || '';
@@ -1033,9 +1033,9 @@ window.RequestPages = function(options) {
   this.tokenId = options.tokenId || '';
   this.requestId = options.requestId || '';
 
-  this.resourceUrl = options.url || 'https://' + (options.debug ? 'staging.' : '') + 'api.covermymeds.com/request-pages/' + this.requestId + 
+  this.resourceUrl = options.url || options.apiUrl + '/request-pages/' + this.requestId +
     '?v=' + this.version + '&api_id=' + this.apiId + '&token_id=' + this.tokenId;
-  
+
   this._getSuccessCallback = _.bind(function(data) {
     this.form = new RequestPages.Form(data['request_page']['forms'], data['request_page']['data'], data['request_page']['actions']);
     $(this.container).html(this.form.render());

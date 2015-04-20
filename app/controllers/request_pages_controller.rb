@@ -8,20 +8,22 @@ class RequestPagesController < ApplicationController
   def show
     # get the request-page for our current request
     @request_page_json = RequestConfigurator.api_client(session[:use_integration]).get_request_page @pa_request.cmm_id, @pa_request.cmm_token
+    @request_page = @request_page_json.request_page
+    replace_actions @request_page, @pa_request
 
-    if is_error_form? @request_page_json
-      # show the error page
-      @request_page = @request_page_json[:errors]
-      render :error
-    else
-      @request_page = @request_page_json.request_page
-      replace_actions @request_page, @pa_request
+    @forms = @request_page[:forms]
+    @data = @request_page[:data]
+    @validations = @request_page[:validations]
 
-      @forms = @request_page[:forms]
-      @data = @request_page[:data]
-      @validations = @request_page[:validations]
-    end
+  rescue RestClient::Exception => e
+    flash_message("Error retrieving the request page", :error)
 
+    # the body of our response is in request_pages format
+    @request_page_json = JSON.parse(e.response, symbolize_names: true)
+
+    # we got an error back
+    @request_page = @request_page_json[:errors]
+    render :error
   end
 
   def do_action
@@ -72,16 +74,16 @@ class RequestPagesController < ApplicationController
         render :show
       end
 
-    else
-      flash_message("Error retrieving the request page", :error)
-
-      # the body of our response is in request_pages format
-      @request_page_json = JSON.parse(response.body, symbolize_names: true)
-
-      # we got an error back
-      @request_page = @request_page_json[:errors]
-      render :error
     end
+  rescue RestClient::Exception => e
+    flash_message("Error retrieving the request page", :error)
+
+    # the body of our response is in request_pages format
+    @request_page_json = JSON.parse(e.response, symbolize_names: true)
+
+    # we got an error back
+    @request_page = @request_page_json[:errors]
+    render :error
 
   end
 
@@ -93,10 +95,6 @@ class RequestPagesController < ApplicationController
 
   def is_pa_request_form?(request_page)
     request_page[:forms].has_key?(:pa_request)
-  end
-
-  def is_error_form?(request_page)
-    request_page.has_key?(:errors)
   end
 
   # proxy actions through this controller, keeping tokens in the server

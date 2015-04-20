@@ -42,10 +42,6 @@ $(function() {
         },
         eachInvalidField : function() {
           $(this).closest('div').removeClass('has-success').addClass('has-error');
-          var attr = $(this).attr('required');
-          if (typeof attr !== typeof undefined && attr !== false) {
-            $(this).closest('div').addClass('data-required');
-          }
         }
       })
 

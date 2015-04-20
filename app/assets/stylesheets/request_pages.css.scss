@@ -10,14 +10,19 @@
   }
 }
 
-input.required{
-  border-radius: 5px;
-  border: 2px solid green;
+div.required:before{
+  content:"* Required";
+  color:red;
 }
 
 div.has-error:before{
   content:"* Validation Error";
   color:red
+}
+
+div.has-success:before {
+  content:"* Matches Validation";
+  color:green;
 }
 
 .signature-pad {

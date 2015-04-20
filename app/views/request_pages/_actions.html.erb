@@ -1,5 +1,6 @@
-<div>
+<div id='actions'>
   <% actions.each do |action| %>
+    <% if action[:display] == "DEFAULT" %>
     <div class="action">
     <button type='submit' 
       formmethod='POST'
@@ -10,5 +11,6 @@
       <%= action[:title] %>
     </button>
     </div>
+    <% end %>
   <% end %>
 </div>

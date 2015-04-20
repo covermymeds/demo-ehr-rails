@@ -35,7 +35,8 @@ $(function() {
   })
 
   $(formSelector).validate({
-        onKeyup : true,
+        onChange: true, // validate on change
+        onBlur: true, // validate on blur
         eachValidField : function() {
           $(this).closest('div').removeClass('has-error').addClass('has-success');
         },

@@ -5,6 +5,7 @@
   <textarea type="text"
   class="form-control <%= require_if(question[:flag]) %>"
   name="<%= massage(question[:question_id], form_name) %>"
+  id='<%= question[:question_id] %>'
   data-validation="<%= question[:validations][0] %>"
   data-default-next-id="<%= massage(question[:default_next_question_id], form_name) %>"
   <%= require_if(question[:flag]) %>

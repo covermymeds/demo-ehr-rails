@@ -10,9 +10,9 @@
   }
 }
 
-div.required:before{
-   content:"* Required" ;
-   color:red   
+input.required{
+  border-radius: 5px;
+  border: 2px solid green;
 }
 
 div.has-error:before{

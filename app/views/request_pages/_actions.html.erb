@@ -1,6 +1,6 @@
 <div id='actions'>
   <% actions.each do |action| %>
-    <% if action[:display] == "DEFAULT" %>
+    <% if action[:display].eql? "DEFAULT" %>
     <div class="action">
     <button type='submit' 
       formmethod='POST'

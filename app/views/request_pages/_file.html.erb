@@ -4,7 +4,7 @@
 <div class="col-md-9 <%= require_if(question[:flag]) %> ">
   <input type="file"
   class="form-control <%= require_if(question[:flag]) %>"
-  id="<%= question[:question_id] %>"
+  id='<%= question[:question_id] %>'
   name="<%= massage(question[:question_id], form_name) %>"
   <% question[:validations].each do |valid| %>
     <%= render_validation(valid, @validations) %>

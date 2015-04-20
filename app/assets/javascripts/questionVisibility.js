@@ -19,6 +19,7 @@ $.widget("CoverMyMeds.questionVisibility", {
     this._visibilityTree($changed)
   },
 
+  // walks the tree of question-ids and hides all that should be hidden.
   _visibilityTree: function($startAt){
     var widget       = this
     var $keepVisible = widget._answeredQuestions($startAt).add($startAt)

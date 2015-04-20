@@ -22,22 +22,23 @@ $(function() {
     })
   }
 
-  // initialize question visibility
+  // show all appropriate questions initially
   var formSelector = "div#form-block form"
   $(formSelector).questionVisibility({
     last: $(formSelector).attr('id')+"[END]"
   })
 
-  // on change hide/show questions
-  var decision = ".question select, .question input[type='checkbox']"
-  $(decision).on("change", function(){
+  // hide/show questions when selects and checkboxes are answered
+  $(".question select, .question input[type='checkbox']").on("change", function(){
     $(formSelector).questionVisibility("changed", $(this))
   })
 
   $(formSelector).validate({
-        onKeyup : true,
+        onChange: true, // validate on change
+        onBlur: true, // validate on blur
         eachValidField : function() {
           $(this).closest('div').removeClass('has-error').addClass('has-success');
+          $(this).closest('div').removeClass('data-required');
         },
         eachInvalidField : function() {
           $(this).closest('div').removeClass('has-success').addClass('has-error');

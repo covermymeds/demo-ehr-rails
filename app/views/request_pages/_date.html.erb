@@ -4,6 +4,7 @@
 <div class="col-md-9 <%= require_if(question[:flag]) %> ">
   <input type="text"
   class="form-control datepicker <%= require_if(question[:flag]) %>"
+  id='<%= question[:question_id] %>'
   name="<%= massage(question[:question_id], form_name) %>"
   value="<%= data[question[:question_id].to_sym] %>"
   <% question[:validations].each do |valid| %>

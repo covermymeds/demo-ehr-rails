@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150326200916) do
+ActiveRecord::Schema.define(version: 20150422141408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(version: 20150326200916) do
   end
 
   add_index "cmm_callbacks", ["pa_request_id"], name: "index_cmm_callbacks_on_pa_request_id", using: :btree
+
+  create_table "credentials", force: true do |t|
+    t.integer "user_id"
+    t.string  "fax"
+    t.boolean "registered_with_cmm", default: false
+  end
+
+  add_index "credentials", ["user_id"], name: "index_credentials_on_user_id", using: :btree
 
   create_table "pa_requests", force: true do |t|
     t.integer  "prescription_id"
@@ -105,6 +113,14 @@ ActiveRecord::Schema.define(version: 20150326200916) do
     t.datetime "updated_at"
     t.string   "last_name"
     t.integer  "role_id"
+    t.string   "email"
+    t.string   "practice_name"
+    t.string   "practice_phone_number"
+    t.string   "practice_street_1"
+    t.string   "practice_street_2"
+    t.string   "practice_city"
+    t.string   "practice_state"
+    t.string   "practice_zip"
   end
 
   add_index "users", ["npi"], name: "index_users_on_npi", unique: true, using: :btree

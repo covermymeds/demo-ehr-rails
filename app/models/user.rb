@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
 
   belongs_to :role
   has_many :pa_requests
+  has_many :credentials
 
   def display_name
     "#{salutation}#{first_name} #{last_name}"

@@ -13,8 +13,8 @@
  *= require select2
  *= require select2-bootstrap
  *= require jquery-ui
- *= require_tree .
  *= require_self
+ *= require_tree .
  */
 
 @import "bootstrap";

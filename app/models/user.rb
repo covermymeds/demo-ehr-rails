@@ -17,11 +17,29 @@ class User < ActiveRecord::Base
   end
 
   def salutation
-    (role == Role.doctor ? 'Dr. ' : '') 
+    (role == Role.doctor ? 'Dr. ' : '')
   end
 
   def prescriber?
     role == Role.doctor
+  end
+
+  def contact_hint
+    {
+      email: email,
+      full_name: display_name,
+      practice: {
+        name: practice_name,
+        phone_number: practice_phone_number,
+        address: {
+          street_1: practice_street_1,
+          street_2: practice_street_2,
+          city: practice_city,
+          state: practice_state,
+          zip: practice_zip
+        }
+      }
+    }
   end
 
   private

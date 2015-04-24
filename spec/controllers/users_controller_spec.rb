@@ -53,7 +53,7 @@ describe UsersController, type: :controller do
     describe 'with valid params' do
       context 'when not registering with CMM' do
         let(:new_attributes) do
-          { first_name: 'Dr. Robert Liston', npi: '4242424242', fax: '18001234567', registered_with_cmm: false  }
+          { first_name: 'Dr. Robert Liston', npi: '4242424242' }
         end
         let!(:user) { User.create! valid_attributes }
 
@@ -72,33 +72,6 @@ describe UsersController, type: :controller do
           put :update, { id: user.to_param, user: valid_attributes }, valid_session
           expect(response).to redirect_to(root_path)
         end
-
-        it 'should not call the credentials api' do
-          expect_any_instance_of(CoverMyApi::Client).to_not receive(:create_credential)
-          put :update, { id: user.to_param, user: valid_attributes }, valid_session
-        end
-      end
-      context 'when registering with CMM' do
-        let(:new_attributes) do
-          { first_name: 'Dr. Robert Liston', npi: '4242424242', fax: '18001234567', registered_with_cmm: '1'  }
-        end
-        let!(:user) { User.create! valid_attributes }
-
-        it 'calls the credentials api' do
-          expect_any_instance_of(CoverMyApi::Client).to receive(:create_credential).with('4242424242', '18001234567')
-          put :update, { id: user.to_param, user: new_attributes  }, valid_session
-        end
-
-        context 'when the user has already registered their NPI' do
-          let(:valid_attributes) do
-            { first_name: 'Test', last_name: 'McTester', npi: '3141592654', role_id: 1, registered_with_cmm: true }
-          end
-
-          it 'should not call the credentials API' do
-            expect_any_instance_of(CoverMyApi::Client).to_not receive(:create_credential)
-            put :update, { id: user.to_param, user: valid_attributes }, valid_session
-          end
-        end
       end
     end
 
@@ -114,16 +87,6 @@ describe UsersController, type: :controller do
         put :update, { id: user.to_param, user: invalid_attributes }, valid_session
         expect(response).to render_template('edit')
       end
-    end
-  end
-
-  describe 'POST cancel_registration' do
-    let!(:user) { User.create! valid_attributes }
-
-    # pending until delete_credential can be implemented in covermymeds_api
-    it 'should call the credentials API' do
-      expect_any_instance_of(CoverMyApi::Client).to receive(:delete_credential).with(valid_attributes[:npi])
-      post :cancel_registration, id: user.id
     end
   end
 end

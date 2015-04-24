@@ -24,9 +24,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      register = !@user.registered_with_cmm? && params[:user][:registered_with_cmm] == '1'
       if @user.update(user_params)
-        create_registration! if register
         format.html { redirect_to root_url, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
@@ -56,7 +54,9 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :npi, :fax, :registered_with_cmm, :role_id)
+    params.require(:user).permit(:first_name, :last_name, :npi, :role_id, :email, :practice_name,
+                                 :practice_phone_number, :practice_street_1, :practice_street_2,
+                                 :practice_city, :practice_state, :practice_zip)
   end
 
   def login_with_id!

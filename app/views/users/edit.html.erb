@@ -1,3 +1,5 @@
-<h1>Editing user</h1>
+<h2>Edit your account settings</h2>
 
-<%= render 'form' %>
+<%= render 'form', user: @user %>
+
+<%= link_to 'Register a new Fax Number with CoverMyMeds', new_user_credential_path(@user) %>

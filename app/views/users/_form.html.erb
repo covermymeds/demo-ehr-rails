@@ -1,49 +1,76 @@
-<%= form_for(@user, html: { class: 'form-horizontal' }) do |f| %>
+<%= form_for(user, html: { class: 'form-horizontal' }) do |f| %>
   <%= render 'shared/errors', object: f.object %>
-  <div class="form-group">
-    <%= f.label :first_name, class: 'control-label col-sm-2' %>
-    <div class="col-sm-5">
-    <%= f.text_field :first_name, class: 'form-control' %>
+
+  <fieldset>
+    <div class="row">
+      <legend class="col-md-offset-2 col-md-5">Personal Information</legend>
     </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :last_name, class: 'control-label col-sm-2' %>
-    <div class="col-sm-5">
-    <%= f.text_field :last_name, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :npi, class: 'control-label col-sm-2' %>
-    <div class="col-sm-5">
-    <%= f.text_field :npi, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :fax, class: 'control-label col-sm-2' %>
-    <div class="col-sm-5">
-    <%= f.text_field :fax, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :registered_with_cmm, "Register with CMM", class: 'control-label col-sm-2' %>
-    <div class="col-sm-5">
-      <div class="checkbox">
-        <label>
-          <%= f.check_box :registered_with_cmm, title: 'Check to register NPI and Fax with CoverMyMeds', :disabled => @user.registered_with_cmm? %>
-        </label>
-        <%= link_to "Cancel Registration", cancel_registration_user_path(@user), method: :post, class: 'btn btn-info btn-sm' if @user.registered_with_cmm? %>
+    <div class="form-group">
+      <%= f.label :first_name, class: 'control-label col-md-2' %>
+      <div class="col-md-5">
+        <%= f.text_field :first_name, class: 'form-control' %>
       </div>
     </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :role, class: 'control-label col-sm-2' %>
-    <div class="col-sm-5">
-    <%= f.select :role_id, options_from_collection_for_select(@roles, 'id', 'description', @user.role_id), { include_blank: true }, { class: 'form-control' } %>
+    <div class="form-group">
+      <%= f.label :last_name, class: 'control-label col-md-2' %>
+      <div class="col-md-5">
+        <%= f.text_field :last_name, class: 'form-control' %>
+      </div>
     </div>
-  </div>
+    <div class="form-group">
+      <%= f.label :email, class: 'control-label col-md-2' %>
+      <div class="col-md-5">
+        <%= f.text_field :email, class: 'form-control' %>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :npi, class: 'control-label col-md-2' %>
+      <div class="col-md-5">
+        <%= f.text_field :npi, class: 'form-control' %>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :role, class: 'control-label col-md-2' %>
+      <div class="col-md-5">
+        <%= f.select :role_id, options_from_collection_for_select(@roles, 'id', 'description', @user.role_id), { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <div class="row">
+      <legend class="col-md-offset-2 col-md-5">Practice Details</legend>
+    </div>
+    <%- [:practice_name, :practice_phone_number, :practice_street_1, :practice_street_2, :practice_city, :practice_state, :practice_zip].each do |field| %>
+      <div class="form-group">
+      <%= f.label field, class: 'control-label col-md-2' %>
+      <div class="col-md-5">
+        <%= f.text_field field, class: 'form-control' %>
+      </div>
+    </div>
+  <fieldset>
+  <% end %>
+
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-5">
+    <div class="col-md-offset-2 col-md-5">
       <%= f.submit class: 'btn btn-primary' %> or <%= link_to 'Back', :back %>
     </div>
   </div>
 <% end %>
+
+<h2>Fax Registration</h2>
+
+<table class="table">
+  <thead>
+    <th>Fax Number</th>
+    <th>Actions</th>
+  </thead>
+  <tbody>
+  <%- user.credentials.each do |credential| %>
+    <tr>
+      <td><%= credential.fax %></td>
+      <td><%= link_to 'Remove', user_credential_path(@user, credential), method: :delete, class: 'btn btn-default' %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

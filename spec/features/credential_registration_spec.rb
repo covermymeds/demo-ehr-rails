@@ -10,6 +10,9 @@ describe 'Credential Management' do
 
   before do
     login_user(user)
+    response = JSON.parse(File.read('spec/fixtures/credentials_post_response.json'))
+    stub_request(:post, /https:\/\/(\S*):(\S*)@api.covermymeds.com\/prescribers\/credentials\/\?v=1/ )
+      .to_return(body: response.to_json)
   end
 
   after do
@@ -23,7 +26,6 @@ describe 'Credential Management' do
 
       click_link('Register a new Fax Number with CoverMyMeds')
       expect(page).to have_content('Register a new Fax Number with CMM')
-
       fill_in('Fax', with: '1-800-555-5555')
       click_button 'Create Credential'
       expect(page).to have_content('1-800-555-5555')

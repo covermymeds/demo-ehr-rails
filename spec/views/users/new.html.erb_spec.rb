@@ -8,8 +8,8 @@ RSpec.describe "users/new", type: :view do
   let!(:user)  { User.create!(first_name: first, last_name: last, role: roles.first, npi: npi ) }
 
   before(:each) do
-    @user = assign(:user, User.new)
-    @roles = assign(:roles, roles)
+    assign(:user, User.new)
+    assign(:roles, roles)
   end
 
   it "renders new user form" do

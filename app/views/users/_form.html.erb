@@ -50,8 +50,8 @@
             <%= f.text_field field, class: 'form-control' %>
           </div>
         </div>
-      <fieldset>
-      <% end %>
+        <% end %>
+      </fieldset>
 
       <div class="form-group">
         <div class="col-md-offset-2 col-md-5">
@@ -59,24 +59,26 @@
         </div>
       </div>
     <% end %>
-  </div> <!-- .col-md-8 -->
-  <div class="col-md-offset-1 col-md-5 well">
-    <h2>Credentials</h2>
+  </div> <!-- .col-md-6 -->
+  <%- unless user.new_record? %>
+    <div class="col-md-offset-1 col-md-5 well">
+      <h2>Credentials</h2>
 
-    <table class="table">
-      <thead>
-        <th>Fax Number</th>
-        <th>Actions</th>
-      </thead>
-      <tbody>
-      <%- user.credentials.each do |credential| %>
-        <tr>
-          <td><%= credential.fax %></td>
-          <td><%= link_to 'Remove', user_credential_path(@user, credential), method: :delete, class: 'btn btn-default' %></td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-    <%= link_to 'Register a new Fax Number with CoverMyMeds', new_user_credential_path(@user) %>
-  </div> <!-- .col-md-4 -->
+      <table class="table">
+        <thead>
+          <th>Fax Number</th>
+          <th>Actions</th>
+        </thead>
+        <tbody>
+        <%- user.credentials.each do |credential| %>
+          <tr>
+            <td><%= credential.fax %></td>
+            <td><%= link_to 'Remove', user_credential_path(user, credential), method: :delete, class: 'btn btn-default' %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <%= link_to 'Register a new Fax Number with CoverMyMeds', new_user_credential_path(user) %>
+    </div> <!-- .col-md-5 -->
+  <% end %>
 </div> <!-- .row -->

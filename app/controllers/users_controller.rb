@@ -20,6 +20,10 @@ class UsersController < ApplicationController
   def edit
   end
 
+  def new
+    @user = User.new
+  end
+
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update

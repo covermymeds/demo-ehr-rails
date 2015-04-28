@@ -1,7 +1,9 @@
 class CmmCallbacksController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:create]
 
+  http_basic_authenticate_with name: "hello", password: "there"
   before_action :set_callback, only: [:show]
+
 
   # GET /callbacks
   # GET /callbacks.json
@@ -66,6 +68,13 @@ class CmmCallbacksController < ApplicationController
         format.html { render :error }
         format.json { render json: @callback }
       end
+    end
+  end
+
+  protected
+  def authenticate
+    authenticate_with_http_basic do |username, password|
+      username == "hello" && password == "there"
     end
   end
 

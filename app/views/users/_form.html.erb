@@ -53,6 +53,15 @@
         <% end %>
       </fieldset>
 
+      <fieldset>
+        <div class="row">
+          <%= f.fields_for :credentials do |builder| %>
+            <%= builder.label :fax %>
+            <%= builder.text_field :fax %>
+          <% end %>
+        </div>
+      </fieldset>
+
       <div class="form-group">
         <div class="col-md-offset-2 col-md-5">
           <%= f.submit class: 'btn btn-primary' %> or <%= link_to 'Back', :back %>
@@ -73,7 +82,7 @@
         <%- user.credentials.each do |credential| %>
           <tr>
             <td><%= credential.fax %></td>
-            <td><%= link_to 'Remove', user_credential_path(user, credential), method: :delete, class: 'btn btn-default' %></td>
+            <td><%= link_to 'Remove', user_credential_path(user, credential), method: :delete, class: 'btn btn-default' unless credential.new_record? %></td>
           </tr>
         <% end %>
         </tbody>

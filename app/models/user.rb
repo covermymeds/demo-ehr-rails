@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   has_many :pa_requests
   has_many :credentials
 
+  accepts_nested_attributes_for :credentials, :reject_if => :all_blank
+
   def display_name
     "#{salutation}#{first_name} #{last_name}"
   end

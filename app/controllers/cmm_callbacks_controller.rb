@@ -1,7 +1,6 @@
 class CmmCallbacksController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:create]
 
-  http_basic_authenticate_with name: "hello", password: "there"
   before_action :set_callback, only: [:show]
 
 

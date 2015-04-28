@@ -54,12 +54,15 @@
       </fieldset>
 
       <fieldset>
-        <div class="row">
-          <%= f.fields_for :credentials do |builder| %>
-            <%= builder.label :fax %>
-            <%= builder.text_field :fax %>
-          <% end %>
-        </div>
+        <%= f.fields_for :credentials do |builder| %>
+          <div class="form-group">
+            <%= builder.label :fax, "Fax #{builder.index+1}", class: 'control-label col-md-2' %>
+            <div class="col-md-6">
+              <%= builder.text_field :fax, class: 'form-control' %>
+            </div>
+            <%= link_to 'Remove', user_credential_path(user, builder.object), method: :delete, class: 'btn btn-default' unless builder.object.new_record? %>
+          </div>
+        <% end %>
       </fieldset>
 
       <div class="form-group">
@@ -69,25 +72,4 @@
       </div>
     <% end %>
   </div> <!-- .col-md-6 -->
-  <%- unless user.new_record? %>
-    <div class="col-md-offset-1 col-md-5 well">
-      <h2>Credentials</h2>
-
-      <table class="table">
-        <thead>
-          <th>Fax Number</th>
-          <th>Actions</th>
-        </thead>
-        <tbody>
-        <%- user.credentials.each do |credential| %>
-          <tr>
-            <td><%= credential.fax %></td>
-            <td><%= link_to 'Remove', user_credential_path(user, credential), method: :delete, class: 'btn btn-default' unless credential.new_record? %></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-      <%= link_to 'Register a new Fax Number with CoverMyMeds', new_user_credential_path(user) %>
-    </div> <!-- .col-md-5 -->
-  <% end %>
 </div> <!-- .row -->

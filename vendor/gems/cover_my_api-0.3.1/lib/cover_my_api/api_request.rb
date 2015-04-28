@@ -19,14 +19,9 @@ module CoverMyApi
 
     def call_api http_method, rest_resource
       body = block_given? ? yield : {}
-      begin
-        response = rest_resource.send http_method, body
-        return nil if response.body.empty?
-      rescue Exception => e
-        # catch errors & return them as JSON also
-        # this is really helpful for request-pages, so that we can render the erorrs appropriately
-        response = e.response
-      end
+      response = rest_resource.send http_method, body
+      return nil if response.body.empty?
+
       return JSON.parse(response)
     end
 

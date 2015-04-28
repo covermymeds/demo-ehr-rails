@@ -79,13 +79,12 @@ class PaRequestsController < ApplicationController
     # the information we have about the patient and prescription
     new_request = RequestConfigurator.request(@prescription,
                                               @pa_request.form_id,
-                                              User.find(params[:pa_request][:prescriber_id]),
-                                              session[:use_integration])
+                                              User.find(params[:pa_request][:prescriber_id]))
 
     # create the request in the API
     # in your application, you will likely do this asynchronously, but
     # we are doing this inline for brevity
-    response = RequestConfigurator.api_client(session[:use_integration]).create_request new_request
+    response = RequestConfigurator.api_client().create_request new_request
     flash_message "Your prior authorization request was successfully started."
 
     # stash away the token, id, link, and workflow status from the return
@@ -106,7 +105,7 @@ class PaRequestsController < ApplicationController
   # DELETE /pa_request/:pa_request_id/pa_requests/1.json
   def destroy
     # first, delete the PA request from our CMM dashboard
-    client = RequestConfigurator.api_client(session[:use_integration])
+    client = RequestConfigurator.api_client()
     client.revoke_access_token? @pa_request.cmm_token
     @pa_request.update_attributes(cmm_token: nil)
 

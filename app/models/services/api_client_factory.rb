@@ -2,9 +2,9 @@ class ApiClientFactory
   def self.build(use_integration: false)
     api_key = self.api_key(use_integration)
     api_secret = self.api_secret(use_integration)
-    client = CoverMyApi::Client.new(api_key, api_secret)
-    client.default_host = Rails.configuration.cmm_integration_url if use_integration
-    client
+    client = CoverMyApi::Client.new(api_key, api_secret) do |client|
+      client.default_host = Rails.configuration.cmm_integration_url if use_integration
+    end
   end
 
   def self.api_key(use_integration)

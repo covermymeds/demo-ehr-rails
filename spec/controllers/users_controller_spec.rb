@@ -73,6 +73,14 @@ describe UsersController, type: :controller do
           expect(response).to redirect_to(root_path)
         end
       end
+
+      context 'when registering with CMM' do
+        it 'sends the npi and fax numbers' do
+          stub = stub_request(:post, 'some_url')
+          put :update, { id: user.to_param, user: valid_attributes.merge!(registered_with_cmm: true) }, valid_session
+          expect(stub).to have_been_requested.once
+        end
+      end
     end
 
     describe 'with invalid params' do

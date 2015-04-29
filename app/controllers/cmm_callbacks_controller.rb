@@ -70,13 +70,6 @@ class CmmCallbacksController < ApplicationController
     end
   end
 
-  protected
-  def authenticate
-    authenticate_with_http_basic do |username, password|
-      username == "hello" && password == "there"
-    end
-  end
-
   private
 
   def is_delete?(callback)
@@ -84,7 +77,6 @@ class CmmCallbacksController < ApplicationController
   end
 
   def request_params
-    #json_params = ActionController::Parameters.new(JSON.parse(request.body.read))
     return params.require(:request)
   end
 

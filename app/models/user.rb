@@ -10,9 +10,9 @@ class User < ActiveRecord::Base
 
   belongs_to :role
   has_many :pa_requests
-  has_many :credentials
+  has_many :credentials, after_add: :cmm_register, after_remove: :cmm_unregister
 
-  accepts_nested_attributes_for :credentials, :reject_if => :all_blank
+  accepts_nested_attributes_for :credentials, reject_if: :all_blank, allow_destroy: true
 
   def display_name
     "#{salutation}#{first_name} #{last_name}"
@@ -45,6 +45,19 @@ class User < ActiveRecord::Base
   end
 
   private
+
+  def cmm_register(credential)
+    client = ApiClientFactory.build
+    client.create_credential(npi: self.npi,
+                             callback_url: '/cmm_callbacks.json',
+                             callback_verb: 'POST',
+                             fax_numbers: credential.fax,
+                             contact_hint: self.contact_hint)
+  end
+
+  def cmm_unregister(credential)
+    # undo tesla
+  end
 
   def valid_npi?
     unless npi && npi.size == 10 && npi =~ /^\d+$/

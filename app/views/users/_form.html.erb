@@ -54,15 +54,24 @@
       </fieldset>
 
       <fieldset>
-        <%= f.fields_for :credentials do |builder| %>
-          <div class="form-group">
-            <%= builder.label :fax, "Fax #{builder.index+1}", class: 'control-label col-md-2' %>
-            <div class="col-md-6">
-              <%= builder.text_field :fax, class: 'form-control' %>
+        <div class="form-group">
+          <%= f.label :registered_with_cmm, class: 'control-label col-md-2' %>
+          <div class="col-md-10">
+            <div class="checkbox">
+              <label>
+                <%= f.check_box :registered_with_cmm %>
+              </label>
             </div>
-            <%= link_to 'Remove', user_credential_path(user, builder.object), method: :delete, class: 'btn btn-default' unless builder.object.new_record? %>
           </div>
-        <% end %>
+        </div>
+        <div id="credentials">
+          <%= f.fields_for :credentials do |credential| %>
+            <%= render 'credential_fields', f: credential %>
+          <% end %>
+          <div class="links">
+            <%= link_to_add_association 'Add Fax', f, :credentials %>
+          </div>
+        </div>
       </fieldset>
 
       <div class="form-group">

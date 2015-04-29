@@ -22,6 +22,7 @@
 //= require config
 //= require api-jquery-plugins
 //= require signature
+//= require cocoon
 //= require_tree .
 
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150422141408) do
+ActiveRecord::Schema.define(version: 20150429150952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,7 +28,6 @@ ActiveRecord::Schema.define(version: 20150422141408) do
   create_table "credentials", force: true do |t|
     t.integer "user_id"
     t.string  "fax"
-    t.boolean "registered_with_cmm", default: false
   end
 
   add_index "credentials", ["user_id"], name: "index_credentials_on_user_id", using: :btree
@@ -121,6 +120,7 @@ ActiveRecord::Schema.define(version: 20150422141408) do
     t.string   "practice_city"
     t.string   "practice_state"
     t.string   "practice_zip"
+    t.boolean  "registered_with_cmm",   default: false
   end
 
   add_index "users", ["npi"], name: "index_users_on_npi", unique: true, using: :btree

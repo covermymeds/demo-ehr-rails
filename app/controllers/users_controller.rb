@@ -18,8 +18,8 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    count = 3 - @user.credentials.count
-    count.times { @user.credentials.build }
+    # count = 3 - @user.credentials.count
+    # count.times { @user.credentials.build }
   end
 
   def new
@@ -62,7 +62,7 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:first_name, :last_name, :npi, :role_id, :email, :practice_name,
                                  :practice_phone_number, :practice_street_1, :practice_street_2,
-                                 :practice_city, :practice_state, :practice_zip, credentials_attributes: [:id, :fax])
+                                 :practice_city, :practice_state, :practice_zip, credentials_attributes: [:id, :fax, :_destroy])
   end
 
   def login_with_id!

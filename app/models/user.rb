@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
 
   belongs_to :role
   has_many :pa_requests
-  has_many :credentials, after_add: :cmm_register, after_remove: :cmm_unregister
+  has_many :credentials
 
   accepts_nested_attributes_for :credentials, reject_if: :all_blank, allow_destroy: true
 
@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
                              callback_url: '/cmm_callbacks.json',
                              callback_verb: 'POST',
                              fax_numbers: credential.fax,
-                             contact_hint: self.contact_hint)
+                             contact_hint: contact_hint)
   end
 
   def cmm_unregister(credential)

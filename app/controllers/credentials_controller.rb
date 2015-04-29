@@ -31,7 +31,7 @@ class CredentialsController < ApplicationController
     client = ApiClientFactory.build(use_integration: !!session[:use_integration])
     credential.transaction do
       credential.save
-      client.create_credential @user.npi, '/cmm_callbacks.json', 'POST', credential.fax, @user.contact_hint
+      client.create_credential(npi: @user.npi, callback_url: '/cmm_callbacks.json', callback_verb: 'POST', fax_numbers: credential.fax, contact_hint: @user.contact_hint)
     end
   end
 

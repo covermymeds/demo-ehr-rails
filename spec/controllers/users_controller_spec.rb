@@ -1,16 +1,9 @@
 require 'rails_helper'
 
 describe UsersController, type: :controller do
-  # This should return the minimal set of attributes required to create a valid
-  # User. As you add validations to User, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) do
-    { first_name: 'Test', last_name: 'McTester', npi: '3141592654', role_id: 1 }
-  end
+  fixtures :users
 
-  let(:invalid_attributes) do
-    { first_name: nil, npi: '12345', role_id: nil }
-  end
+  let!(:user) { users(:doctor) }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -20,7 +13,6 @@ describe UsersController, type: :controller do
   describe 'GET login/:id' do
     it 'logs in the desired user' do
       expect(controller.current_user).to be_nil
-      user = User.create! valid_attributes
       get :login, { id: user.to_param }, valid_session
       expect(session['user_id'].to_i).to eq(user.id)
       expect(controller.current_user).to eq(user)
@@ -30,7 +22,6 @@ describe UsersController, type: :controller do
   describe 'GET logout' do
     it 'logs out the current user' do
       expect(controller.current_user).to be_nil
-      user = User.create! valid_attributes
       get :login, { id: user.to_param }, valid_session
       expect(session['user_id'].to_i).to eq(user.id)
       expect(controller.current_user).to eq(user)
@@ -43,19 +34,32 @@ describe UsersController, type: :controller do
 
   describe 'GET edit' do
     it 'assigns the requested user as @user' do
-      user = User.create! valid_attributes
       get :edit, { id: user.to_param }, valid_session
       expect(assigns(:user)).to eq(user)
     end
   end
 
   describe 'PUT update' do
+    # This should return the minimal set of attributes required to create a valid
+    # User. As you add validations to User, be sure to
+    # adjust the attributes here as well.
+    let(:valid_attributes) do
+      { first_name: 'Test', last_name: 'McTester', npi: user.npi, role_id: 1 }
+    end
+
+    let(:invalid_attributes) do
+      { first_name: nil, npi: '12345', role_id: nil }
+    end
+
     describe 'with valid params' do
       context 'when not registering with CMM' do
-        let(:new_attributes) do
-          { first_name: 'Dr. Robert Liston', npi: '4242424242' }
+        before do
+          expect_any_instance_of(CoverMyApi::Client).to receive(:delete_credential).with(user.npi).and_return({})
         end
-        let!(:user) { User.create! valid_attributes }
+
+        let(:new_attributes) do
+          { first_name: 'Dr. Robert Liston', npi: user.npi, registered_with_cmm: false }
+        end
 
         it 'updates the requested user' do
           put :update, { id: user.to_param, user: new_attributes }, valid_session
@@ -68,6 +72,10 @@ describe UsersController, type: :controller do
           expect(assigns(:user)).to eq(user)
         end
 
+        it 'unregisters with cmm' do
+          put :update, { id: user.to_param, user: valid_attributes }, valid_session
+        end
+
         it 'redirects to the root' do
           put :update, { id: user.to_param, user: valid_attributes }, valid_session
           expect(response).to redirect_to(root_path)
@@ -76,22 +84,19 @@ describe UsersController, type: :controller do
 
       context 'when registering with CMM' do
         it 'sends the npi and fax numbers' do
-          stub = stub_request(:post, 'some_url')
+          expect_any_instance_of(CoverMyApi::Client).to receive(:create_credential).and_return({})
           put :update, { id: user.to_param, user: valid_attributes.merge!(registered_with_cmm: true) }, valid_session
-          expect(stub).to have_been_requested.once
         end
       end
     end
 
     describe 'with invalid params' do
       it 'assigns the user as @user' do
-        user = User.create! valid_attributes
         put :update, { id: user.to_param, user: invalid_attributes }, valid_session
         expect(assigns(:user)).to eq(user)
       end
 
       it "re-renders the 'edit' template" do
-        user = User.create! valid_attributes
         put :update, { id: user.to_param, user: invalid_attributes }, valid_session
         expect(response).to render_template('edit')
       end

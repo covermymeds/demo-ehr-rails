@@ -65,11 +65,13 @@
           </div>
         </div>
         <div id="credentials">
-          <%= f.fields_for :credentials do |credential| %>
-            <%= render 'credential_fields', f: credential %>
+          <div class="form-group nested-fields">
+            <%= f.fields_for :credentials do |credential| %>
+              <%= render 'credential_fields', f: credential %>
           <% end %>
-          <div class="links">
-            <%= link_to_add_association 'Add Fax', f, :credentials %>
+            <div class="col-md-offset-2">
+              <%= link_to_add_association 'Add Fax', f, :credentials %>
+            </div>
           </div>
         </div>
       </fieldset>

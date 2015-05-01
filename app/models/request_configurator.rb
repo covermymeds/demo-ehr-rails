@@ -1,7 +1,7 @@
 class RequestConfigurator
-  def self.request(prescription, form_id, prescriber, use_integration)
+  def self.request(prescription, form_id, prescriber)
 
-    client = self.api_client use_integration
+    client = self.api_client
 
     # get a hash of request data
     new_request = client.request_data
@@ -86,11 +86,11 @@ class RequestConfigurator
     new_request
   end
 
-  def self.api_client(use_integration)
-    api_id     = use_integration ? Rails.application.secrets.integration_cmm_api_id : Rails.application.secrets.cmm_api_id
-    api_secret = use_integration ? Rails.application.secrets.integration_cmm_api_secret : Rails.application.secrets.cmm_api_secret
+  def self.api_client()
+    api_id     = Rails.application.secrets.cmm_api_id
+    api_secret = Rails.application.secrets.cmm_api_secret
     client = CoverMyApi::Client.new(api_id, api_secret)
-    client.default_host = 'https://master-api.integration.covermymeds.com' if use_integration
+    client.default_host = Rails.application.secrets.cmm_api_url 
     client
   end
 end

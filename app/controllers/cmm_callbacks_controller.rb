@@ -3,6 +3,7 @@ class CmmCallbacksController < ApplicationController
 
   before_action :set_callback, only: [:show]
 
+
   # GET /callbacks
   # GET /callbacks.json
   def index
@@ -76,7 +77,6 @@ class CmmCallbacksController < ApplicationController
   end
 
   def request_params
-    #json_params = ActionController::Parameters.new(JSON.parse(request.body.read))
     return params.require(:request)
   end
 

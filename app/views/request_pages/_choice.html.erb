@@ -5,7 +5,9 @@
 <% if (question[:select_multiple])  %>
   <% question[:choices].each do |option| %>
     <div class="checkbox">
+      <input type="hidden" name="<%= massage(question[:question_id], form_name) %>" value="0"/>
       <label>
+        <input type="hidden" name="<%= massage(question[:question_id], form_name) %>" value="0"/>
         <input
         name="<%= massage(question[:question_id], form_name) %>"
         id='<%= question[:question_id] %>'
@@ -26,7 +28,6 @@
     name="<%= massage(question[:question_id], form_name) %>"
     class="form-control"
     id='<%= question[:question_id] %>'
-    data-validation="<%= question[:validations][0] %>"
     data-default-next-id="<%= massage(question[:default_next_question_id], form_name) %>"
     <%= require_if(question[:flag]) %>
     >

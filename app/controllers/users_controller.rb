@@ -67,22 +67,20 @@ class UsersController < ApplicationController
     user = User.find_by_id(params[:id])
     if user && login_user!(user)
       flash_message("Logged in as #{user.display_name}")
-      redirect_to home_url
     else
       flash_message('Login failed.  User not found')
-      redirect_to home_url
     end
+    redirect_to home_url
   end
 
   def login_with_role!
     user = User.joins(:role).where('roles.description = ?', params[:role_description]).first
     if user && login_user!(user)
       flash_message("Logged in as #{user.display_name}")
-      redirect_to home_url
     else
       flash_message('Demo account not found.  Try resetting the database.')
-      redirect_to home_url
     end
+    redirect_to home_url
   end
 
   def login_user!(user)

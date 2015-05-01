@@ -6,7 +6,6 @@ describe 'Credential Management' do
   let(:staff_login) { "/login/staff" }
 
   let(:user) { users(:doctor) }
-  let(:do_request) { visit edit_user_path(user) }
 
   before do
     login_user(user)
@@ -20,24 +19,27 @@ describe 'Credential Management' do
   end
 
   context 'when adding a new credential', js: true do
-    xit 'allows the prescriber to register a credential' do
-      do_request
+    it 'allows the prescriber to register a credential' do
+      visit edit_user_path(user)
 
+      check('Register with CMM')
       click_link('Add Fax')
       fill_in('Fax', with: '1-800-555-5555')
-      click_button 'Create Credential'
-      expect(page).to have_content('1-800-555-5555')
+      click_button 'Update User'
+      visit edit_user_path(user)
+      expect(find_field('Fax').value).to eq('1-800-555-5555')
     end
   end
 
   context 'when deleting an existing credential', js: true do
     let!(:credential) { Credential.create!(fax: '1-800-555-4444', user_id: user.id) }
-    xit 'allows the prescriber to delete a credential' do
-      do_request
-      expect(page).to have_content('1-800-555-4444')
-      click_link 'Remove'
-      expect(page).to have_content('Fax Number removed successfully')
-      expect(page).to_not have_content('1-800-555-5555')
+    it 'allows the prescriber to delete a credential' do
+      visit edit_user_path(user)
+      expect(find_field('Fax').value).to eq('1-800-555-4444')
+      click_link 'Remove Fax'
+      click_button 'Update User'
+      visit edit_user_path(user)
+      expect(page).to have_no_field('Fax')
     end
   end
 end

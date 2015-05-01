@@ -37,7 +37,7 @@ $(function() {
         onChange: true, // validate on change
         onBlur: true, // validate on blur
         eachValidField : function() {
-          $(this).closest('div').removeClass('has-error').addClass('has-success');
+          $(this).closest('div').removeClass('has-error');
           $(this).closest('div').removeClass('data-required');
         },
         eachInvalidField : function() {

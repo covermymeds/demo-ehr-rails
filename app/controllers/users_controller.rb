@@ -17,8 +17,6 @@ class UsersController < ApplicationController
   end
 
   def edit
-    # count = 3 - @user.credentials.count
-    # count.times { @user.credentials.build }
   end
 
   def new

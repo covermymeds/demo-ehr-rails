@@ -14,26 +14,29 @@ This application demonstrates what a typical web-based EHR can do to automate pr
 * Ruby version 2.0.0-p481
 * Rails version 4.1.1
 * Bundler
-* phantom.js (`brew install phantomjs`)
+* phantom.js (Use homebrew to install phantomjs 1.8.1, or whichever version is required by our current version of poltergeist.  Installing older versions is not exactly straightforward, so [this](http://effectif.com/mac-os-x/installing-specific-version-of-homebrew-formula) may be helpful to you.)
 
-Run `bundle install` to install all of the gem dependencies.
+Run `bundle install` to install all of the gem dependencies.  The application is written for Rails 4.1.1. 
 
 ### Installation
 
-First, see [Heroku Postgres](http://postgresapp.com/) for installing Postgres on your platform. Once that is installed, you can install Ruby and Rails, and the gems that are bundled.
+#### Database
 
-Run postgres and create the required user:
-
+brew install postgres, -OR- see [Heroku Postgres](http://postgresapp.com/) for installing Postgres.app on your platform. Once that is installed, you can install Ruby and Rails, and the gems that are bundled.  Then, run postgres and create the required user:
+```
     CREATE ROLE demoehrrails LOGIN CREATEDB;
+```
 
-Run `bundle install` if you have not installed the gem dependencies. The application is written for Rails 4.1.1. When the bundle is completed, run:
-
+Once you have postgres running, execute:
     bundle exec rake db:setup
 
-You'll need to obtain your own unique API keys, which must be stored in environment variables that the server can access. You can obtain your API keys at [api.covermymeds.com/your-account](https://api.covermymeds.com/your-account). You'll have to set the `api_id` as `CMM_API_KEY` and `api_secret` as `CMM_API_SECRET`. Set `CMM_API_URL` to https://api.covermymeds.com.
+#### API Keys
+
+You'll need to obtain your own unique API keys, which must be stored in environment variables that the server can access. You can obtain your API keys at [api.covermymeds.com/your-account](https://api.covermymeds.com/your-account). You'll have to set the `api_id` as `CMM_API_KEY` and `api_secret` as `CMM_API_SECRET`. Additionally, in order to use the [integration API environment](https://master-api.integration.covermymeds.com) you'll have to set your integration `api_id` as `INTEGRATION_CMM_API_KEY` and your integration `api_secret` as `INTEGRATION_CMM_API_SECRET`.
 
 For convenience, you may optionally set these enviroment variables by copying the file `.env.sample` to `.env` and entering your appropriate key and secret.  This is for `development` and `test` environments only and does not affect production.
 
+#### Tests
 Once your API keys are set in the environment, you can run `bundle exec rspec` to run through the tests.
 
 To start the server, run `bundle exec rails server`.

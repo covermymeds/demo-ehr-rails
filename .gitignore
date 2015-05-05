@@ -16,3 +16,6 @@
 /tmp
 .env
 .env.test
+
+# rvm
+.ruby-gemset

@@ -22,18 +22,7 @@ Run `bundle install` to install all of the gem dependencies.  The application is
 
 #### Database
 
-It is recommended to connect to vagrant's postgres instance.  Once [vagrant](https://git.innova-partners.com/cmm/vagrant) is up, modify your database.yml to look like so:
-```
-postgres: &postgres
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
-  host: 192.168.33.10
-  username: admin
-  password: admin
-```
-
-If you prefer to run against postgres locally, brew install postgres, -OR- see [Heroku Postgres](http://postgresapp.com/) for installing Postgres.app on your platform. Once that is installed, you can install Ruby and Rails, and the gems that are bundled.  Then, run postgres and create the required user:
+brew install postgres, -OR- see [Heroku Postgres](http://postgresapp.com/) for installing Postgres.app on your platform. Once that is installed, you can install Ruby and Rails, and the gems that are bundled.  Then, run postgres and create the required user:
 ```
     CREATE ROLE demoehrrails LOGIN CREATEDB;
 ```

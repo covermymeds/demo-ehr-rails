@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   validates :last_name, presence: { message: "Prescribers must have a last name" }, if: :prescriber?
   validates :npi, presence: { message: "Prescribers must have an npi" }, if: :prescriber?
   validate :valid_npi?, if: :prescriber?
+  validates :credentials, length: {minimum: 1, message: "You must add at least one fax number when registering with CoverMyMeds"}, if: :registered_with_cmm?
 
   belongs_to :role
   has_many :pa_requests

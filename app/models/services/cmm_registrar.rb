@@ -20,8 +20,8 @@ class CmmRegistrar
   end
 
   def unregister_with_cmm
-    api_client.delete_credential(@user.npi)
     @user.update_attributes(registered_with_cmm: false)
+    api_client.delete_credential(@user.npi)
   end
 
   private

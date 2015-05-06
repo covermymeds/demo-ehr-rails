@@ -4,10 +4,9 @@ class User < ActiveRecord::Base
 
   validates :role_id, presence: true
   validates :first_name, presence: true
-  validates :last_name, presence: { message: "Prescribers must have a last name" }, if: :prescriber?
-  validates :npi, presence: { message: "Prescribers must have an npi" }, if: :prescriber?
+  validates :last_name, presence: { message: 'Prescribers must have a last name' }, if: :prescriber?
+  validates :npi, presence: { message: 'Prescribers must have an npi' }, if: :prescriber?
   validate :valid_npi?, if: :prescriber?
-  validates :credentials, length: {minimum: 1, message: "You must add at least one fax number when registering with CoverMyMeds"}, if: :registered_with_cmm?
   validate :validate_credentials
 
   belongs_to :role
@@ -50,7 +49,7 @@ class User < ActiveRecord::Base
 
   def cmm_register(credential)
     client = ApiClientFactory.build
-    client.create_credential(npi: self.npi,
+    client.create_credential(npi: npi,
                              callback_url: '/cmm_callbacks.json',
                              callback_verb: 'POST',
                              fax_numbers: credential.fax,
@@ -59,13 +58,13 @@ class User < ActiveRecord::Base
 
   def valid_npi?
     unless npi && npi.size == 10 && npi =~ /^\d+$/
-      errors.add(:valid_npi, "must be 10 digits")
+      errors.add(:valid_npi, 'must be 10 digits')
     end
   end
 
   def validate_credentials
-    if self.registered_with_cmm && credentials.reject(&:marked_for_destruction?).blank?
-      errors.add(:credentials, "You must have at least one fax number if registering your NPI with CoverMyMeds.")
+    if registered_with_cmm && credentials.reject(&:marked_for_destruction?).blank?
+      errors.add(:credentials, 'You must have at least one fax number if registering your NPI with CoverMyMeds.')
     end
   end
 end

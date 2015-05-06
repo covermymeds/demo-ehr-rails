@@ -22,12 +22,12 @@ describe 'Credential Management' do
     it 'allows the prescriber to register a credential' do
       visit edit_user_path(user)
 
-      check('Register with CMM')
+      check('I would like to receive PAs started at the pharmacy for the below fax numbers.')
       click_link('Add Fax')
-      fill_in('Fax', with: '800-555-5555')
+      fill_in('Fax', with: '8005555555')
       click_button 'Update User'
       visit edit_user_path(user)
-      expect(find_field('Fax').value).to eq('800-555-5555')
+      expect(find_field('Fax').value).to eq('8005555555')
     end
   end
 

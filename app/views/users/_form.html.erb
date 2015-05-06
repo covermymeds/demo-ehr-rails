@@ -59,16 +59,16 @@
 
       <fieldset>
         <div class="form-group">
-          <%= f.label :registered_with_cmm, 'Register with CMM', class: 'control-label col-md-2' %>
-          <div class="col-md-10">
+          <div class="col-md-10 col-md-offset-2">
             <div class="checkbox">
               <label>
                 <%= f.check_box :registered_with_cmm %>
+                I would like to receive PAs started at the pharmacy for the below fax numbers.
               </label>
             </div>
           </div>
         </div>
-        <%= f.fields_for :credentials do |credential| %>
+        <% f.fields_for :credentials do |credential| %>
           <div class="form-group">
             <%= render 'credential_fields', f: credential %>
           </div>

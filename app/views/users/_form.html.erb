@@ -48,7 +48,12 @@
         <%= render partial: 'form_field', locals: {builder: f, field_label: 'Street 1', field_name: :practice_street_1} %>
         <%= render partial: 'form_field', locals: {builder: f, field_label: 'Street 2', field_name: :practice_street_2} %>
         <%= render partial: 'form_field', locals: {builder: f, field_label: 'City', field_name: :practice_city} %>
-        <%= render partial: 'form_field', locals: {builder: f, field_label: "State", field_name: :practice_state} %>
+        <div class="form-group">
+          <%= f.label "State", class: 'control-label col-md-2' %>
+          <div class="col-md-10">
+            <%= f.subregion_select :practice_state, 'US', {priority: %w(@user.state)}, :class=>'form-control' %>
+          </div>
+        </div>
         <%= render partial: 'form_field', locals: {builder: f, field_label: 'Zip', field_name: :practice_zip} %>
       </fieldset>
 

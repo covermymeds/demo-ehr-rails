@@ -24,18 +24,18 @@ describe 'Credential Management' do
 
       check('Register with CMM')
       click_link('Add Fax')
-      fill_in('Fax', with: '1-800-555-5555')
+      fill_in('Fax', with: '800-555-5555')
       click_button 'Update User'
       visit edit_user_path(user)
-      expect(find_field('Fax').value).to eq('1-800-555-5555')
+      expect(find_field('Fax').value).to eq('800-555-5555')
     end
   end
 
   context 'when deleting an existing credential', js: true do
-    let!(:credential) { Credential.create!(fax: '1-800-555-4444', user_id: user.id) }
+    let!(:credential) { Credential.create!(fax: '8005554444', user_id: user.id) }
     it 'allows the prescriber to delete a credential' do
       visit edit_user_path(user)
-      expect(find_field('Fax').value).to eq('1-800-555-4444')
+      expect(find_field('Fax').value).to eq('8005554444')
       click_link 'Remove Fax'
       click_button 'Update User'
       visit edit_user_path(user)

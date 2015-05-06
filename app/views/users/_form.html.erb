@@ -43,14 +43,13 @@
         <div class="row">
           <legend class="col-md-offset-2 col-md-5">Practice Details</legend>
         </div>
-        <%- [:practice_name, :practice_phone_number, :practice_street_1, :practice_street_2, :practice_city, :practice_state, :practice_zip].each do |field| %>
-          <div class="form-group">
-          <%= f.label field.to_s.gsub('practice_',''), class: 'control-label col-md-2' %>
-          <div class="col-md-10">
-            <%= f.text_field field, class: 'form-control' %>
-          </div>
-        </div>
-        <% end %>
+        <%= render partial: 'form_field', locals: {builder: f, field_label: 'Name', field_name: :practice_name} %>
+        <%= render partial: 'form_field', locals: {builder: f, field_label: 'Phone number', field_name: :practice_phone_number, options: {class: 'form-control', data: {mask: '999-999-9999'}, placeholder: '800-555-5555'}} %>
+        <%= render partial: 'form_field', locals: {builder: f, field_label: 'Street 1', field_name: :practice_street_1} %>
+        <%= render partial: 'form_field', locals: {builder: f, field_label: 'Street 2', field_name: :practice_street_2} %>
+        <%= render partial: 'form_field', locals: {builder: f, field_label: 'City', field_name: :practice_city} %>
+        <%= render partial: 'form_field', locals: {builder: f, field_label: "State", field_name: :practice_state} %>
+        <%= render partial: 'form_field', locals: {builder: f, field_label: 'Zip', field_name: :practice_zip} %>
       </fieldset>
 
       <fieldset>

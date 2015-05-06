@@ -84,6 +84,7 @@ describe UsersController, type: :controller do
 
       context 'when registering with CMM' do
         it 'sends the npi and fax numbers' do
+          user.credentials.create(fax: '800-555-1234')
           expect_any_instance_of(CoverMyApi::Client).to receive(:create_credential).and_return({})
           put :update, { id: user.to_param, user: valid_attributes.merge!(registered_with_cmm: true) }, valid_session
         end

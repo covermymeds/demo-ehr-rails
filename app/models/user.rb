@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   validates :npi, presence: { message: "Prescribers must have an npi" }, if: :prescriber?
   validate :valid_npi?, if: :prescriber?
   validates :credentials, length: {minimum: 1, message: "You must add at least one fax number when registering with CoverMyMeds"}, if: :registered_with_cmm?
+  validate :validate_credentials
 
   belongs_to :role
   has_many :pa_requests
@@ -56,13 +57,15 @@ class User < ActiveRecord::Base
                              contact_hint: contact_hint)
   end
 
-  def cmm_unregister(credential)
-    # undo tesla
-  end
-
   def valid_npi?
     unless npi && npi.size == 10 && npi =~ /^\d+$/
       errors.add(:valid_npi, "must be 10 digits")
+    end
+  end
+
+  def validate_credentials
+    if self.registered_with_cmm && credentials.reject(&:marked_for_destruction?).blank?
+      errors.add(:credentials, "You must have at least one fax number if registering your NPI with CoverMyMeds.")
     end
   end
 end

@@ -2,6 +2,12 @@ require 'rails_helper'
 
 describe User, type: :model do
   fixtures :roles
+  let(:npi) { "1234512345" }
+  let(:first_name) { SecureRandom.uuid }
+  let(:last_name) { SecureRandom.uuid }
+  let(:doctor) { User.create! first_name: first_name, last_name: last_name, npi: npi, role: Role.doctor }
+  let(:staff) { User.create! first_name: first_name, last_name: last_name, role: Role.staff }
+
   it { should respond_to(:first_name) }
   it { should respond_to(:last_name) }
   it { should respond_to(:role_id) }
@@ -15,12 +21,27 @@ describe User, type: :model do
     it { should allow_value(npi).for(:npi) }
   end
 
+  context 'is registered with CMM' do
+    subject do
+      doctor.registered_with_cmm = true
+      doctor
+    end
 
-  let(:npi) { "1234512345" }
-  let(:first_name) { SecureRandom.uuid }
-  let(:last_name) { SecureRandom.uuid }
-  let(:doctor) { User.create! first_name: first_name, last_name: last_name, npi: npi, role: Role.doctor }
-  let(:staff) { User.create! first_name: first_name, last_name: last_name, role: Role.staff }
+    it 'requires at least one credential' do
+      expect(subject).to require_at_least_one_credential
+    end
+
+    context 'when the last credential is marked for deletion' do
+      before do
+        subject.credentials.create(fax: '800-555-1234')
+        subject.credentials.destroy_all
+      end
+
+      it 'requires at least one credential' do
+        expect(subject).to require_at_least_one_credential
+      end
+    end
+  end
 
   describe "#display_name" do
     context "user is a doctor" do

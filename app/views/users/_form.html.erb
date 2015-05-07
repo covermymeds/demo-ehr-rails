@@ -68,7 +68,7 @@
             </div>
           </div>
         </div>
-        <% f.fields_for :credentials do |credential| %>
+        <%= f.fields_for :credentials do |credential| %>
           <div class="form-group">
             <%= render 'credential_fields', f: credential %>
           </div>

@@ -27,7 +27,7 @@ describe 'Credential Management' do
       fill_in('Fax', with: '8005555555')
       click_button 'Update User'
       visit edit_user_path(user)
-      expect(find_field('Fax').value).to eq('8005555555')
+      expect(find_field('Fax').value).to eq('800-555-5555')
     end
   end
 

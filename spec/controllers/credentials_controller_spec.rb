@@ -26,7 +26,7 @@ describe CredentialsController, type: :controller do
     end
 
     it 'calls the api' do
-      expect_any_instance_of(CoverMyApi::Client).to receive(:create_credential).with(npi: user.npi, callback_url: '/cmm_callbacks.json', callback_verb: 'POST', fax_numbers: '1-855-555-5555', contact_hint: user.contact_hint)
+      expect_any_instance_of(CoverMyApi::Client).to receive(:create_credential).with(npi: user.npi, callback_url: cmm_callbacks_url, callback_verb: 'POST', fax_numbers: '1-855-555-5555', contact_hint: user.contact_hint)
       do_request
     end
   end

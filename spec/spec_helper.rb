@@ -3,6 +3,7 @@ require 'capybara/poltergeist'
 require 'capybara/webkit'
 require 'rack_session_access/capybara'
 require 'webmock/rspec'
+require 'support/webmock_stubs'
 
 
 RSpec.configure do |config|
@@ -88,6 +89,7 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  config.include WebmockStubs, type: :controller
 end
 
 Capybara.configure do |config|

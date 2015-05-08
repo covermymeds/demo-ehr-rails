@@ -74,6 +74,8 @@
       <%= f.submit "Save", :class => 'btn btn-primary create', :onsubmit => 'getDrugName' %>
     </div>
 
+    <%= hidden_field_tag 'prescription_patient_id', @patient.id %>
+
   </fieldset>
 </div>
 <% end %>

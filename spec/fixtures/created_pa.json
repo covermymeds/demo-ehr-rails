@@ -1,0 +1,113 @@
+{
+  "memo": null,
+    "api_id": "5unkw1q2d32f7he52hwj",
+    "is_stale": false,
+    "id": "CUT67P",
+    "form_id": null,
+    "patient": {
+      "first_name": "Amber",
+      "middle_name": "",
+      "last_name": "Smith",
+      "member_id": "",
+      "phone_number": "",
+      "email": "",
+      "date_of_birth": "10/01/1971",
+      "gender": "",
+      "address": {
+        "street_1": "",
+        "street_2": "",
+        "city": "",
+        "state": "OH",
+        "zip": ""
+
+      }
+
+    },
+    "pharmacy": {
+      "name": "",
+      "phone_number": ""
+
+    },
+    "payer": {
+      "form_search_text": "111111, SAMP001, NOTREAL",
+      "bin": "111111",
+      "pcn": "SAMP001,",
+      "group_id": "NOTREAL",
+      "medical_benefit_name": "",
+      "drug_benefit_name": ""
+
+    },
+    "prescriber": {
+      "npi": "1234567890",
+      "first_name": "Albert",
+      "last_name": "Fleming",
+      "clinic_name": "",
+      "fax_number": "555-555-5555",
+      "phone_number": "",
+      "address": {
+        "street_1": "1 Starship Way",
+        "street_2": "",
+        "city": "Riverside",
+        "state": "OH",
+        "zip": "52327"
+
+      }
+
+    },
+    "prescription": {
+      "drug_id": "061882",
+      "name": "Banana Concentrate liquids",
+      "strength": "",
+      "frequency": "qD",
+      "days_supply": "",
+      "quantity": "30",
+      "quantity_unit_of_measure": null,
+      "rationale": null
+
+    },
+    "enumerated_fields": {
+      "icd9_0": "",
+      "icd9_1": "",
+      "icd9_2": "",
+      "failed_med_0": "",
+      "failed_med_1": "",
+      "failed_med_2": "",
+      "failed_med_3": "",
+      "failed_med_4": "",
+      "failed_med_5": "",
+      "failed_med_6": "",
+      "failed_med_7": "",
+      "failed_med_8": "",
+      "failed_med_9": ""
+
+    },
+    "is_epa": false,
+    "href": "https://api.covermymeds.com/requests/CUT67P",
+    "plan_outcome": null,
+    "workflow_status": "New",
+    "thumbnail_urls": [
+      "https://www.covermymeds.com/async/thumbnail/?request=CUT67P&mode=plan"
+
+      ],
+    "pdf_url": "https://www.covermymeds.com/request/send/CUT67P/",
+    "html_url": "https://www.covermymeds.com/request/view/CUT67P",
+    "created_at": "2015-04-06T22:10:16Z",
+    "state": "OH",
+    "urgent": "false",
+    "attachments_included": 0,
+    "response_from_plan": null,
+    "tokens": [
+    {
+      "id": "77six8y53v243c9vvtds",
+      "request_id": "CUT67P",
+      "href": "https://api.covermymeds.com/requests/tokens/77six8y53v243c9vvtds",
+      "html_url": "https://www.covermymeds.com/request/view/CUT67P?token_id=77six8y53v243c9vvtds",
+      "pdf_url": "https://www.covermymeds.com/request/send/CUT67P?token_id=77six8y53v243c9vvtds",
+      "thumbnail_url": "https://www.covermymeds.com/async/thumbnail/?mode=plan&request=CUT67P&token_id=77six8y53v243c9vvtds"
+
+    }
+
+  ],
+    "events": []
+
+}

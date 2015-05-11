@@ -9,6 +9,8 @@ describe DbResetter do
     Role.create! description: Role::DOCTOR
     User.create! first_name: first_name, last_name: last_name, role: Role.doctor, npi: junk(:int, size: 10).to_s
     PaRequest.create! cmm_token: token
+    response = Hashie::Mash.new(JSON.parse(File.read('spec/fixtures/created_pa.json')))
+    allow_any_instance_of(CoverMyMeds::Client).to receive(:create_request).and_return(response)
     DbResetter.reset
   end
 

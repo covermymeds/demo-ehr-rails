@@ -39,7 +39,7 @@ class CmmCallbacksController < ApplicationController
       create_alert(@user, "Your NPI of #{@user.npi} was found, but the prescription didn't match")
       render(status: 404, text: 'prescription not found') and return
     when :new_retrospective
-      pa.init_from_callback(request_params)
+      @pa.init_from_callback(request_params)
     when :pa_found
       delete_or_update_pa!
     end

@@ -130,7 +130,6 @@ ActiveRecord::Schema.define(version: 20150429150952) do
     t.string   "practice_state"
     t.string   "practice_zip"
     t.boolean  "registered_with_cmm",   default: false
-    t.boolean  "registered_with_cmm"
   end
 
   add_index "users", ["npi"], name: "index_users_on_npi", unique: true, using: :btree

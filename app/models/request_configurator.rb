@@ -89,7 +89,7 @@ class RequestConfigurator
   def self.api_client()
     api_id     = Rails.application.secrets.cmm_api_id
     api_secret = Rails.application.secrets.cmm_api_secret
-    client = CoverMyApi::Client.new(api_id, api_secret)
+    client = CoverMyMeds::Client.new(api_id, api_secret)
     client.default_host = Rails.application.secrets.cmm_api_url 
     client
   end

@@ -76,6 +76,19 @@ describe RequestPagesController, type: :controller do
           pa_request_id:    pa_request.id
         }
       end
+      let(:request_pages_response) do
+        {
+          request_page: {
+            forms: {},
+            data: {},
+            validations: {},
+            actions: []}
+        }
+      end
+
+      before do
+        expect_any_instance_of(CoverMyMeds::Client).to receive(:get_request_page).with(pa_request.cmm_id, pa_request.cmm_token).and_return(Hashie::Mash.new(request_pages_response))
+      end
 
       it 'hides the actions from the browser' do
         get :show, show_params

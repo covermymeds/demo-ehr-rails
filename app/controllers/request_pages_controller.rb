@@ -8,7 +8,7 @@ class RequestPagesController < ApplicationController
   def show
     # get the request-page for our current request
     @request_page_json = RequestConfigurator.api_client().get_request_page @pa_request.cmm_id, @pa_request.cmm_token
-    @request_page = @request_page_json.request_page
+    @request_page = @request_page_json['request_page']
     replace_actions @request_page, @pa_request
 
     @forms = @request_page[:forms]

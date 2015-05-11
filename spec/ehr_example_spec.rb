@@ -75,6 +75,8 @@ describe 'eHR Example App' do
       end
 
       it 'should reset the database when asked', js: true do
+        response = Hashie::Mash.new(JSON.parse(File.read('spec/fixtures/created_pa.json')))
+        allow_any_instance_of(CoverMyMeds::Client).to receive(:create_request).and_return response
         click_link('Reset Database')
         Capybara.page.execute_script  'window.confirm = function () { return true }'
         expect(page).to have_content('Database has been reset')

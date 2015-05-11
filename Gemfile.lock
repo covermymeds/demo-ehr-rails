@@ -4,15 +4,6 @@ GIT
   specs:
     database_cleaner (1.4.1)
 
-PATH
-  remote: vendor/gems/cover_my_api-0.3.1
-  specs:
-    cover_my_api (0.3.1)
-      activesupport
-      hashie (~> 2.0.2)
-      rest-client (~> 1.6)
-      settingslogic
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -79,6 +70,11 @@ GEM
       execjs
     coffee-script-source (1.9.1)
     columnize (0.9.0)
+    covermymeds_api (0.0.1)
+      activesupport
+      hashie (~> 2.0.2)
+      rest-client (~> 1.6)
+      settingslogic
     diff-lcs (1.2.5)
     domain_name (0.5.23)
       unf (>= 0.0.5, < 1.0.0)
@@ -283,7 +279,7 @@ DEPENDENCIES
   capybara-webkit
   carmen-rails
   coffee-rails (~> 4.0.0)
-  cover_my_api (~> 0.3.1)!
+  covermymeds_api (~> 0.0.1)
   database_cleaner!
   dotenv-rails
   guard

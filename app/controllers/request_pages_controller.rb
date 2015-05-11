@@ -17,6 +17,20 @@ class RequestPagesController < ApplicationController
 
   rescue RestClient::Exception => e
     flash_message("Error retrieving the request page", :error)
+    @request_page_json = RequestConfigurator.api_client(session[:use_integration]).get_request_page @pa_request.cmm_id, @pa_request.cmm_token
+
+    if is_error_form? @request_page_json
+      # show the error page
+      @request_page = @request_page_json[:errors]
+      render :error
+    else
+      @request_page = @request_page_json
+      replace_actions @request_page, @pa_request
+
+      @forms = @request_page[:forms]
+      @data = @request_page[:data]
+      @validations = @request_page[:validations]
+    end
 
     # the body of our response is in request_pages format
     @request_page_json = JSON.parse(e.response, symbolize_names: true)

@@ -17,5 +17,8 @@
 .env
 .env.test
 
+# vim
+*.swp
+
 # rvm
 .ruby-gemset

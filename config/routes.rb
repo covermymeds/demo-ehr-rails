@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
-  resources :users
+  resources :users do
+    post :cancel_registration, on: :member
+    resources :credentials
+  end
 
   get '/login/:role_description' => 'users#login', as: :demo_login, constraints: { role_description: /(doctor|staff)/ }
   get '/login/:id' => 'users#login', as: :login

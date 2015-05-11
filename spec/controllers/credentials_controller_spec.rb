@@ -12,8 +12,7 @@ describe CredentialsController, type: :controller do
   describe 'POST create' do
     let(:do_request) { post :create, user_id: user.id, credential: { fax: '1-855-555-5555' } }
     before do
-      stub_request(:post, /https:\/\/(\S*):(\S*)@api.covermymeds.com\/prescribers\/credentials\/\?v=1/ )
-        .to_return(body:{}.to_json)
+      expect_any_instance_of(CoverMyMeds::Client).to receive(:create_credential).with(npi: user.npi, callback_url: cmm_callbacks_url, callback_verb: 'POST', fax_numbers: '1-855-555-5555', contact_hint: user.contact_hint).and_return({})
     end
 
     it 'sets the user' do
@@ -23,11 +22,6 @@ describe CredentialsController, type: :controller do
 
     it 'redirects to the edit user action' do
       expect(do_request).to redirect_to edit_user_url(user)
-    end
-
-    it 'calls the api' do
-      expect_any_instance_of(CoverMyApi::Client).to receive(:create_credential).with(npi: user.npi, callback_url: cmm_callbacks_url, callback_verb: 'POST', fax_numbers: '1-855-555-5555', contact_hint: user.contact_hint)
-      do_request
     end
   end
 

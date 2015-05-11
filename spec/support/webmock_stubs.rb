@@ -1,8 +1,7 @@
 module WebmockStubs
   def stub_create_pa_request!
     response = JSON.parse(File.read('spec/fixtures/created_pa.json'))
-    stub_request(:post, /https:\/\/(\S*):(\S*)@api.covermymeds.com\/requests\/\?v=1/ )
-      .to_return(body: response.to_json)
+    allow_any_instance_of(CoverMyMeds::Client).to receive(:create_request).and_return(Hashie::Mash.new(response))
   end
 end
 

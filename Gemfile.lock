@@ -4,17 +4,6 @@ GIT
   specs:
     database_cleaner (1.4.1)
 
-GIT
-  remote: git@git.innova-partners.com:cmm/cover_my_api.git
-  revision: ff8e7d8d99c44a0f2517187341b035c3af92456a
-  branch: update-credentials-to-match-api-params
-  specs:
-    cover_my_api (0.10.6)
-      activesupport
-      hashie (~> 2.0.2)
-      rest-client (~> 1.6)
-      settingslogic
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -82,6 +71,11 @@ GEM
       execjs
     coffee-script-source (1.9.1)
     columnize (0.9.0)
+    covermymeds_api (0.0.1)
+      activesupport
+      hashie (~> 2.0.2)
+      rest-client (~> 1.6)
+      settingslogic
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     diff-lcs (1.2.5)
@@ -296,7 +290,7 @@ DEPENDENCIES
   carmen-rails
   cocoon
   coffee-rails (~> 4.0.0)
-  cover_my_api!
+  covermymeds_api (~> 0.0.1)
   database_cleaner!
   dotenv-rails
   guard

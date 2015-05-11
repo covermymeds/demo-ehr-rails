@@ -54,7 +54,7 @@ describe UsersController, type: :controller do
     describe 'with valid params' do
       context 'when not registering with CMM' do
         before do
-          expect_any_instance_of(CoverMyApi::Client).to receive(:delete_credential).with(user.npi).and_return({})
+          expect_any_instance_of(CoverMyMeds::Client).to receive(:delete_credential).with(user.npi).and_return({})
         end
 
         let(:new_attributes) do
@@ -85,7 +85,7 @@ describe UsersController, type: :controller do
       context 'when registering with CMM' do
         it 'sends the npi and fax numbers' do
           user.credentials.create(fax: '800-555-1234')
-          expect_any_instance_of(CoverMyApi::Client).to receive(:create_credential).and_return({})
+          expect_any_instance_of(CoverMyMeds::Client).to receive(:create_credential).and_return({})
           put :update, { id: user.to_param, user: valid_attributes.merge!(registered_with_cmm: true) }, valid_session
         end
       end

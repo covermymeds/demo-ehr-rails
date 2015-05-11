@@ -204,6 +204,7 @@ describe 'eHR Example App' do
 
     describe 'formulary service' do
       before do
+        stub_create_pa_request!
         find('#s2id_prescription_drug_number').click
         find('.select2-input').set(search_term)
         expect(page).to have_selector('.select2-result-selectable')
@@ -220,7 +221,6 @@ describe 'eHR Example App' do
         end
 
         it 'starts a PA', js: true do
-          stub_create_pa_request!
           click_on('Save')
           expect(page).to have_content("Your prior authorization request was successfully started.")
         end

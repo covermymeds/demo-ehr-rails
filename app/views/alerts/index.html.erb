@@ -8,5 +8,8 @@
       <td><%= link_to 'Delete', alert_path(alert), method: :delete, class: 'btn btn-default' %></td>
     </tr>
   <% end %>
+  <% unless @alerts.any? %>
+    <p> You have no alerts.</p>
+  <% end %>
   </tbody>
 </table>

@@ -58,12 +58,12 @@ $(function () {
           contentType: 'application/json',
           data: JSON.stringify(data),
           success: function(data) {
-            if (data.prescriptions[0].autostart) {
+            if (data.prescriptions[0].pa_required) {
               $('#pa_required_alert').removeClass('hidden');
             } else {
               $('#pa_required_alert').addClass('hidden');
             }
-            $('#start_pa').prop('checked', data.prescriptions[0].autostart);
+            $('#start_pa').prop('checked', data.prescriptions[0].pa_required).prop('disabled', data.prescriptions[0].autostart);
           }
         });
       }

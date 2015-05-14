@@ -78,11 +78,10 @@ describe RequestPagesController, type: :controller do
       end
       let(:request_pages_response) do
         {
-          request_page: {
             forms: {},
             data: {},
             validations: {},
-            actions: []}
+            actions: []
         }
       end
 

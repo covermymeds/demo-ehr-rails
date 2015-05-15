@@ -81,7 +81,7 @@ $.widget("CoverMyMeds.questionVisibility", {
   },
 
   _defaultNextQuestionId: function($question){
-    return $question.attr(this.options.data_default_next)
+    return $question.not("input[type=hidden]").attr(this.options.data_default_next)
   },
 
   _question: function(id){

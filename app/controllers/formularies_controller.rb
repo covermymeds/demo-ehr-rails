@@ -6,7 +6,7 @@ class FormulariesController < ApplicationController
         config.default_host = ENV['CMM_API_URL']
       end
       patient = Patient.find(params[:patient_id])
-      result = client.post_indicators(params[:prescriptions], {}, {bin: patient.bin, pcn: patient.pcn, group_id: patient.group_id})
+      result = client.search_indicators(prescriptions: params[:prescriptions], patient: {}, payer: {bin: patient.bin, pcn: patient.pcn, group_id: patient.group_id})
 
       render json: result
     else

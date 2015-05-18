@@ -6,7 +6,7 @@ class AlertsController < ApplicationController
   def destroy
     @alert = Alert.find(params[:id])
     if @alert.destroy
-      redirect_to alerts_path, notice: 'Alert successfully deleted'
+      redirect_to alerts_path
     end
   end
 end

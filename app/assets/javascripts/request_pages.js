@@ -31,12 +31,9 @@ $(function() {
   // hide/show questions when selects and checkboxes are answered
   $(".question select, .question input[type='checkbox']").on("change", function(){
     $(formSelector).questionVisibility("changed", $(this))
-    // validateForm();
   })
 
-  function validateForm() {
-    $(formSelector).validate({
-        filter: ':visible',
+  $(formSelector).validate({
         onChange: true, // validate on change
         onBlur: true, // validate on blur
         eachValidField : function() {
@@ -47,8 +44,5 @@ $(function() {
           $(this).closest('div').removeClass('has-success').addClass('has-error');
         }
       })
-  }
 
-
-  validateForm();
 });

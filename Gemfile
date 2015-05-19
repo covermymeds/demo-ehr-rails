@@ -39,7 +39,7 @@ gem 'select2-rails'
 gem 'carmen-rails'
 
 # cover my meds api gem
-gem 'covermymeds_api', git: 'git@github.com:covermymeds/covermymeds_api.git', branch: 'update_indicators_api'
+gem 'covermymeds_api', github: 'covermymeds/covermymeds_api', branch: 'update_indicators_api'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'

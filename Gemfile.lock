@@ -5,7 +5,7 @@ GIT
     database_cleaner (1.4.1)
 
 GIT
-  remote: git@github.com:covermymeds/covermymeds_api.git
+  remote: git://github.com/covermymeds/covermymeds_api.git
   revision: e1d1c48466afd54e5f0ac19f803a616713344bb6
   branch: update_indicators_api
   specs:

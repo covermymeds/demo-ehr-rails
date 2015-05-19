@@ -142,7 +142,7 @@ class PaRequestsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def prescription_params
-    params.require(:prescription).permit(:drug_number, :quantity, :frequency, :refills, :dispense_as_written, :patient_id, :drug_name, :formulary_status, :pharmacy_id)
+    params.require(:prescription).permit(:drug_number, :quantity, :frequency, :refills, :dispense_as_written, :patient_id, :drug_name, :pharmacy_id)
   end
 
 end

@@ -78,13 +78,13 @@ class DbResetter
 
       drugs = [
         {drug_number: "175366", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          drug_name: "SpongeBob SquarePants Gummies", formulary_status: "Tier 1", active: true },
+          drug_name: "SpongeBob SquarePants Gummies",  active: true },
         {drug_number: "122704", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          drug_name: "Flintstones Gummies", formulary_status: "Tier 1", active: true },
+          drug_name: "Flintstones Gummies",  active: true },
         {drug_number: "003485", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          drug_name: "Bugs Bunny Vitamins/Minerals", formulary_status: "Tier 1", active: true },
+          drug_name: "Bugs Bunny Vitamins/Minerals",  active: true },
         {drug_number: "091833", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          drug_name: "Bacon Flavor", formulary_status: "Tier 1", active: true },
+          drug_name: "Bacon Flavor",  active: true },
       ]
       Patient.first(drugs.count).zip(drugs).each do |patient, drug|
         create_pa(patient.prescriptions.new(drug.merge(date_prescribed: rand(1.year).seconds.ago)))

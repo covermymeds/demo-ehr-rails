@@ -25,10 +25,6 @@
     </div>
 
     <div class='row'>
-      <div class='form-group col-md-4'>
-        <%= f.label :formulary_status, "Formulary Status" %>
-        <%= f.text_field :formulary_status, :class=>'form-control', :readonly => true %>
-      </div>
       <div class='checkbox col-md-2'>
         <%= label_tag :start_pa do %>
         <%= check_box_tag :start_pa, 1, false, :class=>'checkbox' %><b>Start PA?</b>

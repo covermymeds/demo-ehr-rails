@@ -48,7 +48,6 @@ RSpec.describe PrescriptionsController, type: :controller do
       frequency: 'qD',
       refills: '3',
       dispense_as_written: true,
-      formulary_status: 'On Formulary',
       patient_id: patient.id,
       pharmacy_id: pharmacy.id
     }
@@ -62,7 +61,6 @@ RSpec.describe PrescriptionsController, type: :controller do
       frequency: 'xf',
       refills: '-1',
       dispense_as_written: true,
-      formulary_status: 'Ouch!'
     }
   }
 
@@ -154,7 +152,6 @@ RSpec.describe PrescriptionsController, type: :controller do
           frequency: 'qD',
           refills: '3',
           dispense_as_written: true,
-          formulary_status: 'On Formulary',
           patient_id: patient.id
         }
       }

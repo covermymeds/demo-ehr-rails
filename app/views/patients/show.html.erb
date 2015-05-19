@@ -23,8 +23,6 @@
         <%= link_to prescription.drug_name, edit_patient_prescription_path(@patient, prescription), :class=>"#{(request.sent) ? 'disabled' : ''}" %>
       </td>
 
-      <td><%= prescription.formulary_status %></td>
-
       <td><%= request.cmm_workflow_status %> - <%= request.cmm_outcome %></td>
 
       <td class="start">

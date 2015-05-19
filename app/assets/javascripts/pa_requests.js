@@ -52,7 +52,7 @@ $(function () {
                                 'drug_id': $('#prescription_drug_number').val() }],
                  patient_id: $('#prescription_patient_id').val() };
         $.ajax({
-          type: "POST",
+          method: "POST",
           url: '/pa_required',
           dataType: 'json',
           contentType: 'application/json',

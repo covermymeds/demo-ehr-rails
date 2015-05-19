@@ -179,7 +179,11 @@ describe 'eHR Example App' do
   end
 
   describe 'adding a prescription' do
+    let(:search_term) { 'Nexium' }
+    let(:indicator_result) { Hash prescriptions: [{ name: search_term, pa_required: true}] }
+
     before do
+      expect_any_instance_of(CoverMyMeds::Client).to receive(:search_indicators).and_return(indicator_result)
       visit doctor_login
       visit '/patients'
       page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
@@ -189,7 +193,7 @@ describe 'eHR Example App' do
     it 'should add a medication to a patient', js: true do
       # Find a drug
       find('#s2id_prescription_drug_number').click
-      find('.select2-input').set('Nexium')
+      find('.select2-input').set(search_term)
       expect(page).to have_selector('.select2-result-selectable')
       within '.select2-results' do
         find('li:first-child').click

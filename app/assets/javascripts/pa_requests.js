@@ -63,7 +63,8 @@ $(function () {
             } else {
               $('#pa_required_alert').addClass('hidden');
             }
-            $('#prescription_pa_required').prop('checked', data.prescriptions[0].pa_required).prop('disabled', data.prescriptions[0].autostart);
+            $('#prescription_pa_required').val(data.prescriptions[0].pa_required ? '1' : '0');
+            $('#display_pa_required').prop('checked', data.prescriptions[0].pa_required).prop('disabled', data.prescriptions[0].autostart);
           }
         });
       }

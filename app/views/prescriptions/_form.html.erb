@@ -20,14 +20,15 @@
       <div class="form-group col-md-12">
         <%= f.label :drug_number, "Medication" %><br>
         <%= f.text_field :drug_number, :class=>'form-control' %>
-        <%= f.hidden_field :drug_name, :class=>'form-control' %>
+        <%= f.hidden_field :drug_name %>
       </div>
     </div>
 
     <div class='row'>
       <div class='checkbox col-md-2'>
-        <%= f.label :pa_required do %>
-          <%= f.check_box :pa_required, :class=>'checkbox' %><b>Start PA?</b>
+        <%= label_tag :display_pa_required do %>
+          <%= check_box_tag :display_pa_required, '1', @prescription.pa_required, :class=>'checkbox' %><b>Start PA?</b>
+          <%= f.hidden_field :pa_required %>
         <% end %>
       </div>
       <div id='pa_required_alert' class='alert alert-info col-md-6 hidden' role='alert'>

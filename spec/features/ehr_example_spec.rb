@@ -179,25 +179,26 @@ describe 'eHR Example App' do
   end
 
   describe 'adding a prescription' do
-    let(:search_term) { 'Nexium' }
-    let(:indicator_result) { Hash prescriptions: [{ name: search_term, pa_required: true}] }
-
+    let(:drug_name) { 'Nexium' }
+    let(:pa_required) { false }
     before do
-      expect_any_instance_of(CoverMyMeds::Client).to receive(:search_indicators).and_return(indicator_result)
       visit doctor_login
       visit '/patients'
       page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
       click_link('Add Prescription')
+      stub_indicators(drug_name, pa_required)
     end
 
     it 'should add a medication to a patient', js: true do
       # Find a drug
       find('#s2id_prescription_drug_number').click
-      find('.select2-input').set(search_term)
+      find('.select2-input').set(drug_name)
+      wait_for_ajax
       expect(page).to have_selector('.select2-result-selectable')
       within '.select2-results' do
         find('li:first-child').click
       end
+      wait_for_ajax
 
       click_on('Save')
 
@@ -210,18 +211,19 @@ describe 'eHR Example App' do
       before do
         stub_create_pa_request!
         find('#s2id_prescription_drug_number').click
-        find('.select2-input').set(search_term)
+        find('.select2-input').set(drug_name)
         expect(page).to have_selector('.select2-result-selectable')
         within '.select2-results' do
           find('li:first-child').click
         end
+        wait_for_ajax
       end
 
-      context 'drug is a banana' do
-        let (:search_term) { 'banana' }
-        it 'requires a PA', js: true do
-          sleep 1
-          expect(find('#start_pa')).to be_checked
+      context 'drug requires a PA' do
+        let(:pa_required) { true }
+
+        it 'checks the PA Required checkbox', js: true do
+          expect(find('#display_pa_required')).to be_checked
         end
 
         it 'starts a PA', js: true do
@@ -230,11 +232,13 @@ describe 'eHR Example App' do
         end
       end
 
-      context 'drug is not a banana' do
-        let (:search_term) { 'apple' }
-        it 'does not require a PA', js: true do
-          expect(find('#start_pa')).to_not be_checked
+      context 'drug does not require a PA' do
+        let(:pa_required) { false }
+
+        it 'does not check the pa_required box', js: true do
+          expect(find('#display_pa_required')).to_not be_checked
         end
+
         it 'does not create a PA' do
           click_on('Save')
           expect(page).to have_content("Not Started - Unknown")

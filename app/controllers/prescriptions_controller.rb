@@ -36,7 +36,7 @@ class PrescriptionsController < ApplicationController
 
     respond_to do |format|
       if @prescription.save
-        if params[:start_pa]
+        if params[:prescription][:pa_required]
           start_pa(@prescription)
         end
         flash_message('Prescription successfully created')
@@ -54,7 +54,7 @@ class PrescriptionsController < ApplicationController
   def update
     respond_to do |format|
       if @prescription.update(prescription_params)
-        if params[:start_pa]
+        if params[:prescription][:pa_required]
           start_pa(@prescription)
         end
         flash_message('Prescription successfully updated.')

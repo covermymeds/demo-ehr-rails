@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150519173818) do
+ActiveRecord::Schema.define(version: 20150519194240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 20150519173818) do
     t.datetime "date_prescribed"
     t.boolean  "active"
     t.integer  "pharmacy_id"
+    t.boolean  "pa_required"
   end
 
   add_index "prescriptions", ["patient_id"], name: "index_prescriptions_on_patient_id", using: :btree

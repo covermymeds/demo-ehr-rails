@@ -23,6 +23,8 @@ $(function () {
   $('#dashboard').dashboard(dashboard_options);
 
   // drug search for the "new pa" form
+  options.drugId = $('#prescription_drug_number').val();
+  options.drugName = $('#prescription_drug_name').val();
   $('#prescription_drug_number').drugSearch(options);
 
   // if we got here from choosing a patient, the drug will already be filled in

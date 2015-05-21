@@ -86,11 +86,7 @@ class RequestConfigurator
     new_request
   end
 
-  def self.api_client(use_integration = false)
-    api_id     = use_integration ? Rails.application.secrets.integration_cmm_api_id : Rails.application.secrets.cmm_api_id
-    api_secret = use_integration ? Rails.application.secrets.integration_cmm_api_secret : Rails.application.secrets.cmm_api_secret
-    client = CoverMyMeds::Client.new(api_id, api_secret)
-    client.default_host = ENV['CMM_API_URL']
-    client
+  def self.api_client
+    ApiClientFactory.build
   end
 end

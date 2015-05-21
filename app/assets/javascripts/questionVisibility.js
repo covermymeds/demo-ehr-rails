@@ -30,6 +30,18 @@ $.widget("CoverMyMeds.questionVisibility", {
     })
     var $toHide = widget._allQuestions().not($keepVisible)
 
+    _.each($toHide, function(e,i,l) {
+      $(e).removeAttr('required');
+      $(e).removeAttr('data-required');
+      $(e).data('was-req', true)
+    });
+
+    _.each($keepVisible, function(e,i,l) {
+      if ($(e).data('was-req') == true) {
+        $(e).attr('required','');
+        $(e).attr('data-required','');
+      }
+    });
     widget.options.showBy($keepVisible.closest(widget.options.effectedSelector))
     widget.options.hideBy($toHide.closest(widget.options.effectedSelector))
   },

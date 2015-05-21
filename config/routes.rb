@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     resource :request_pages, only: [:show]
   end
 
+  resources :alerts
+
   post '/pa_requests/:pa_request_id/request_pages/:button_title',
     to: 'request_pages#do_action',
     as: :pa_request_request_pages_action

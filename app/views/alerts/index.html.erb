@@ -1,0 +1,15 @@
+<h2>Your Alerts</h2>
+<table class="table table-striped">
+  <tbody>
+  <%- @alerts.each do |alert| %>
+    <tr>
+      <td><%= alert.created_at.strftime('%b %e, %l:%M %p') %></td>
+      <td><%= alert.message %></td>
+      <td><%= link_to 'Delete', alert_path(alert), method: :delete, class: 'btn btn-default' %></td>
+    </tr>
+  <% end %>
+  <% unless @alerts.any? %>
+    <p> You have no alerts.</p>
+  <% end %>
+  </tbody>
+</table>

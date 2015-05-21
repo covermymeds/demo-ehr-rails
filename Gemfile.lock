@@ -4,17 +4,6 @@ GIT
   specs:
     database_cleaner (1.4.1)
 
-GIT
-  remote: git://github.com/covermymeds/covermymeds_api.git
-  revision: e1d1c48466afd54e5f0ac19f803a616713344bb6
-  branch: update_indicators_api
-  specs:
-    covermymeds_api (0.0.1)
-      activesupport
-      hashie (~> 2.0.2)
-      rest-client (~> 1.6)
-      settingslogic
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -82,6 +71,11 @@ GEM
       execjs
     coffee-script-source (1.9.1)
     columnize (0.9.0)
+    covermymeds_api (0.0.2)
+      activesupport
+      hashie (~> 2.0.2)
+      rest-client (~> 1.6)
+      settingslogic
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     diff-lcs (1.2.5)
@@ -296,7 +290,7 @@ DEPENDENCIES
   carmen-rails
   cocoon
   coffee-rails (~> 4.0.0)
-  covermymeds_api!
+  covermymeds_api (= 0.0.2)
   database_cleaner!
   dotenv-rails
   guard

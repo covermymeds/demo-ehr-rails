@@ -31,7 +31,7 @@
           <%= f.hidden_field :pa_required %>
         <% end %>
       </div>
-      <div id='pa_required_alert' class='alert alert-info col-md-6 hidden' role='alert'>
+      <div id='pa_required_alert' class="alert alert-warning col-md-6 <%= hidden_unless_pa_required(@prescription) %>" role='alert'>
         This medication will require a prior authorization.
       </div>
     </div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150429150952) do
+ActiveRecord::Schema.define(version: 20150519194240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,10 +101,10 @@ ActiveRecord::Schema.define(version: 20150429150952) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "drug_name"
-    t.string   "formulary_status"
     t.datetime "date_prescribed"
     t.boolean  "active"
     t.integer  "pharmacy_id"
+    t.boolean  "pa_required",         default: false
   end
 
   add_index "prescriptions", ["patient_id"], name: "index_prescriptions_on_patient_id", using: :btree

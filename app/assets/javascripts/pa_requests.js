@@ -51,20 +51,22 @@ $(function () {
       // if we're on the add prescription page, check if we need to start a PA
       if(document.URL.indexOf('prescription') != -1) {
         data = { prescriptions: [{ 'name': $('#prescription_drug_name').val(),
-                                'drug_id': $('#prescription_drug_number').val() }] };
+                                'drug_id': $('#prescription_drug_number').val() }],
+                 patient_id: $('#prescription_patient_id').val() };
         $.ajax({
-          type: "POST",
+          method: "POST",
           url: '/pa_required',
           dataType: 'json',
           contentType: 'application/json',
           data: JSON.stringify(data),
           success: function(data) {
-            if (data.prescriptions[0].autostart) {
+            if (data.prescriptions[0].pa_required) {
               $('#pa_required_alert').removeClass('hidden');
             } else {
               $('#pa_required_alert').addClass('hidden');
             }
-            $('#start_pa').prop('checked', data.prescriptions[0].autostart);
+            $('#prescription_pa_required').val(data.prescriptions[0].pa_required ? '1' : '0');
+            $('#display_pa_required').prop('checked', data.prescriptions[0].pa_required).prop('disabled', data.prescriptions[0].autostart);
           }
         });
       }

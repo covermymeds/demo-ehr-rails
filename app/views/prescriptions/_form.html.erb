@@ -20,18 +20,15 @@
       <div class="form-group col-md-12">
         <%= f.label :drug_number, "Medication" %><br>
         <%= f.text_field :drug_number, :class=>'form-control' %>
-        <%= f.hidden_field :drug_name, :class=>'form-control' %>
+        <%= f.hidden_field :drug_name %>
       </div>
     </div>
 
     <div class='row'>
-      <div class='form-group col-md-4'>
-        <%= f.label :formulary_status, "Formulary Status" %>
-        <%= f.text_field :formulary_status, :class=>'form-control', :readonly => true %>
-      </div>
       <div class='checkbox col-md-2'>
-        <%= label_tag :start_pa do %>
-        <%= check_box_tag :start_pa, 1, false, :class=>'checkbox' %><b>Start PA?</b>
+        <%= label_tag :display_pa_required do %>
+          <%= check_box_tag :display_pa_required, '1', @prescription.pa_required, :class=>'checkbox' %><b>Start PA?</b>
+          <%= f.hidden_field :pa_required %>
         <% end %>
       </div>
       <div id='pa_required_alert' class='alert alert-info col-md-6 hidden' role='alert'>
@@ -73,6 +70,8 @@
       <%= link_to "Cancel", :back, :class=>'btn btn-default' %>
       <%= f.submit "Save", :class => 'btn btn-primary create', :onsubmit => 'getDrugName' %>
     </div>
+
+    <%= hidden_field_tag 'prescription_patient_id', @patient.id %>
 
   </fieldset>
 </div>

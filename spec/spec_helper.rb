@@ -5,7 +5,6 @@ require 'rack_session_access/capybara'
 require 'webmock/rspec'
 require 'support/webmock_stubs'
 
-
 RSpec.configure do |config|
   config.include Capybara::DSL
 
@@ -69,25 +68,6 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
-  config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation)
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.strategy = :truncation
-  end
-
-  config.before(:each, js: true) do
-    DatabaseCleaner.strategy = :truncation
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
 
   config.include WebmockStubs, type: :controller
 end

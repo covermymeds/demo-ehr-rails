@@ -20,7 +20,6 @@ class PrescriptionsController < ApplicationController
     @patient = Patient.find(params[:patient_id])
     @prescription = @patient.prescriptions.build
     @prescription.quantity = 30
-    @prescription.formulary_status = Prescription::FORMULARY_STATUSES.sample
   end
 
   # GET /patient/:patient_id/prescriptions/1/edit
@@ -37,7 +36,7 @@ class PrescriptionsController < ApplicationController
 
     respond_to do |format|
       if @prescription.save
-        if params[:start_pa]
+        if params[:prescription][:pa_required]
           start_pa(@prescription)
         end
         flash_message('Prescription successfully created')
@@ -55,7 +54,7 @@ class PrescriptionsController < ApplicationController
   def update
     respond_to do |format|
       if @prescription.update(prescription_params)
-        if params[:start_pa]
+        if params[:prescription][:pa_required]
           start_pa(@prescription)
         end
         flash_message('Prescription successfully updated.')
@@ -127,6 +126,6 @@ class PrescriptionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def prescription_params
-      params.require(:prescription).permit(:drug_number, :quantity, :frequency, :refills, :dispense_as_written, :patient_id, :drug_name, :formulary_status, :pharmacy_id)
+      params.require(:prescription).permit(:drug_number, :quantity, :frequency, :refills, :dispense_as_written, :patient_id, :drug_name, :pharmacy_id, :pa_required)
     end
   end

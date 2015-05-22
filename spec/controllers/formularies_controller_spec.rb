@@ -1,25 +1,25 @@
 require 'rails_helper'
 
 describe FormulariesController, type: :controller do
-
-  let (:drug_id_1) { SecureRandom.uuid }
-  let (:drug_id_2) { SecureRandom.uuid }
-  let (:drug_name) { SecureRandom.uuid }
-  let (:banana)    { 'banana' }
-  let (:valid_attributes) {
-    { prescriptions: [
-      { drug_id: drug_id_1, name: drug_name },
-      { drug_id: drug_id_2, name: banana },
-  ], } }
+  fixtures :patients
+  junklet :drug_id, :drug_name
+  let(:patient)   { patients('patient_Amber') }
+  let(:request_data) do
+    {
+      prescriptions: [
+        { drug_id: drug_id, name: drug_name }
+      ],
+      patient_id: patient.id
+    }
+  end
+  let(:indicator_result) { Hash 'prescriptions' => [{ 'drug_id' => drug_id, 'name' => drug_name, 'pa_required' => true }] }
 
   describe 'POST pa_required' do
     describe 'with valid params' do
       it 'returns a JSON object indicating if the client must start a PA for each prescription' do
-        post :pa_required, valid_attributes
-        expect(JSON.parse(response.body)).to include('prescriptions' => [
-                                         {'drug_id' => drug_id_1, 'name' => drug_name, 'autostart' => false},
-                                         {'drug_id' => drug_id_2, 'name' => banana,    'autostart' => true}, ])
-
+        expect_any_instance_of(CoverMyMeds::Client).to receive(:search_indicators).and_return(Hashie::Mash.new(indicator_result))
+        post :pa_required, request_data
+        expect(JSON.parse(response.body)).to eq(indicator_result)
       end
     end
   end

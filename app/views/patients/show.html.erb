@@ -26,10 +26,12 @@
       <td><%= request.cmm_workflow_status %> - <%= request.cmm_outcome %></td>
 
       <td class="start">
-        <% if (request == nil) || (request.cmm_token == nil) then %>
+        <% if prescription.pa_required? && request.new_record? %>
           <%= link_to "PA Required", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
-        <% else  %>
+        <% elsif !request.new_record?  %>
           <%= link_to "View", patient_prescription_pa_request_path(@patient, prescription, request) %>
+        <% else %>
+            PA Not Required
         <% end %>
       </td>
       <td>

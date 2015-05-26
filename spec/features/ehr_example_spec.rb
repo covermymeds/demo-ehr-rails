@@ -41,9 +41,9 @@ describe 'eHR Example App' do
     end
 
     it 'should navigate to the new prior auth view', js: true do
+      prescriptions(:prescriptions_Amber).update_attribute(:pa_required, true)
       click_link('Patients')
       expect(page).to have_content('Patients')
-
       # Amber has a prescription
       page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
 

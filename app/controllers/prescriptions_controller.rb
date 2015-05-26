@@ -36,7 +36,7 @@ class PrescriptionsController < ApplicationController
 
     respond_to do |format|
       if @prescription.save
-        if params[:prescription][:pa_required]
+        if params[:prescription][:pa_required] == '1'
           start_pa(@prescription)
         end
         flash_message('Prescription successfully created')

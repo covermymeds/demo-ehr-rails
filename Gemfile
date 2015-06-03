@@ -33,6 +33,9 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 
+gem 'jquery-rails-cdn'
+gem 'jquery-ui-rails-cdn'
+
 #select2 gem needed for CoverMyMeds plugins
 gem 'select2-rails'
 

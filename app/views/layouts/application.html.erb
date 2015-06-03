@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Your EHR</title>
-
+  <% bootstrap_version = "3.1.1" %>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/<%= bootstrap_version %>/css/bootstrap.min.css" rel="stylesheet">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 
@@ -39,6 +40,9 @@
 
     </div>
 
+    <%= jquery_include_tag :google, force: true %>
+    <%= jquery_ui_include_tag :google, force: true %>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/<%= bootstrap_version %>/js/bootstrap.min.js"></script>
     <%= javascript_include_tag 'application' %>
 
   </body>

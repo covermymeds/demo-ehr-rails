@@ -22,5 +22,8 @@ module DemoEhrRails
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.cmm_integration_url = 'https://master-api.integration.covermymeds.com'
+
+    config.assets.precompile += %w( jquery.js jquery-ui.js )
+
   end
 end

@@ -734,8 +734,7 @@ return __p
 
         this.elem = options.elem;   // jQuery object to draw into
         this.url = options.url;
-        this.defaultUrl = options.apiUrl + '/requests/search?v=' + options.version;
-
+        this.defaultUrl = options.apiUrl + '/requests?v=' + options.version;
         this.tokenIds = options.tokenIds || [];
         this.apiId = options.apiId || '';
 
@@ -775,7 +774,7 @@ return __p
 
         $.ajax({
             url: this.url || this.defaultUrl,
-            type: 'POST',
+            type: 'GET',
             data: {
                 token_ids: this.tokenIds
             },

@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   end
 
   def cancel_registration
-    client = ApiClientFactory.build
+    client = CoverMyMeds.default_client
     client.delete_credential(@user.npi)
     @user.update_attributes(registered_with_cmm: false)
     redirect_to edit_user_path(@user), notice: 'User registration with CMM has been cancelled'

@@ -85,8 +85,4 @@ class RequestConfigurator
 
     new_request
   end
-
-  def self.api_client
-    ApiClientFactory.build
-  end
 end

@@ -27,6 +27,6 @@ class CmmRegistrar
   private
 
   def api_client
-    @api_client ||= ApiClientFactory.build
+    CoverMyMeds.default_client
   end
 end

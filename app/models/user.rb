@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
   private
 
   def cmm_register(credential)
-    client = ApiClientFactory.build
+    client = CoverMyMeds.default_client
     client.create_credential(npi: npi,
                              callback_url: '/cmm_callbacks.json',
                              callback_verb: 'POST',

@@ -71,7 +71,7 @@ GEM
       execjs
     coffee-script-source (1.9.1)
     columnize (0.9.0)
-    covermymeds_api (0.0.2)
+    cover_my_meds (1.0.0)
       activesupport
       hashie (~> 2.0.2)
       rest-client (~> 1.6)
@@ -290,7 +290,7 @@ DEPENDENCIES
   carmen-rails
   cocoon
   coffee-rails (~> 4.0.0)
-  covermymeds_api (= 0.0.2)
+  cover_my_meds (~> 1.0)
   database_cleaner!
   dotenv-rails
   guard

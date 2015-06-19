@@ -28,7 +28,7 @@ class CredentialsController < ApplicationController
   end
 
   def save_credential(credential)
-    client = ApiClientFactory.build
+    client = CoverMyMeds.default_client
     credential.transaction do
       credential.save
       client.create_credential(npi: @user.npi, callback_url: cmm_callbacks_url, callback_verb: 'POST', fax_numbers: credential.fax, contact_hint: @user.contact_hint)

@@ -60,21 +60,24 @@ describe 'eHR Example App' do
     end
 
     context 'Resources' do
-      before { click_link ('Resources') }
 
       it 'defaults to the custom UI' do
+        click_link ('Resources') 
         expect(find_link('Use CoverMyMeds Request Page')[:href]).to match(/toggle_ui/)
       end
 
       it 'should navigate to the api documentation' do
+        click_link ('Resources') 
         expect(find_link('API Documentation')[:href]).to match("/api")
       end
 
       it 'should display the source code when asked' do
+        click_link ('Resources') 
         expect(find_link('Source Code')[:href]).to match("/code")
       end
 
       it 'should reset the database when asked', js: true do
+        click_link ('Resources') 
         response = Hashie::Mash.new(JSON.parse(File.read('spec/fixtures/created_pa.json')))
         allow_any_instance_of(CoverMyMeds::Client).to receive(:create_request).and_return response
         click_link('Reset Database')
@@ -83,6 +86,7 @@ describe 'eHR Example App' do
       end
 
       it 'should navigate to the callbacks view' do
+        click_link ('Resources') 
         click_link('Callbacks')
         expect(page).to have_content('Listing callbacks')
       end

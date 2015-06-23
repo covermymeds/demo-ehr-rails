@@ -8,7 +8,7 @@ class CmmCallbacksController < ApplicationController
   # GET /callbacks
   # GET /callbacks.json
   def index
-    @callbacks = CmmCallback.all
+    @callbacks = CmmCallback.page(params[:page])
   end
 
   # GET /callbacks/1

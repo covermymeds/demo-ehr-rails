@@ -56,6 +56,9 @@ gem 'spring', '~> 1.3.6', group: :development
 
 gem 'cocoon'
 
+gem 'kaminari'
+gem 'bootstrap-kaminari-views'
+
 group :test do
   gem 'shoulda-matchers'
   gem 'junklet'

@@ -53,28 +53,31 @@ describe 'eHR Example App' do
       expect(page).to have_content('New PA Request')
     end
 
-    it 'should navigate to the contact cmm view' do
+    it 'should navigate to the contact cmm view', js: true do
       click_link('Prior Authorizations')
       click_link('Contact CoverMyMeds')
       expect(page).to have_content('For assistance using CoverMyMeds')
     end
 
     context 'Resources' do
-      before { click_link ('Resources') }
 
-      it 'defaults to the custom UI' do
+      it 'defaults to the custom UI', js: true do
+        click_link ('Resources') 
         expect(find_link('Use CoverMyMeds Request Page')[:href]).to match(/toggle_ui/)
       end
 
-      it 'should navigate to the api documentation' do
+      it 'should navigate to the api documentation', js: true do
+        click_link ('Resources') 
         expect(find_link('API Documentation')[:href]).to match("/api")
       end
 
-      it 'should display the source code when asked' do
+      it 'should display the source code when asked', js: true do
+        click_link ('Resources') 
         expect(find_link('Source Code')[:href]).to match("/code")
       end
 
       it 'should reset the database when asked', js: true do
+        click_link ('Resources') 
         response = Hashie::Mash.new(JSON.parse(File.read('spec/fixtures/created_pa.json')))
         allow_any_instance_of(CoverMyMeds::Client).to receive(:create_request).and_return response
         click_link('Reset Database')
@@ -82,18 +85,19 @@ describe 'eHR Example App' do
         expect(page).to have_content('Database has been reset')
       end
 
-      it 'should navigate to the callbacks view' do
+      it 'should navigate to the callbacks view', js: true do
+        click_link ('Resources') 
         click_link('Callbacks')
         expect(page).to have_content('Listing callbacks')
       end
     end
 
-    it 'should navigate to the dashboard view from staff login' do
+    it 'should navigate to the dashboard view from staff login', js: true do
       click_link('staff_login')
       expect(page).to have_content('Your Prior Auth Dashboard')
     end
 
-    it 'should navigate to the patient list from doctor login' do
+    it 'should navigate to the patient list from doctor login', js: true do
       click_link('dr_login')
       expect(page).to have_content('Patients')
     end
@@ -115,7 +119,7 @@ describe 'eHR Example App' do
       expect(page).to have_content('First Name')
     end
 
-    it 'should create ten default patients by default' do
+    it 'should create ten default patients by default', js: true do
       expect(page).to have_selector('.table')
       expect(page).to have_css('.table tr.patients', count: 10)
     end
@@ -146,7 +150,7 @@ describe 'eHR Example App' do
       end
     end
 
-    it 'should delete a patient if remove button is clicked' do
+    it 'should delete a patient if remove button is clicked', js: true do
       within '.table' do
         click_link('X', match: :first)
       end
@@ -239,7 +243,7 @@ describe 'eHR Example App' do
           expect(find('#display_pa_required')).to_not be_checked
         end
 
-        it 'does not create a PA' do
+        it 'does not create a PA', js: true do
           click_on('Save')
           expect(page).to have_content("Not Started - Unknown")
         end

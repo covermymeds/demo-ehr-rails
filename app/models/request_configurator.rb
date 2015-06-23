@@ -89,4 +89,5 @@ class RequestConfigurator
   def self.api_client
     CoverMyMeds.default_client
   end
+
 end

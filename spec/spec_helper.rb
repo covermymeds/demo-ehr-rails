@@ -72,11 +72,27 @@ RSpec.configure do |config|
   config.include WebmockStubs, type: :controller
 end
 
-Capybara.configure do |config|
-  config.run_server = true
-  config.javascript_driver = :poltergeist
-  config.default_driver = :webkit
-  config.app_host = 'http://localhost:3001' # change url
 
-  config.server_port = 3001
+setup_url_whitelist = lambda do |driver|
+  driver.block_unknown_urls
+  driver.allow_url "staging-demo-ehr-rails.herokuapp.com"
+  driver.allow_url "demo-ehr-rails.herokuapp.com"
+  driver.allow_url "ajax.googleapis.com"
+  driver.allow_url "netdna.bootstrapcdn.com"
+  driver.allow_url "api.covermymeds.com"
+  driver.allow_url "master-api.integration.covermymeds.com"
+end
+
+RSpec.configure do |config|
+  config.before :example, :js, type: :feature do |example|
+    if example.metadata[:js] && Capybara.current_driver == :webkit
+      setup_url_whitelist.call(page.driver)
+    end
+  end
+end
+
+Capybara.register_driver :webkit do |app|
+  Capybara::Webkit::Driver.new(app).tap do |driver|
+    setup_url_whitelist.call(driver)
+  end
 end

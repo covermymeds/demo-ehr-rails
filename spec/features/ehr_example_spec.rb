@@ -56,6 +56,7 @@ describe 'eHR Example App' do
     it 'should navigate to the contact cmm view' do
       click_link('Prior Authorizations')
       click_link('Contact CoverMyMeds')
+      save_screenshot('/Users/mharris/Code/demo-ehr-rails/screen.png', :full => true)
       expect(page).to have_content('For assistance using CoverMyMeds')
     end
 

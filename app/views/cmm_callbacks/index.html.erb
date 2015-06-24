@@ -1,3 +1,4 @@
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <div id="callbacks-list" class="template">
 <h1>Listing callbacks</h1>
 
@@ -16,9 +17,9 @@
       <%= link_to callback.created_at, callback %>
     </div>
     <div class='col-md-9'>
-      <code>
+      <pre><code class='prettyprint json'>
         <%= json_pp(callback.content) %>
-      </code>
+      </code></pre>
     </div>
   </div>
 <% end %>

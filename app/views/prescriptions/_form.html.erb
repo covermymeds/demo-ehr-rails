@@ -34,16 +34,17 @@
     <div class='checkbox'>
       <%= f.label :pa_required do %>
         <% if @prescription.autostart %>
-          <%= f.check_box :pa_required, enabled: false %>
-            <b>Start PA?</b>
+          <%= f.hidden_field :pa_required %>
+          <%= check_box_tag 'prescription_pa_required', '1', true, disabled: true %>
+          <b>Start PA?</b>
         <% else %>
           <%= f.check_box :pa_required %>
-            <b>Start PA?</b>
+          <b>Start PA?</b>
         <% end %>
       <% end %>
     </div>
 
-    <%= f.hidden_field :autostart, id:'prescription_autostart' %>
+    <%= f.hidden_field :autostart, value: (@prescription.autostart ? 1 : 0) %>
 
     <div class='row'>
       <div class="form-group col-md-2">
@@ -77,7 +78,7 @@
 
     <div class="actions">
       <%= link_to "Cancel", :back, :class=>'btn btn-default' %>
-      <%= f.submit "Save", :class => 'btn btn-primary create', :onsubmit => 'getDrugName' %>
+      <%= f.submit nil, :class => 'btn btn-primary create', :onsubmit => 'getDrugName' %>
     </div>
 
     <%= hidden_field_tag 'prescription_patient_id', @patient.id %>

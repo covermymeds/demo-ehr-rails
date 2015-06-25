@@ -29,14 +29,13 @@ class PrescriptionsController < ApplicationController
   # POST /patient/:patient_id/prescriptions.json
   def create
     @patient = Patient.find(params[:patient_id])
-    @prescription = @patient.prescriptions.build(prescription_params)
-    @prescription.date_prescribed = Time.zone.now
-    @prescription.active = true
-
+    @prescription = @patient.prescriptions.build(prescription_params.merge({
+      date_prescribed: Time.zone.now, 
+      active: true}))
+    
     respond_to do |format|
       if @prescription.save
-        binding.pry
-        if params[:prescription][:pa_required] == '1'
+        if @prescription.pa_required
           start_pa(@prescription)
         end
         flash_message('Prescription successfully created')
@@ -54,7 +53,7 @@ class PrescriptionsController < ApplicationController
   def update
     respond_to do |format|
       if @prescription.update(prescription_params)
-        if params[:prescription][:pa_required]
+        if @prescription.pa_required && @prescription.pa_requests.empty?
           start_pa(@prescription)
         end
         flash_message('Prescription successfully updated.')
@@ -126,6 +125,6 @@ class PrescriptionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def prescription_params
-      params.require(:prescription).permit(:drug_number, :quantity, :frequency, :refills, :dispense_as_written, :patient_id, :drug_name, :pharmacy_id, :pa_required)
+      params.require(:prescription).permit(:drug_number, :quantity, :frequency, :refills, :dispense_as_written, :patient_id, :drug_name, :pharmacy_id, :pa_required, :autostart)
     end
   end

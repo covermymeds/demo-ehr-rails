@@ -12,7 +12,7 @@ describe FormulariesController, type: :controller do
       patient_id: patient.id
     }
   end
-  let(:indicator_result) { Hash 'prescriptions' => [{ 'drug_id' => drug_id, 'name' => drug_name, 'pa_required' => true }] }
+  let(:indicator_result) { Hash 'prescriptions' => [{ 'drug_id' => drug_id, 'name' => drug_name, 'pa_required' => true, 'autostart' => false }] }
 
   describe 'POST pa_required' do
     describe 'with valid params' do

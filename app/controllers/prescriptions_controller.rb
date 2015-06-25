@@ -35,6 +35,7 @@ class PrescriptionsController < ApplicationController
 
     respond_to do |format|
       if @prescription.save
+        binding.pry
         if params[:prescription][:pa_required] == '1'
           start_pa(@prescription)
         end

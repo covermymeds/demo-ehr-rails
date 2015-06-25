@@ -17,7 +17,7 @@ class Prescription < ActiveRecord::Base
   ]
 
   def pa_required?
-    self.pa_required || (self.drug_name && self.drug_name.downcase.include?("banana"))
+    self.pa_required || (drug_name || "").include?("banana")
   end
 
   def script

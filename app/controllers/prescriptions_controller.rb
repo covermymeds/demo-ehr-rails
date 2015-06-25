@@ -19,7 +19,6 @@ class PrescriptionsController < ApplicationController
   def new
     @patient = Patient.find(params[:patient_id])
     @prescription = @patient.prescriptions.build
-    @prescription.quantity = 30
   end
 
   # GET /patient/:patient_id/prescriptions/1/edit

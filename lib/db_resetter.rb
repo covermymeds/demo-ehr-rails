@@ -78,7 +78,7 @@ class DbResetter
 
       drugs = [
         {drug_number: "175366", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
-          drug_name: "SpongeBob SquarePants Gummies",  active: true },
+          drug_name: "SpongeBob SquarePants Gummies", active: true },
         {drug_number: "122704", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,
           drug_name: "Flintstones Gummies",  active: true },
         {drug_number: "003485", quantity: 30, frequency: "qD", refills: 1, dispense_as_written: true,

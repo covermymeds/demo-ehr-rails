@@ -16,8 +16,13 @@ class Prescription < ActiveRecord::Base
     ['UD - AS DIRECTED', 'UD']
   ]
 
-  def pa_required?
-    self.pa_required || (self.drug_name && self.drug_name.downcase.include?("banana"))
+  def self.pa_required?(drug_name)
+    (drug_name || "").downcase.include?("banana") || 
+    (drug_name || "").downcase.include?("chocolate")
+  end
+
+  def self.autostart?(drug_name)
+    (drug_name || "").downcase.include?("chocolate")
   end
 
   def script

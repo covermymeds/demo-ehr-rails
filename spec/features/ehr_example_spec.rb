@@ -204,7 +204,7 @@ describe 'eHR Example App' do
       end
       wait_for_ajax
 
-      click_on('Save')
+      click_on('Create Prescription')
 
       visit '/patients'
       page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
@@ -227,11 +227,11 @@ describe 'eHR Example App' do
         let(:pa_required) { true }
 
         it 'checks the PA Required checkbox', js: true do
-          expect(find('#display_pa_required')).to be_checked
+          expect(find('#prescription_pa_required')).to be_checked
         end
 
         it 'starts a PA', js: true do
-          click_on('Save')
+          click_on('Create Prescription')
           expect(page).to have_content("Your prior authorization request was successfully started.")
         end
       end
@@ -240,11 +240,11 @@ describe 'eHR Example App' do
         let(:pa_required) { false }
 
         it 'does not check the pa_required box', js: true do
-          expect(find('#display_pa_required')).to_not be_checked
+          expect(find('#prescription_pa_required')).to_not be_checked
         end
 
         it 'does not create a PA', js: true do
-          click_on('Save')
+          click_on('Create Prescription')
           expect(page).to have_content("Not Started - Unknown")
         end
       end

@@ -65,8 +65,9 @@ $(function () {
             } else {
               $('#pa_required_alert').addClass('hidden');
             }
-            $('#prescription_pa_required').val(data.prescriptions[0].pa_required ? '1' : '0');
-            $('#display_pa_required').prop('checked', data.prescriptions[0].pa_required).prop('disabled', data.prescriptions[0].autostart);
+            $('input[name="prescription[pa_required]"][type=hidden]').val(data.prescriptions[0].pa_required ? '1' : '0');
+            $('#prescription_autostart').val(data.prescriptions[0].autostart ? '1' : '0');
+            $('#prescription_pa_required').prop('checked', data.prescriptions[0].pa_required).prop('disabled', data.prescriptions[0].autostart);
           }
         });
       }

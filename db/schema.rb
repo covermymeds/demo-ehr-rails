@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150519194240) do
+ActiveRecord::Schema.define(version: 20150625163629) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 20150519194240) do
 
   create_table "prescriptions", force: true do |t|
     t.string   "drug_number"
-    t.integer  "quantity"
+    t.integer  "quantity",            default: 1
     t.string   "frequency"
     t.integer  "refills"
     t.boolean  "dispense_as_written"
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20150519194240) do
     t.boolean  "active"
     t.integer  "pharmacy_id"
     t.boolean  "pa_required",         default: false
+    t.boolean  "autostart",           default: false
   end
 
   add_index "prescriptions", ["patient_id"], name: "index_prescriptions_on_patient_id", using: :btree

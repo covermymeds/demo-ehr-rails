@@ -20,21 +20,31 @@
       <div class="form-group col-md-12">
         <%= f.label :drug_number, "Medication" %><br>
         <%= f.text_field :drug_number, :class=>'form-control' %>
-        <%= f.hidden_field :drug_name %>
+        <%= f.hidden_field :drug_name, :class=>'form-control' %>
       </div>
     </div>
 
-    <div class='row'>
-      <div class='checkbox col-md-2'>
-        <%= label_tag :display_pa_required do %>
-          <%= check_box_tag :display_pa_required, '1', @prescription.pa_required, :class=>'checkbox' %><b>Start PA?</b>
+    <ul class='list-unstyled'>
+      <li>
+        <div id='pa_required_alert' class='alert alert-warning <%= hidden_unless_pa_required(@prescription) %>'>
+          This medication requires prior authorization
+        </div>
+      </li>
+    </ul>
+    <div class='checkbox'>
+      <%= f.label :pa_required do %>
+        <% if @prescription.autostart %>
           <%= f.hidden_field :pa_required %>
+          <%= check_box_tag 'prescription_pa_required', '1', true, disabled: true %>
+          <b>Start PA?</b>
+        <% else %>
+          <%= f.check_box :pa_required %>
+          <b>Start PA?</b>
         <% end %>
-      </div>
-      <div id='pa_required_alert' class="alert alert-warning col-md-6 <%= hidden_unless_pa_required(@prescription) %>" role='alert'>
-        This medication will require a prior authorization.
-      </div>
+      <% end %>
     </div>
+
+    <%= f.hidden_field :autostart, value: (@prescription.autostart ? 1 : 0) %>
 
     <div class='row'>
       <div class="form-group col-md-2">
@@ -68,7 +78,7 @@
 
     <div class="actions">
       <%= link_to "Cancel", :back, :class=>'btn btn-default' %>
-      <%= f.submit "Save", :class => 'btn btn-primary create', :onsubmit => 'getDrugName' %>
+      <%= f.submit nil, :class => 'btn btn-primary create', :onsubmit => 'getDrugName' %>
     </div>
 
     <%= hidden_field_tag 'prescription_patient_id', @patient.id %>

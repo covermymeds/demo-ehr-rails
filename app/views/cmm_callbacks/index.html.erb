@@ -18,7 +18,7 @@
     </div>
     <div class='col-md-9'>
       <pre><code class='prettyprint json'>
-        <%= json_pp(callback.content) %>
+        <%= callback.content.truncate(75) %>
       </code></pre>
     </div>
   </div>

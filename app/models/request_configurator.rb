@@ -49,17 +49,15 @@ class RequestConfigurator
     new_request.prescription.dispense_as_written = prescription.dispense_as_written
 
     # merge prescriber information
-    # for now, just hard code doctor information.  Technically, this would come from the
-    # currently logged in user, or some other way of selecting the physician.
     physician = {npi: prescriber ? prescriber.npi : "1234567890",
                  first_name: prescriber ? prescriber.first_name : "James",
                  last_name: prescriber ? prescriber.last_name : "Kirk",
-                 clinic: "The Enterprise Clinic",
-                 fax_number: "555-555-5555",
-                 street: "1 Starship Way",
-                 city: "Riverside",
-                 state: "OH",
-                 zip: "52327" }
+                 clinic: prescriber.practice_name || "The Enterprise Clinic",
+                 fax_number: prescriber.credentials.first.nil? ? "614-555-5555" : prescriber.credentials.first.fax,
+                 street: prescriber.practice_street_1 || "1 Starship Way",
+                 city: prescriber.practice_city || "Riverside",
+                 state: prescriber.practice_state || "OH",
+                 zip: prescriber.practice_zip || "52327" }
 
     new_request.prescriber.npi = physician[:npi]
     new_request.prescriber.first_name = physician[:first_name]

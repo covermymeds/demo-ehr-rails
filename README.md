@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/covermymeds/demo-ehr-rails.png?label=ready&title=Ready)](https://waffle.io/covermymeds/demo-ehr-rails)
 Demo EHR Rails Example
 ============
 

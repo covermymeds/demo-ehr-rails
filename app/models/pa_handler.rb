@@ -9,7 +9,7 @@ class PaHandler
     if !npi_found?
       :npi_not_found
     elsif !found_prescription?
-      :prescription_not_found
+      :new_retrospective
     elsif @pa.new_record?
       :new_retrospective
     else

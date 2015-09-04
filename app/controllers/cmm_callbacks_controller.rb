@@ -30,7 +30,6 @@ class CmmCallbacksController < ApplicationController
   # changes. In that case, we need to update the PA record in our system with the
   # new values in the callback.
   def create
-    logger.debug "received a callback for #{@pa.cmm_id}"
     handler = PaHandler.new(pa: @pa, user: @user, prescription: @prescription)
 
     case handler.call

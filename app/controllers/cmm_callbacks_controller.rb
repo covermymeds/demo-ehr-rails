@@ -36,8 +36,12 @@ class CmmCallbacksController < ApplicationController
     when :npi_not_found
       render(status: 410, text: 'NPI not found') and return
     when :prescription_not_found
-      create_alert(@user, "Your NPI of #{@user.npi} was found, but the prescription didn't match")
-      render(status: 404, text: 'prescription not found') and return
+      # systems may choose to reject unrecognized prescriptions, 
+      # to add them to the system, or to have a un-attached PA
+      # for this example, we have decided this is a paper Rx
+      # so we want to handle PA electronically
+      create_alert(@user, "NPI #{@user.npi} was found, but the prescription didn't match. Creating new Rx.")
+      @pa.init_from_callback(request_params)
     when :new_retrospective
       @pa.init_from_callback(request_params)
     when :pa_found

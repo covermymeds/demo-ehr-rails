@@ -9,11 +9,7 @@ class PaHandler
     if !npi_found?
       :npi_not_found
     elsif !found_prescription?
-      # systems may choose to reject unrecognized prescriptions, 
-      # to create them, or to have a un-attached PA
-      # this is the case where a script might have originally been
-      # on paper and just the PA is electronic
-      :new_retrospective
+      :prescription_not_found
     elsif @pa.new_record?
       :new_retrospective
     else

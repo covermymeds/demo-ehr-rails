@@ -66,19 +66,16 @@ RSpec.describe CmmCallbacksController, type: :controller do
       end
 
       context "when the EHR doesn't have the prescription" do
-        it 'ignores the PA' do
-          expect(PaRequest).to_not receive(:new)
+
+        it 'initiates PA for the new prescription' do
           post :create, valid_request, format: :json
+          expect(response.status).to eq(200)
         end
 
         it 'alerts the prescriber' do
           expect { do_request }.to change { user.reload.alerts.count }.from(0).to(1)
         end
 
-        it 'returns 404' do
-          post :create, valid_request, format: :json
-          expect(response.status).to eq(404)
-        end
       end
     end
 

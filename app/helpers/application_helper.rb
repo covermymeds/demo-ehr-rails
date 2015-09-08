@@ -23,7 +23,7 @@ module ApplicationHelper
     if request.cmm_link
       request.cmm_link
     else
-      "https://api.covermymeds.com/requests/#{request.cmm_id}?v=1&#{params.to_query}"
+      "#{ENV['CMM_API_URL']}/requests/#{request.cmm_id}?v=1&#{params.to_query}"
     end
   end
 

@@ -2,7 +2,7 @@
 Demo EHR Rails Example
 ============
 
-This application demonstrates what a typical web-based EHR can do to automate prior authorization using the [CoverMyMeds EHR API](https://api.covermymeds.com).
+This application demonstrates what a typical web-based EHR can do to automate prior authorization using the [CoverMyMeds EHR API](https://developers.covermymeds.com/ehr-api.html).
 
 
 ### Dependencies

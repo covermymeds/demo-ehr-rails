@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
       # token_id is included in cmm_link
       request.cmm_link + "&#{params.to_query}"
     else
-      "https://api.covermymeds.com/requests/#{request.cmm_id}?v=1&token_id=#{request.cmm_token_id}&#{params.to_query}"
+      "#{ENV['CMM_API_URL']}/requests/#{request.cmm_id}?v=1&token_id=#{request.cmm_token_id}&#{params.to_query}"
     end
   end
 

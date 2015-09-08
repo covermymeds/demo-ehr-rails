@@ -1,7 +1,7 @@
 class CmmRegistrar
 
-  CALLBACK_VERB = 'post'.freeze
-  CALLBACK_URL = '/cmm_callbacks.json'.freeze
+  CALLBACK_VERB = 'POST'.freeze
+  CALLBACK_URL = "#{ENV['ROOT_URL']}/cmm_callbacks.json".freeze
 
   def initialize(user: user)
     @user = user

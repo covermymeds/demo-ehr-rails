@@ -37,6 +37,13 @@ You'll need to obtain your own unique API keys, which must be stored in environm
 
 For convenience, you may optionally set these enviroment variables by copying the file `.env.sample` to `.env` and entering your appropriate key and secret.  This is for `development` and `test` environments only and does not affect production.
 
+#### Callbacks
+
+To register for retrospective callbacks, you'll need to set an environment 
+variable for your system called "ROOT_URL" that points to the root URL of your
+installation. In the demonstration environment, it is set to 
+"http://demo-ehr-rails.herokuapp.com".
+
 #### Tests
 Once your API keys are set in the environment, you can run `bundle exec rspec` to run through the tests.
 

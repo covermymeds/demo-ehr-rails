@@ -16,7 +16,7 @@
         <th colspan="2">Prescribed On</th>
       </tr>
     </thead>
-    <% @patient.prescriptions.each do |prescription| %>
+    <% @patient.prescriptions.order('date_prescribed DESC').each do |prescription| %>
     <% request = prescription.pa_requests.first || PaRequest.new %>
     <tr>
       <td>

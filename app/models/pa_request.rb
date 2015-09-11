@@ -3,6 +3,37 @@ class PaRequest < ActiveRecord::Base
   has_many :cmm_callbacks
   default_scope { where('cmm_token IS NOT NULL') }
 
+  def last_updated
+    updated_at.in_time_zone(Time.zone.name)
+  end
+
+  def status
+    outcome = read_attribute(:cmm_outcome).downcase
+    status = read_attribute(:cmm_workflow_status).downcase
+
+    if "unfavorable" == outcome
+      "Denied"
+    elsif "favorable" == outcome
+      "Approved"
+    elsif /response/ =~ status
+      "Response"
+    elsif /request/ =~ status
+      "Request"
+    elsif /sent/ =~ status
+      "Request"
+    elsif /shared/ =~ status
+      "New"
+    elsif /new/ =~ status
+      "New"
+    elsif /failure/ =~ status
+      'Error'
+    elsif /expired/ =~ status
+      'Expired'      
+    else
+      'Unknown'
+    end
+  end
+
   def set_cmm_values(response)
     self.cmm_link = response.tokens[0].html_url
     self.cmm_id = response.id

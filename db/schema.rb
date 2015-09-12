@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150625163629) do
+ActiveRecord::Schema.define(version: 20150912172807) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,18 @@ ActiveRecord::Schema.define(version: 20150625163629) do
   end
 
   add_index "alerts", ["user_id"], name: "index_alerts_on_user_id", using: :btree
+
+  create_table "choices", force: true do |t|
+    t.integer  "question_id"
+    t.string   "additional_free_text_indicator"
+    t.text     "choice_text"
+    t.integer  "sequence_number"
+    t.string   "cid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "choices", ["question_id"], name: "index_choices_on_question_id", using: :btree
 
   create_table "cmm_callbacks", force: true do |t|
     t.text     "content"
@@ -41,6 +53,15 @@ ActiveRecord::Schema.define(version: 20150625163629) do
 
   add_index "credentials", ["user_id"], name: "index_credentials_on_user_id", using: :btree
 
+  create_table "messages", force: true do |t|
+    t.integer  "pa_request_id"
+    t.text     "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "messages", ["pa_request_id"], name: "index_messages_on_pa_request_id", using: :btree
+
   create_table "pa_requests", force: true do |t|
     t.integer  "prescription_id"
     t.boolean  "urgent"
@@ -56,6 +77,16 @@ ActiveRecord::Schema.define(version: 20150625163629) do
     t.text     "request_pages_actions"
     t.string   "cmm_outcome"
     t.integer  "prescriber_id"
+    t.text     "note"
+    t.string   "cancel_denial_reason",  limit: 2
+    t.datetime "datetime_for_reply"
+    t.date     "date_for_reply"
+    t.datetime "effective_datetime"
+    t.datetime "expiration_datetime"
+    t.string   "appeal_supported",      limit: 1
+    t.string   "still_open_reason"
+    t.string   "closed_reason_code",    limit: 2
+    t.string   "form_name",                       default: "None Chosen"
   end
 
   add_index "pa_requests", ["prescription_id"], name: "index_pa_requests_on_prescription_id", using: :btree
@@ -105,11 +136,46 @@ ActiveRecord::Schema.define(version: 20150625163629) do
     t.boolean  "active"
     t.integer  "pharmacy_id"
     t.boolean  "pa_required",         default: false
+    t.boolean  "use_ncpdp",           default: false
     t.boolean  "autostart",           default: false
+    t.integer  "days_supply"
+    t.string   "diagnosis_icd9"
+    t.string   "diagnosis_icd10"
   end
 
   add_index "prescriptions", ["patient_id"], name: "index_prescriptions_on_patient_id", using: :btree
   add_index "prescriptions", ["pharmacy_id"], name: "index_prescriptions_on_pharmacy_id", using: :btree
+
+  create_table "question_sets", force: true do |t|
+    t.string   "qsid"
+    t.string   "title"
+    t.text     "description"
+    t.string   "contact_number"
+    t.text     "orig_xml"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "pa_request_id"
+  end
+
+  add_index "question_sets", ["pa_request_id"], name: "index_question_sets_on_pa_request_id", using: :btree
+
+  create_table "questions", force: true do |t|
+    t.string   "qid"
+    t.string   "sequence_number"
+    t.text     "question_text"
+    t.string   "default_next_question_id"
+    t.integer  "question_set_id"
+    t.text     "orig_xml"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "question_type"
+    t.string   "is_date_time_required"
+    t.string   "is_numeric"
+    t.string   "is_free_text"
+    t.string   "select_multiple",          limit: 2
+  end
+
+  add_index "questions", ["question_set_id"], name: "index_questions_on_question_set_id", using: :btree
 
   create_table "roles", force: true do |t|
     t.string "description", null: false

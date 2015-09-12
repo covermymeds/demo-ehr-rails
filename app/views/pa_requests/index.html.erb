@@ -15,6 +15,7 @@
       <th>Status</th>
       <th>Patient Name</th>
       <th>Prescription</th>
+      <th>Payer</th>
       <th>Updated</th>
       <th class='remove'>Remove</th>
     </tr>
@@ -33,6 +34,9 @@
       </td>
       <td>
         <%= link_to "#{request.prescription.drug_name}", edit_patient_prescription_path(request.prescription.patient, request.prescription) %>
+      </td>
+      <td>
+        <%= request.form_name %>
       </td>
       <td>
         <%= request.last_updated.strftime("%m/%d/%Y at %I:%M%p") %>

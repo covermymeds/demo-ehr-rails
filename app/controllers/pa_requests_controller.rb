@@ -11,11 +11,23 @@ class PaRequestsController < ApplicationController
 
     # update the request statuses
     @cmm_requests = CoverMyMeds.default_client.get_requests(@tokens)
-    @cmm_requests.each do |update|
-      local = @requests.find_by_cmm_id(update[:id])
-      logger.info "updating #{local.cmm_id} with status #{update[:workflow_status]}"
-      local.update_attribute(:cmm_workflow_status, update[:workflow_status])
-      local.update_attribute(:cmm_outcome, update[:plan_outcome])
+    @cmm_requests.each do |cmm_request|
+      local = @requests.find_by_cmm_id(cmm_request[:id])
+
+      # update workflow status & outcome
+      local.update_attributes({
+        cmm_workflow_status: cmm_request[:workflow_status],
+        cmm_outcome: cmm_request[:plan_outcome]})
+
+      # update form selection
+      if cmm_request[:form_id]
+        form = CoverMyMeds.default_client.get_form(cmm_request[:form_id])
+        if form
+          local.update_attributes({form_id: cmm_request[:form_id],
+            form_name: form[:description]})
+        end
+      end
+
     end
   end
 

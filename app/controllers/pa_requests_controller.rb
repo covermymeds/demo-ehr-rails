@@ -20,7 +20,7 @@ class PaRequestsController < ApplicationController
         cmm_outcome: cmm_request[:plan_outcome]})
 
       # update form selection
-      if cmm_request[:form_id]
+      if cmm_request[:form_id] && cmm_request[:form_id] != ""
         form = CoverMyMeds.default_client.get_form(cmm_request[:form_id])
         if form
           local.update_attributes({form_id: cmm_request[:form_id],

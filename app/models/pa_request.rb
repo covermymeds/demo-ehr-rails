@@ -3,35 +3,40 @@ class PaRequest < ActiveRecord::Base
   has_many :cmm_callbacks
   default_scope { where('cmm_token IS NOT NULL') }
 
+  OUTCOME_MAP = {
+    unfavorable:  'Denied',
+    favorable:    'Approved',
+    na:           'Not Needed',
+    unsent:       'Unsent',
+    cancelled:    'Cancelled',
+    unknown:      'Unknown'
+  }.freeze
+
+  STATUS_MAP = {
+    question_request:     'Request',
+    question_response:    'Response',
+    pa_request:           'Request',
+    pa_response:          'Response',
+    appeal_request:       'Request',
+    appeal_response:      'Response',
+    cancel_request_sent:  'Request',
+    provider_cancel:      'Response',
+    sent_to_plan:         'Request',
+    archived:             'Response'
+  }.freeze
+
   def last_updated
     updated_at.in_time_zone(Time.zone.name)
   end
 
   def status
-    outcome = read_attribute(:cmm_outcome).downcase
-    status = read_attribute(:cmm_workflow_status).downcase
+    outcome = self.cmm_outcome.downcase.parameterize.underscore.to_sym
+    status = self.cmm_workflow_status.downcase.parameterize.underscore.to_sym
 
-    if "unfavorable" == outcome
-      "Denied"
-    elsif "favorable" == outcome
-      "Approved"
-    elsif /response/ =~ status
-      "Response"
-    elsif /request/ =~ status
-      "Request"
-    elsif /sent/ =~ status
-      "Request"
-    elsif /shared/ =~ status
-      "New"
-    elsif /new/ =~ status
-      "New"
-    elsif /failure/ =~ status
-      'Error'
-    elsif /expired/ =~ status
-      'Expired'      
-    else
-      'Unknown'
-    end
+    retval = OUTCOME_MAP[outcome] ||
+     STATUS_MAP[status] ||
+     self.cmm_workflow_status
+      
   end
 
   def set_cmm_values(response)

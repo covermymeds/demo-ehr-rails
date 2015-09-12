@@ -8,6 +8,15 @@ class PaRequestsController < ApplicationController
     # if the token parameter is nil, then we don't have access to the request
     @requests = PaRequest.where.not(cmm_token: nil).order(created_at: :desc)
     @tokens = @requests.pluck(:cmm_token)
+
+    # update the request statuses
+    @cmm_requests = CoverMyMeds.default_client.get_requests(@tokens)
+    @cmm_requests.each do |update|
+      local = @requests.find_by_cmm_id(update[:id])
+      logger.info "updating #{local.cmm_id} with status #{update[:workflow_status]}"
+      local.update_attribute(:cmm_workflow_status, update[:workflow_status])
+      local.update_attribute(:cmm_outcome, update[:plan_outcome])
+    end
   end
 
   # GET /patients/1/prescriptions/1/pa_requests/1

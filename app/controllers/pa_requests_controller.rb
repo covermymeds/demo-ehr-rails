@@ -6,28 +6,29 @@ class PaRequestsController < ApplicationController
   def index
     # the @requests var holds all requests to be shown to the user
     # if the token parameter is nil, then we don't have access to the request
-    @requests = PaRequest.where.not(cmm_token: nil).order(created_at: :desc)
+    @requests = PaRequest.order(created_at: :desc)
     @tokens = @requests.pluck(:cmm_token)
 
     # update the request statuses
-    @cmm_requests = CoverMyMeds.default_client.get_requests(@tokens)
-    @cmm_requests.each do |cmm_request|
-      local = @requests.find_by_cmm_id(cmm_request[:id])
+    begin
+      @cmm_requests = CoverMyMeds.default_client.get_requests(@tokens)
+      @cmm_requests.each do |cmm_request|
+        local = @requests.find_by_cmm_id(cmm_request[:id])
 
-      # update workflow status & outcome
-      local.update_attributes({
-        cmm_workflow_status: cmm_request[:workflow_status],
-        cmm_outcome: cmm_request[:plan_outcome]})
+        # update workflow status & outcome
+        local.update_attributes({
+          cmm_workflow_status: cmm_request[:workflow_status],
+          cmm_outcome: cmm_request[:plan_outcome]})
 
-      # update form selection
-      if cmm_request[:form_id] && cmm_request[:form_id] != ""
-        form = CoverMyMeds.default_client.get_form(cmm_request[:form_id])
-        if form
+        # update form selection
+        if cmm_request[:form_id]
+          form = CoverMyMeds.default_client.get_form(cmm_request[:form_id])
           local.update_attributes({form_id: cmm_request[:form_id],
             form_name: form[:description]})
         end
       end
-
+    rescue RestClient::Exception => e
+      logger.info "Unable to reach CoverMyMeds: #{e.response.code}: #{e.response.body}"
     end
   end
 

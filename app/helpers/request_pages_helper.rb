@@ -1,5 +1,27 @@
 module RequestPagesHelper
 
+  def show_question(form_name, question, data)
+    form_name != "pa_request" ||
+      ( question[:question_type] != "STATEMENT" &&
+        question[:flag] == "REQUIRED" && 
+        data[question[:question_id].underscore.to_sym].nil? ) ||
+      is_patient_name(question)
+  end
+
+  def is_patient_name(question)
+    question["coded_reference"].present? &&
+    question["coded_reference"]["code"] == "prior-auth-header"
+  end
+
+  def has_showable_questions(form_name, question_set, data)
+    (question_set["questions"].count { |q| show_question(form_name, q, data) } ) > 0
+  end
+
+  def show_question_set(form_name, question_set, data)
+    form_name != "pa_request" || 
+    has_showable_questions(form_name, question_set, data)
+  end
+
   def render_question(question, form_name, data)
     # render the correct question based on the type
     types = {

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'spec_helper'
 
 describe 'eHR Example App' do
   fixtures :all
@@ -6,7 +7,7 @@ describe 'eHR Example App' do
   let(:staff_login) { "/login/staff" }
 
   it 'should allow accessing the site root' do
-    visit('/')
+    visit(root_path)
     expect(page).to have_content("Let's pretend that this is your EHR...")
   end
 
@@ -93,12 +94,14 @@ describe 'eHR Example App' do
     end
 
     it 'should navigate to the dashboard view from staff login', js: true do
-      click_link('staff_login')
+      click_link("Sign in...")
+      click_link("Sign in as Staff")
       expect(page).to have_content('Your Prior Auth Dashboard')
     end
 
     it 'should navigate to the patient list from doctor login', js: true do
-      click_link('dr_login')
+      click_link("Sign in...")
+      click_link("Sign in as Dr. Alexander Fleming")
       expect(page).to have_content('Patients')
     end
   end
@@ -195,18 +198,18 @@ describe 'eHR Example App' do
 
     it 'should add a medication to a patient', js: true do
       # Find a drug
-      find('#s2id_prescription_drug_number').click
-      find('.select2-input').set(drug_name)
+      find('#select2-prescription_drug_number-container').click
+      find('input.select2-search__field').set(drug_name)
       wait_for_ajax
-      expect(page).to have_selector('.select2-result-selectable')
-      within '.select2-results' do
+      expect(page).to have_selector('#select2-prescription_drug_number-results')
+      within '#select2-prescription_drug_number-results' do
         find('li:first-child').click
       end
       wait_for_ajax
 
       click_on('Create Prescription')
 
-      visit '/patients'
+      visit(patients_path)
       page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
       expect(page).to have_selector('#patient-show')
     end

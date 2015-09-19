@@ -22,7 +22,7 @@ $(function () {
   };
   $('#dashboard').dashboard(dashboard_options);
 
-  // drug search for the "new pa" form
+  // drug search for pa_requests/_form.html
   options.drugId = $('#prescription_drug_number').val();
   options.drugName = $('#prescription_drug_name').val();
   $('#prescription_drug_number').drugSearch(options);

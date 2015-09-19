@@ -34,15 +34,15 @@ $(function() {
   })
 
   $(formSelector).validate({
-        onChange: true, // validate on change
-        onBlur: true, // validate on blur
-        eachValidField : function() {
-          $(this).closest('div').removeClass('has-error');
-          $(this).closest('div').removeClass('data-required');
-        },
-        eachInvalidField : function() {
-          $(this).closest('div').removeClass('has-success').addClass('has-error');
-        }
-      })
+    onChange: true, // validate on change
+    onBlur: true, // validate on blur
+    eachValidField : function() {
+      $(this).closest('div').removeClass('has-error');
+      $(this).closest('div').removeClass('data-required');
+    },
+    eachInvalidField : function() {
+      $(this).closest('div').removeClass('has-success').addClass('has-error');
+    }
+  })
 
 });

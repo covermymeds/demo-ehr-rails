@@ -31,7 +31,7 @@ describe 'eHR Example App' do
 
     it 'should navigate to the dashboard view', js: true do
       click_link('Prior Authorizations')
-      click_link('Dashboard')
+      click_link('Task List')
       expect(page).to have_content('Your Prior Auth Dashboard')
     end
 

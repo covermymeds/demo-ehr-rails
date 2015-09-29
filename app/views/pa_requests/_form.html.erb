@@ -47,10 +47,12 @@
 <formset>
   <legend>Prescription</legend>
   <div class="form-group">
-    <%= label_tag :prescription_drug_number, "Medication" %><br/>
-    <select class='form-control' id='prescription_drug_number' name='prescription[drug_number]'>
-    </select>
-    <%= hidden_field :prescription, :drug_name %>
+    <%= label_tag :prescription_drug_name, "Medication" %><br/>
+    <input type='text' class='form-control' id='prescription_drug_name' name='prescription[drug_name]'>
+    </input>
+    <%= hidden_field :prescription, :drug_number %>
+    <span class="help-block">Type at least 4 letters of the name of the drug you wish to prescribe.</span>
+
   </div>
 
   <div class='row'>
@@ -89,8 +91,9 @@
   <legend>Payer</legend>
 
   <div class='form-group'>
-    <%= f.label :form_id, "Payer" %>
-    <select id='pa_request_form_id' name='pa_request[form_id]' class='form-control'></select>
+    <%= label_tag :form_name, "Payer" %>
+    <input type='text' id='form_name' class='form-control'></input>
+    <%= hidden_field :pa_request, :form_id %>
   </div>
 
 </formset>

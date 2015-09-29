@@ -64,6 +64,9 @@ class RequestPagesController < ApplicationController
 
     # important: look up the form data to be included
     form_data = params[action[:ref]] if action[:ref]
+    binding.pry
+    form_data.delete_if { |_, v| v.nil? or v.blank? }
+    binding.pry
     method = action[:method].downcase
 
     # call out to get the next request page

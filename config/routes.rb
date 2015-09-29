@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get '/drugs' => 'drugs#index'
+  get '/forms' => 'forms#index'
+  post '/pa_required' => 'formularies#pa_required'
+
   resources :users do
     post :cancel_registration, on: :member
     resources :credentials
@@ -46,6 +50,5 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
-  post '/pa_required' => 'formularies#pa_required'
 
 end

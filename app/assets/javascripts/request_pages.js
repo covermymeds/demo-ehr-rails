@@ -12,15 +12,13 @@ $(function() {
 
   $("[data-coded-reference='CoverMyMeds:signature-pad:1']").signaturePad()
 
-  if ($("[data-coded-reference='CoverMyMeds:form-search:1']").size()) {
-    $("[data-coded-reference='CoverMyMeds:form-search:1']").formSearch({
-      apiId: window.config.apiId,
-      apiUrl: window.config.apiUrl,
-      version: 1,
-      drugId: $('#drug_id').val(),
-      state: $('#patient_state').val()
-    })
-  }
+  $("[data-coded-reference='CoverMyMeds:form-search:1']").formSearch({
+    apiId: window.config.apiId,
+    apiUrl: window.config.apiUrl,
+    version: 1,
+    drugId: $('#drug_id').val(),
+    state: $('#patient_state').val()
+  })
 
   // show all appropriate questions initially
   var formSelector = "div#form-block form"

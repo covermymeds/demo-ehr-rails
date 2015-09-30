@@ -41,7 +41,10 @@ $(function () {
   function enable_form_pick(drug_id, state) {
     $("#form_name").autocomplete({
       source: function(request, response) {
-        $.get("/forms?drug_id="+$("#prescription_drug_number").val()+"&state="+$("#pa_request_state").val()+"&term="+request.term, 
+        $.get("/forms?"+
+          "drug_id="+$("#prescription_drug_number").val()+
+          "&state="+$("#pa_request_state").val()+
+          "&term="+request.term, 
           function(data, status){
             response(data);
           })

@@ -59,16 +59,12 @@ class RequestPagesController < ApplicationController
     conn = RestClient::Resource.new(action[:href], {
                                       user: Rails.application.secrets.cmm_api_id,
                                       password: 'x-no-pass',
-                                      headers: headers
-    })
+                                      headers: headers})
 
     # important: look up the form data to be included
-    form_data = params[action[:ref]] if action[:ref]
-    binding.pry
-    form_data.delete_if { |_, v| v.nil? or v.blank? }
-    binding.pry
+    form_data = params[action[:ref]].delete_if { |_, v| v.blank? } if action[:ref]
     method = action[:method].downcase
-
+    
     # call out to get the next request page
     response = conn.send method, (form_data || {})
 

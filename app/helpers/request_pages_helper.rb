@@ -50,6 +50,10 @@ module RequestPagesHelper
     "checked" if checked != ""
   end
 
+  def multiple_if(multiple)
+    "multiple" if multiple == "true"
+  end
+
   def multiple_checked_if(option, value)
     "checked" if value && value != "" && value.include?(option)
   end

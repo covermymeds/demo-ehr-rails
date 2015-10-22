@@ -29,6 +29,7 @@
     class="form-control"
     id='<%= question[:question_id] %>'
     data-default-next-id="<%= massage(question[:default_next_question_id], form_name) %>"
+    <%= multiple_if(question[:select_multiple]) %>
     <%= require_if(question[:flag]) %>
     >
     <% question[:choices].each do |option| %>

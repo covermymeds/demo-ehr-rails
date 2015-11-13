@@ -34,12 +34,9 @@ module RequestPagesHelper
       HIDDEN: "hidden",
       FILE: "file"
     }
-    question_type = question[:question_type].to_sym
-    if types.has_key?(question_type)
-      render partial: types[question_type], locals:{question: question, form_name:form_name, data: data}
-    else
-      render partial: "unknown", locals:{question: question, form_name:form_name, data: data}
-    end
+    question_type = types.fetch(question[:question_type].to_sym, :unknown)
+    question_type = :HIDDEN unless show_question(form_name, question, data)
+    render partial: question_type.to_s.downcase, locals:{question: question, form_name:form_name, data: data}
   end
   
   def display_if_not(display)

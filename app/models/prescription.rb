@@ -18,7 +18,8 @@ class Prescription < ActiveRecord::Base
 
   def self.pa_required?(drug_name)
     (drug_name || "").downcase.include?("banana") || 
-    (drug_name || "").downcase.include?("chocolate")
+    (drug_name || "").downcase.include?("chocolate") ||
+    (drug_name || "").downcase.include?("abilify")
   end
 
   def self.autostart?(drug_name)

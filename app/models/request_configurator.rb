@@ -55,6 +55,7 @@ class RequestConfigurator
                  clinic: prescriber.practice_name || "The Enterprise Clinic",
                  fax_number: prescriber.credentials.first.nil? ? "614-555-5555" : prescriber.credentials.first.fax,
                  street: prescriber.practice_street_1 || "1 Starship Way",
+                 street_2: prescriber.practice_street_2 || "Apt 200",
                  city: prescriber.practice_city || "Riverside",
                  state: prescriber.practice_state || "OH",
                  zip: prescriber.practice_zip || "52327" }
@@ -65,6 +66,7 @@ class RequestConfigurator
     new_request.prescriber.clinic = physician[:clinic]
     new_request.prescriber.fax_number = physician[:fax_number]
     new_request.prescriber.address.street_1 = physician[:street]
+    new_request.prescriber.address.street_2 = physician[:street_2]
     new_request.prescriber.address.city = physician[:city]
     new_request.prescriber.address.state = physician[:state]
     new_request.prescriber.address.zip = physician[:zip]

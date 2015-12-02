@@ -53,7 +53,8 @@ class RequestConfigurator
                  first_name: prescriber ? prescriber.first_name : "James",
                  last_name: prescriber ? prescriber.last_name : "Kirk",
                  clinic: prescriber.practice_name || "The Enterprise Clinic",
-                 fax_number: prescriber.credentials.first.nil? ? "614-555-5555" : prescriber.credentials.first.fax,
+                 phone_number: prescriber.practice_phone_number || "615-555-1212"
+                 fax_number: prescriber.credentials.first.nil? ? "614-999-9999" : prescriber.credentials.first.fax,
                  street: prescriber.practice_street_1 || "1 Starship Way",
                  street_2: prescriber.practice_street_2 || "Apt 200",
                  city: prescriber.practice_city || "Riverside",
@@ -65,6 +66,7 @@ class RequestConfigurator
     new_request.prescriber.last_name = physician[:last_name]
     new_request.prescriber.clinic = physician[:clinic]
     new_request.prescriber.fax_number = physician[:fax_number]
+    new_request.prescriber.phone_number = physician[:phone_number]
     new_request.prescriber.address.street_1 = physician[:street]
     new_request.prescriber.address.street_2 = physician[:street_2]
     new_request.prescriber.address.city = physician[:city]

@@ -64,20 +64,6 @@ $(function () {
     };
   }
 
-  // else {
-  //   // when the drug search completes, we activate the formSearch box
-  //   $('#prescription_drug_number').change(function() {
-  //     $('#prescription_drug_name').val($('#prescription_drug_number').select2('data').text);
-  //     $('#pa_request_form_id').formSearch({
-  //       apiId: options.apiId,
-  //       apiUrl: options.apiUrl,
-  //       version: 1,
-  //       drugId: $('#prescription_drug_number').val(),
-  //       state: $('#pa_request_state').val()
-  //     });
-  //   });
-  // }
-
   $('.date').datepicker();
 
 });

@@ -1,11 +1,15 @@
 module RequestPagesHelper
 
   def show_question(form_name, question, data)
-    form_name != "pa_request" ||
-      ( question[:question_type] != "STATEMENT" &&
-        question[:flag] == "REQUIRED" && 
-        data[question[:question_id].underscore.to_sym].nil? ) ||
-      is_patient_name(question)
+    # uncomment the below lines to hide questions
+    # that are either statements, not required, or already answered
+    # form_name != "pa_request" ||
+    #   ( question[:question_type] != "STATEMENT" &&
+    #     question[:flag] == "REQUIRED" && 
+    #     data[question[:question_id].underscore.to_sym].nil? ) ||
+    #   is_patient_name(question)
+
+    true
   end
 
   def is_patient_name(question)
@@ -24,7 +28,7 @@ module RequestPagesHelper
 
   def render_question(question, form_name, data)
     # render the correct question based on the type
-    types = {
+    question_type = {
       FREE_TEXT: "free_text",
       FREE_AREA: "free_area",
       DATE: "date",
@@ -33,10 +37,9 @@ module RequestPagesHelper
       CHECKBOX: "checkbox",
       HIDDEN: "hidden",
       FILE: "file"
-    }
-    question_type = types.fetch(question[:question_type].to_sym, :unknown)
+    }.fetch( question[:question_type].to_sym, :HIDDEN )
     question_type = :HIDDEN unless show_question(form_name, question, data)
-    render partial: question_type.to_s.downcase, locals:{question: question, form_name:form_name, data: data}
+    render partial: question_type.to_s.downcase, locals:{ question: question, form_name:form_name, data: data }
   end
   
   def display_if_not(display)

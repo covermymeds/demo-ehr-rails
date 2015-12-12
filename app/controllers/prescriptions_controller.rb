@@ -70,7 +70,7 @@ class PrescriptionsController < ApplicationController
   # DELETE /patient/:patient_id/prescriptions/1.json
   def destroy
     # first, delete the PA request from our CMM dashboard
-    client = RequestConfigurator.api_client()
+    client = CoverMyMeds.default_client
     @prescription.pa_requests.each do |pa_request|
       # delete the PA request's token from our access list
       if client.revoke_access_token? pa_request.cmm_token
@@ -101,7 +101,7 @@ class PrescriptionsController < ApplicationController
       # create the request in the API
       # in your application, you will likely do this asynchronously, but
       # we are doing this inline for brevity
-      response = RequestConfigurator.api_client().create_request new_request
+      response = CoverMyMeds.default_client.create_request new_request
       flash_message("Your prior authorization request was successfully started.")
 
       # stash away the token, id, link, and workflow status from the return

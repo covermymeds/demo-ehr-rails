@@ -29,7 +29,7 @@ module ApplicationHelper
 
   def pa_request_edit_link(request, title = "View")
     if @_use_custom_ui
-      link_to title, pa_request_request_pages_path(request), id: 'edit_pa_request'
+      link_to title, pages_pa_request_path(request), id: 'edit_pa_request'
     else
       link_to title, patient_prescription_pa_request_path(request.prescription.patient, request.prescription, request), id: 'edit_pa_request'
     end

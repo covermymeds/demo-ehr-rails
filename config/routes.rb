@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
 
-  get '/drugs' => 'drugs#index'
-  get '/forms' => 'forms#index'
+  resources :drugs, only: [:index]
+  resources :forms, only: [:index]
+
   post '/pa_required' => 'formularies#pa_required'
 
   resources :users do
@@ -21,14 +22,18 @@ Rails.application.routes.draw do
   end
 
   resources :pa_requests do
-    resource :request_pages, only: [:show]
+    member do
+      get 'pages', to: 'request_pages#index'
+      post 'pages/:button_title',
+        to: 'request_pages#action', as: 'action'
+    end
   end
 
   resources :alerts
 
-  post '/pa_requests/:pa_request_id/request_pages/:button_title',
-    to: 'request_pages#do_action',
-    as: :pa_request_request_pages_action
+  # post '/pa_requests/:pa_request_id/request_pages/:button_title',
+  #   to: 'request_pages#do_action',
+  #   as: :pa_request_request_pages_action
 
   get '/toggle_ui', to: 'home#toggle_custom_ui'
 

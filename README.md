@@ -33,9 +33,13 @@ Once you have postgres running, execute:
 
 #### API Keys
 
-You'll need to obtain your own unique API keys, which must be stored in environment variables that the server can access. You can obtain your API keys at [api.covermymeds.com/your-account](https://api.covermymeds.com/your-account). You'll have to set the `api_id` as `CMM_API_KEY` and `api_secret` as `CMM_API_SECRET`.
+You'll need to obtain your own unique API keys, which must be stored in environment variables that the
+server can access. You can obtain your API keys at 
+[api.covermymeds.com/your-account](https://api.covermymeds.com/your-account). You'll have to set the `api_id` 
+as `CMM_API_KEY` and `api_secret` as `CMM_API_SECRET`.
 
-For convenience, you may optionally set these enviroment variables by copying the file `.env.sample` to `.env` and entering your appropriate key and secret.  This is for `development` and `test` environments only and does not affect production.
+For convenience, you may optionally set these enviroment variables by copying the file `.env.sample` to `.env` 
+and entering your appropriate key and secret.  This is for `development` and `test` environments only and does not affect production.
 
 #### Callbacks
 

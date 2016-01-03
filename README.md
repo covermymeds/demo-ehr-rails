@@ -101,11 +101,20 @@ When creating a new prescription, clicking the checkbox "Start PA" causes a new 
 
 Route: `/requests/new `
 
-Allows you to add a single prior authorization request. The drug and form search plugins are used here as well as the create request plugin. When the form is filled out and the request is successful you will be redirected to the task list or dashboard page.
+Allows you to add a single prior authorization request. The drug and form 
+search plugins are used here as well as the create request plugin. When the 
+form is filled out and the request is successful you will be redirected to the
+task list or dashboard page.
 
 Route: `/request-pages`
 
-The Request Pages resource provides the ability to completely embed the CoverMyMeds workflow within your EHR's own user interface. This API returns a UI-agnostic description of a request at a particular point in the workflow, along with a set of actions the user can take to move the request through to the next workflow. Based on the idea of Hypermedia APIs, Request Pages lends the strength of CoverMyMeds' years of experience in managing workflows to your EHR.
+The Request Pages resource provides the ability to completely embed the 
+CoverMyMeds workflow within your EHR's own user interface. This API returns a 
+UI-agnostic description of a request at a particular point in the workflow, 
+along with a set of actions the user can take to move the request through to 
+the next workflow. Based on the idea of Hypermedia APIs, Request Pages lends 
+the strength of CoverMyMeds' years of experience in managing workflows to your 
+EHR.
 
 #### Dashboard/Task List
 

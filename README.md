@@ -2,7 +2,9 @@
 Demo EHR Rails Example
 ============
 
-This application demonstrates what a typical web-based EHR can do to automate prior authorization using the [CoverMyMeds EHR API](https://developers.covermymeds.com/ehr-api.html).
+This application demonstrates what a typical web-based EHR can do to 
+automate prior authorization using the 
+[CoverMyMeds EHR API](https://developers.covermymeds.com/ehr-api.html).
 
 
 ### Dependencies
@@ -15,9 +17,12 @@ This application demonstrates what a typical web-based EHR can do to automate pr
 * Ruby version 2.0.0-p481
 * Rails version 4.1.1
 * Bundler
-* phantom.js (Use homebrew to install phantomjs 1.8.1, or whichever version is required by our current version of poltergeist.  Installing older versions is not exactly straightforward, so [this](http://effectif.com/mac-os-x/installing-specific-version-of-homebrew-formula) may be helpful to you.)
+* phantom.js (Use homebrew to install phantomjs 1.8.1, or whichever version is
+ required by our current version of poltergeist.  Installing older versions is 
+ not exactly straightforward, so [this](http://effectif.com/mac-os-x/installing-specific-version-of-homebrew-formula) may be helpful to you.)
 
-Run `bundle install` to install all of the gem dependencies.  The application is written for Rails 4.1.1. 
+Run `bundle install` to install all of the gem dependencies.  The application
+is written for Rails 4.1.1. 
 
 ### Installation
 
@@ -33,10 +38,10 @@ Once you have postgres running, execute:
 
 #### API Keys
 
-You'll need to obtain your own unique API keys, which must be stored in environment variables that the
-server can access. You can obtain your API keys at 
-[api.covermymeds.com/your-account](https://api.covermymeds.com/your-account). You'll have to set the `api_id` 
-as `CMM_API_KEY` and `api_secret` as `CMM_API_SECRET`.
+You'll need to obtain your own unique API keys, which must be stored in
+environment variables that the server can access. You can obtain your API keys
+at [api.covermymeds.com/your-account](https://api.covermymeds.com/your-account). 
+You'll have to set the `api_id` as `CMM_API_KEY` and `api_secret` as `CMM_API_SECRET`.
 
 For convenience, you may optionally set these enviroment variables by copying the file `.env.sample` to `.env` 
 and entering your appropriate key and secret.  This is for `development` and `test` environments only and does not affect production.

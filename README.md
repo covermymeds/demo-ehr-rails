@@ -2,7 +2,9 @@
 Demo EHR Rails Example
 ============
 
-This application demonstrates what a typical web-based EHR can do to automate prior authorization using the [CoverMyMeds EHR API](https://developers.covermymeds.com/ehr-api.html).
+This application demonstrates what a typical web-based EHR can do to 
+automate prior authorization using the 
+[CoverMyMeds EHR API](https://developers.covermymeds.com/ehr-api.html).
 
 
 ### Dependencies
@@ -15,9 +17,12 @@ This application demonstrates what a typical web-based EHR can do to automate pr
 * Ruby version 2.0.0-p481
 * Rails version 4.1.1
 * Bundler
-* phantom.js (Use homebrew to install phantomjs 1.8.1, or whichever version is required by our current version of poltergeist.  Installing older versions is not exactly straightforward, so [this](http://effectif.com/mac-os-x/installing-specific-version-of-homebrew-formula) may be helpful to you.)
+* phantom.js (Use homebrew to install phantomjs 1.8.1, or whichever version is
+ required by our current version of poltergeist.  Installing older versions is 
+ not exactly straightforward, so [this](http://effectif.com/mac-os-x/installing-specific-version-of-homebrew-formula) may be helpful to you.)
 
-Run `bundle install` to install all of the gem dependencies.  The application is written for Rails 4.1.1. 
+Run `bundle install` to install all of the gem dependencies.  The application
+is written for Rails 4.1.1. 
 
 ### Installation
 
@@ -33,9 +38,13 @@ Once you have postgres running, execute:
 
 #### API Keys
 
-You'll need to obtain your own unique API keys, which must be stored in environment variables that the server can access. You can obtain your API keys at [api.covermymeds.com/your-account](https://api.covermymeds.com/your-account). You'll have to set the `api_id` as `CMM_API_KEY` and `api_secret` as `CMM_API_SECRET`.
+You'll need to obtain your own unique API keys, which must be stored in
+environment variables that the server can access. You can obtain your API keys
+at [api.covermymeds.com/your-account](https://api.covermymeds.com/your-account). 
+You'll have to set the `api_id` as `CMM_API_KEY` and `api_secret` as `CMM_API_SECRET`.
 
-For convenience, you may optionally set these enviroment variables by copying the file `.env.sample` to `.env` and entering your appropriate key and secret.  This is for `development` and `test` environments only and does not affect production.
+For convenience, you may optionally set these enviroment variables by copying the file `.env.sample` to `.env` 
+and entering your appropriate key and secret.  This is for `development` and `test` environments only and does not affect production.
 
 #### Callbacks
 
@@ -92,11 +101,20 @@ When creating a new prescription, clicking the checkbox "Start PA" causes a new 
 
 Route: `/requests/new `
 
-Allows you to add a single prior authorization request. The drug and form search plugins are used here as well as the create request plugin. When the form is filled out and the request is successful you will be redirected to the task list or dashboard page.
+Allows you to add a single prior authorization request. The drug and form 
+search plugins are used here as well as the create request plugin. When the 
+form is filled out and the request is successful you will be redirected to the
+task list or dashboard page.
 
 Route: `/request-pages`
 
-The Request Pages resource provides the ability to completely embed the CoverMyMeds workflow within your EHR's own user interface. This API returns a UI-agnostic description of a request at a particular point in the workflow, along with a set of actions the user can take to move the request through to the next workflow. Based on the idea of Hypermedia APIs, Request Pages lends the strength of CoverMyMeds' years of experience in managing workflows to your EHR.
+The Request Pages resource provides the ability to completely embed the 
+CoverMyMeds workflow within your EHR's own user interface. This API returns a 
+UI-agnostic description of a request at a particular point in the workflow, 
+along with a set of actions the user can take to move the request through to 
+the next workflow. Based on the idea of Hypermedia APIs, Request Pages lends 
+the strength of CoverMyMeds' years of experience in managing workflows to your 
+EHR.
 
 #### Dashboard/Task List
 

@@ -56,6 +56,8 @@
               <li><%= link_to "API Documentation", api_documentation_path %></li>
               <li><%= link_to "Source Code", source_code_path %></li>
               <% if @_use_custom_ui %>
+              <li class='divider'></li>
+              <li><%= link_to "Retrospective Demo", 'https://claim-test.herokuapp.com'%></li>
               <li><%= link_to "Use CoverMyMeds Request Page", toggle_ui_path(return: request.original_url) %></li>
               <% else %>
               <li><%= link_to "Use Request-Pages", toggle_ui_path(return: request.original_url) %></li>

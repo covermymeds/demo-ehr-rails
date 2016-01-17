@@ -3,10 +3,9 @@
 <% if @prescription.errors.any? %>
 <div id="error_explanation">
   <h2><%= pluralize(@prescription.errors.count, "error") %> prohibited this prescription from being saved:</h2>
-
   <ul>
     <% @prescription.errors.full_messages.each do |message| %>
-    <li><%= message %></li>
+      <li><%= message %></li>
     <% end %>
   </ul>
 </div>
@@ -18,8 +17,8 @@
     <legend>Prescription - <%= "#{@patient.description}" %></legend>
     <div class='row'>
       <div class="form-group col-md-12">
-        <%= f.label :drug_number, "Medication" %><br>
-        <input type='text' id='prescription_drug_name' class='form-control' name='prescription[drug_name]'></select>
+        <%= f.label :drug_name, "Medication" %><br>
+        <%= f.text_field :drug_name, :class=>'form-control', :placeholder=>'Drug Name' %>
         <%= hidden_field :prescription, :drug_number %>
       </div>
     </div>
@@ -86,7 +85,3 @@
   </fieldset>
 </div>
 <% end %>
-
-<script>
-
-</script>

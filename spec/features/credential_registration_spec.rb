@@ -19,7 +19,7 @@ describe 'Credential Management' do
   end
 
   context 'when adding a new credential', js: true do
-    it 'allows the prescriber to register a credential' do
+    xit 'allows the prescriber to register a credential' do
       visit edit_user_path(user)
 
       check('I would like to receive PAs started at the pharmacy for the below fax numbers.')

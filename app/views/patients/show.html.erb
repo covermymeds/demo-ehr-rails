@@ -11,7 +11,6 @@
     <thead>
       <tr>
         <th>Medication</th>
-        <th>Formulary Status</th>
         <th>PA Status</th>
         <th colspan="2">Prescribed On</th>
       </tr>
@@ -24,16 +23,14 @@
       </td>
 
       <td class="start">
-        <% if prescription.pa_required? && request.new_record? %>
-          <%= link_to "PA Required", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
+        <% if prescription.pa_required? %>
+          <% if request.new_record? %>
+            <%= link_to "PA Required", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
+          <% else %>
+            <%= link_to cmm_outcome_label(request), patient_prescription_pa_request_path(@patient, prescription, request) %>
+          <% end %>
         <% else %>
             PA Not Required
-        <% end %>
-      </td>
-
-      <td>
-        <% if prescription.pa_required? && !request.new_record? %>
-          <%= link_to cmm_outcome_label(request), patient_prescription_pa_request_path(@patient, prescription, request) %>
         <% end %>
       </td>
 

@@ -24,6 +24,7 @@ $(function () {
   $('#dashboard').dashboard(dashboard_options);
 
   $("#prescription_drug_name").autocomplete({
+    minLength: 4,
     source: '/drugs',
     select: function(e, selected) {
       $("#prescription_drug_number").val(selected.item.id);
@@ -33,6 +34,9 @@ $(function () {
     change: function(e, ui) { 
       enable_form_pick($("#prescription_drug_number").val(),
         $("#pa_request_state").val());
+      check_pa_required($('#prescription_drug_number').val(),
+        $('#prescription_drug_name').val(),
+        $('#prescription_patient_id').val());
     }
   }).autocomplete("instance")._renderItem = function(ul, item) {
     return $("<li>").append(item.full_name).appendTo(ul);
@@ -50,14 +54,14 @@ $(function () {
           })
       },
       select: function(e, selected) {
-        $("#pa_request_form_id").val(selected.item.id);
+        $("#pa_request_form_id").val(selected.item.request_form_id);
         $("#form_name").val(selected.item.description);
         return false;
       },
       change: function(e, ui) { 
-        if(document.URL.indexOf('prescription') != -1) {
-          check_pa_required(ui.val());
-        }
+        check_pa_required(ui.val(), 
+          $('#prescription_drug_name').val(),
+          $('#prescription_patient_id').val());
       }
     }).autocomplete("instance")._renderItem = function(ul, item) {
       return $("<li>").append(item.description).appendTo(ul);

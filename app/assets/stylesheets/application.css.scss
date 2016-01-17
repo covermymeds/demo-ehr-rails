@@ -11,12 +11,11 @@
  * file per style scope.
  *
  *= require jquery-ui
- *= require select2
- *= require select2-bootstrap
  *= require_self
  *= require_tree .
  */
 
+@import "bootstrap-sprockets";
 @import "bootstrap";
-@import "bootstrap/theme";
 @import "bootstrap-datepicker3";
+

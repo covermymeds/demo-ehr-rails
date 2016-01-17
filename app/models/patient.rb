@@ -16,4 +16,21 @@ class Patient < ActiveRecord::Base
   def requests
     self.pa_requests.where("cmm_workflow_status IN ('New', 'PA Request', 'Question Request', 'Sent to Plan')").count
   end
+
+  def to_patient_hash
+    {
+      first_name:            first_name,
+      last_name:             last_name,
+      date_of_birth:         date_of_birth,
+      gender:                gender
+    }
+  end
+
+  def to_payer_hash
+    { 
+      bin: bin || "773836",
+      pcn: pcn || "MOCKPBM",
+      group_id: group_id || "ABC1"
+    }.delete_if { |k, v| v.blank? }
+  end
 end

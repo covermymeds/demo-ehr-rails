@@ -11,21 +11,9 @@ class PaRequestsController < ApplicationController
 
     # update the request statuses
     begin
-      @cmm_requests = CoverMyMeds.default_client.get_requests(@tokens)
-      @cmm_requests.each do |cmm_request|
-        local = @requests.find_by_cmm_id(cmm_request[:id])
-
-        # update workflow status & outcome
-        local.update_attributes({
-          cmm_workflow_status: cmm_request[:workflow_status],
-          cmm_outcome: cmm_request[:plan_outcome]})
-
-        # update form selection
-        if cmm_request[:form_id]
-          form = CoverMyMeds.default_client.get_form(cmm_request[:form_id])
-          local.update_attributes({form_id: cmm_request[:form_id],
-            form_name: form[:description]})
-        end
+      if not @tokens.empty?
+        @cmm_requests = CoverMyMeds.default_client.get_requests(@tokens)
+        update_local_data(@cmm_requests)
       end
     rescue RestClient::Exception => e
       logger.info "Unable to reach CoverMyMeds: #{e.response.code}: #{e.response.body}"
@@ -35,7 +23,7 @@ class PaRequestsController < ApplicationController
   # GET /patients/1/prescriptions/1/pa_requests/1
   # GET /patients/1/prescriptions/1/pa_requests/1.json
   def show
-    if @_use_custom_ui
+    if session[:use_custom_ui]
       respond_to do |format|
         format.html { redirect_to pages_pa_request_path(@pa_request) }
         format.json { render :show, status: :ok, location: @pa_request }
@@ -142,6 +130,24 @@ class PaRequestsController < ApplicationController
   end
 
   private
+
+  def update_local_data cmm_requests
+    cmm_requests.each do |cmm_request|
+      local = @requests.find_by_cmm_id(cmm_request[:id])
+
+      # update workflow status & outcome
+      local.update_attributes({
+        cmm_workflow_status: cmm_request[:workflow_status],
+        cmm_outcome: cmm_request[:plan_outcome]}) if local
+
+      # update form selection
+      if cmm_request[:form_id]
+        form = CoverMyMeds.default_client.get_form(cmm_request[:form_id])
+        local.update_attributes({form_id: cmm_request[:form_id],
+          form_name: form[:description]}) if local
+      end
+    end
+  end
 
   def set_request
     if params[:patient_id]

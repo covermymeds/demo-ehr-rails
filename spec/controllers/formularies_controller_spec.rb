@@ -12,12 +12,12 @@ describe FormulariesController, type: :controller do
       patient_id: patient.id
     }
   end
-  let(:indicator_result) { Hash 'prescriptions' => [{ 'drug_id' => drug_id, 'name' => drug_name, 'pa_required' => true, 'autostart' => false }] }
+  let(:indicator_result) { Hash 'prescription' => { 'drug_id' => drug_id, 'name' => drug_name, 'pa_required' => true, 'autostart' => false } }
 
   describe 'POST pa_required' do
     describe 'with valid params' do
       it 'returns a JSON object indicating if the client must start a PA for each prescription' do
-        expect_any_instance_of(CoverMyMeds::Client).to receive(:search_indicators).and_return(Hashie::Mash.new(indicator_result))
+        expect_any_instance_of(CoverMyMeds::Client).to receive(:post_indicators).and_return(Hashie::Mash.new(indicator_result))
         post :pa_required, request_data
         expect(JSON.parse(response.body)).to eq(indicator_result)
       end

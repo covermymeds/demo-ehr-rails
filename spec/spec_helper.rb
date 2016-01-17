@@ -1,6 +1,5 @@
 require 'capybara/rspec'
 require 'capybara/poltergeist'
-require 'capybara/webkit'
 require 'rack_session_access/capybara'
 require 'webmock/rspec'
 require 'support/webmock_stubs'
@@ -72,26 +71,16 @@ RSpec.configure do |config|
   config.include WebmockStubs, type: :controller
 end
 
-Capybara.default_driver = :webkit
-#Capybara.register_driver :webkit
+Capybara.register_driver :chrome do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
+end
+
+Capybara.default_driver = :chrome
 
 Capybara.configure do |config|
   config.run_server = true
-  config.javascript_driver = :poltergeist
-  config.default_driver = :webkit
   config.app_host = 'http://localhost:3001' # change url
 
   config.server_port = 3001
-end
-
-Capybara::Webkit.configure do |config|
-  config.block_unknown_urls
-  config.allow_url("ajax.googleapis.com")
-  config.allow_url("staging-demo-ehr-rails.herokuapp.com")
-  config.allow_url("demo-ehr-rails.herokuapp.com")
-  config.allow_url("ajax.googleapis.com")
-  config.allow_url("netdna.bootstrapcdn.com")
-  config.allow_url("api.covermymeds.com")
-  config.allow_url("master-api.integration.covermymeds.com")
 end
 

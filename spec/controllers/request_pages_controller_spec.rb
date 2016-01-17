@@ -44,8 +44,8 @@ describe RequestPagesController, type: :controller do
   end
   let(:pa_request) { PaRequest.create! pa_request_attributes }
 
-  describe 'GET show' do
-    context 'format json' do
+  describe 'GET index' do
+    context 'when using format json' do
       let(:action_url) { 'http://api.cmm.com?token_id=etc' }
       let(:rp_json) do
         JSON.parse( {
@@ -70,9 +70,9 @@ describe RequestPagesController, type: :controller do
       let(:show_params) do
         {
           format:           'json',
-          patient_id:       patient.id,
-          prescription_id:  prescription.id,
-          pa_request_id:    pa_request.id
+          # patient_id:       patient.id,
+          # prescription_id:  prescription.id,
+          id:    pa_request.id
         }
       end
       let(:request_pages_response) do
@@ -89,8 +89,8 @@ describe RequestPagesController, type: :controller do
       end
 
       it 'hides the actions from the browser' do
-        get :show, show_params
-        expect(subject.instance_variable_get(:@request_page)).to_not include(action_url)
+        get :index, show_params
+        expect(subject.instance_variable_get(:@request_page_json)).to_not include(action_url)
       end
     end
   end

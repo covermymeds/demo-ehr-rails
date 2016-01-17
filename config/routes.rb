@@ -51,7 +51,7 @@ Rails.application.routes.draw do
 
   get '/home' => 'home#home', as: :home
   put '/home/change_api_env' => 'home#change_api_env'
-  put '/home/resetdb' => 'home#reset_database', as: :reset_db
+  get '/home/resetdb' => 'home#reset_database', as: :reset_db
 
   root 'home#index'
 

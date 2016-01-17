@@ -15,7 +15,7 @@ class PaRequestsController < ApplicationController
         @cmm_requests = CoverMyMeds.default_client.get_requests(@tokens)
         update_local_data(@cmm_requests)
       end
-    rescue Error::HTTPError => e
+    rescue CoverMyMeds::Error::HTTPError => e
       logger.info "Unable to reach CoverMyMeds: #{e.message}"
       flash_message e.message
     end

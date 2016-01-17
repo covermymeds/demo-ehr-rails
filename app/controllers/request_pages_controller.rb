@@ -18,14 +18,15 @@ class RequestPagesController < ApplicationController
     @validations = @request_page_json[:validations]
 
   rescue CoverMyMeds::Error::HTTPError => e
-    flash_message("Error retrieving the request page", :error)
+    flash_message "Error retrieving the request page: #{e.message}", :error
+    redirect_to :back
 
-    # the body of our response is in request_pages format
-    @request_page_json = e.error_json 
+    # # the body of our response is in request_pages format
+    # @request_page_json = e.error_json 
 
-    # show the error page
-    @request_page = @request_page_json[:errors]
-    render :error
+    # # show the error page
+    # @request_page = @request_page_json[:errors]
+    # render :error
   end
 
   def action

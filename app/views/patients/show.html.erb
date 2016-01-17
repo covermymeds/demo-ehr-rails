@@ -16,7 +16,7 @@
       </tr>
     </thead>
     <% @patient.prescriptions.order('date_prescribed DESC').each do |prescription| %>
-    <% request = prescription.pa_requests.first || PaRequest.new %>
+    <% request = prescription.pa_requests.first %>
     <tr>
       <td>
         <%= link_to prescription.drug_name, edit_patient_prescription_path(@patient, prescription), :class=>"#{(request.sent) ? 'disabled' : ''}" %>
@@ -24,7 +24,7 @@
 
       <td class="start">
         <% if prescription.pa_required? %>
-          <% if request.new_record? %>
+          <% if request.nil? %>
             <%= link_to "PA Required", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
           <% else %>
             <%= link_to cmm_outcome_label(request), patient_prescription_pa_request_path(@patient, prescription, request) %>

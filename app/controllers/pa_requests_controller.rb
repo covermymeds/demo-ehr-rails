@@ -15,8 +15,9 @@ class PaRequestsController < ApplicationController
         @cmm_requests = CoverMyMeds.default_client.get_requests(@tokens)
         update_local_data(@cmm_requests)
       end
-    rescue RestClient::Exception => e
-      logger.info "Unable to reach CoverMyMeds: #{e.response.code}: #{e.response.body}"
+    rescue Error::HTTPError => e
+      logger.info "Unable to reach CoverMyMeds: #{e.message}"
+      flash_message e.message
     end
   end
 
@@ -73,11 +74,9 @@ class PaRequestsController < ApplicationController
     end
 
     # set the pharmacy in our PA request
-    pharmacy_id = (params[:pharmacy][:id] == "") ? Pharmacy.first.id : params[:pharmacy][:id]
-    @pharmacy = Pharmacy.find(pharmacy_id)
-    @prescription.pharmacy = @pharmacy
-
+    @prescription.pharmacy = Pharmacy.find(Pharmacy.first.id || pharmacy_params[:id])
     @prescription.date_prescribed = DateTime.now
+    @prescription.pa_required = true
 
     # save the prescription, now we have all the information
     @prescription.save
@@ -88,8 +87,8 @@ class PaRequestsController < ApplicationController
     # call out to the request pages API to create a request with CMM, given
     # the information we have about the patient and prescription
     new_request = RequestConfigurator.request(@prescription,
-                                              @pa_request.form_id,
-                                              User.find(params[:pa_request][:prescriber_id]))
+                      @pa_request.form_id,
+                      User.find(params[:pa_request][:prescriber_id]))
 
     # create the request in the API
     # in your application, you will likely do this asynchronously, but
@@ -171,6 +170,10 @@ class PaRequestsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def prescription_params
     params.require(:prescription).permit(:drug_number, :quantity, :frequency, :refills, :dispense_as_written, :patient_id, :drug_name, :pharmacy_id)
+  end
+
+  def pharmacy_params
+    params.require(:pharmacy).permit(:id)
   end
 
 end

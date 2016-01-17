@@ -48,6 +48,9 @@ gem 'spring', '~> 1.3.6', group: :development
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 
+# for nested forms
+gem 'cocoon'
+
 gem 'dotenv-rails'
 
 group :development, :test do 
@@ -61,7 +64,6 @@ group :development, :test do
   gem 'poltergeist'
   gem 'selenium-webdriver'
   gem 'rack_session_access'
-  gem 'cocoon'
 end
 
 group :test do

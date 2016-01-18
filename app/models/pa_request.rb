@@ -1,6 +1,6 @@
 class PaRequest < ActiveRecord::Base
-  belongs_to :prescription
-  has_many :cmm_callbacks
+  belongs_to :prescription, inverse_of: :pa_requests
+  has_many :cmm_callbacks, inverse_of: :pa_request
   default_scope { where('cmm_token IS NOT NULL') }
 
   OUTCOME_MAP = {

@@ -1,7 +1,7 @@
 class Prescription < ActiveRecord::Base
-  belongs_to :patient
+  belongs_to :patient, inverse_of: :prescriptions
   belongs_to :pharmacy, inverse_of: :prescriptions
-  has_many :pa_requests, dependent: :destroy
+  has_many :pa_requests, dependent: :destroy, inverse_of: :prescription
 
   validates :drug_number, format: {with: /[0-9]+/ , message: 'Drug Number is invalid'}
 

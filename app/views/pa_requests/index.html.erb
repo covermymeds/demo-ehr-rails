@@ -3,7 +3,7 @@
 <% if @_use_custom_ui %>
 <!-- draw our own dashboard -->
 <div id="parequests-list">
-    <%= link_to "New Request", new_pa_request_path, :class=>'btn btn-small btn-success' %>
+  <%= link_to "New Request", new_pa_request_path, :class=>'btn btn-small btn-success' %>
 
   <% if @requests.empty? %>
   <h2>None Yet</h2>
@@ -20,7 +20,7 @@
       <th class='remove'>Remove</th>
     </tr>
 
-    <% @requests.order('updated_at DESC').each do |request| %>
+    <% @requests.each do |request| %>
     
     <tr class="request">
       <td>

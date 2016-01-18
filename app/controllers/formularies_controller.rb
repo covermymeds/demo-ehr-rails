@@ -10,10 +10,10 @@ class FormulariesController < ApplicationController
 
     # for purposes of demonstration, vanilla flavors require PA
     # while chocolate flavors are auto-started and require Patient
-    rx = result[:prescription]
-    drug_name = rx[:name].downcase
-    rx[:pa_required] ||= (drug_name.include?("vanilla") || drug_name.include?("chocolate"))
-    rx[:autostart] ||= drug_name.include?("chocolate")
+    rx = result['indicator']['prescription']
+    drug_name = rx['name'].downcase
+    rx['pa_required'] ||= (drug_name.include?("vanilla") || drug_name.include?("chocolate"))
+    rx['autostart'] ||= drug_name.include?("chocolate")
 
     render json: result
   end

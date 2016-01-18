@@ -30,10 +30,12 @@ class CmmCallbacksController < ApplicationController
   # changes. In that case, we need to update the PA record in our system with the
   # new values in the callback.
   def create
-    handler = PaHandler.new(pa: @pa, user: @user, prescription: @prescription)
+    handler = PaHandler.new(pa: @pa, user: @user, 
+      prescription: @prescription, patient: @patient)
 
     case handler.call
     when :npi_not_found
+      logger.debug "CmmCallbacksController: NPI #{request_params['prescriber']['npi']} not found."
       render(status: 410, text: 'NPI not found') and return
     when :prescription_not_found
       # systems may choose to reject unrecognized prescriptions, 
@@ -70,13 +72,12 @@ class CmmCallbacksController < ApplicationController
     params.require(:request)
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def callback_params
-    params.require(:callback)
+    params.require(:callback).permit(:id)
   end
 
   def set_callback
-    @callback = CmmCallback.find(params[:id])
+    @callback = CmmCallback.find(callback_params[:id])
   end
 
   def create_alert(user, message)
@@ -92,7 +93,10 @@ class CmmCallbacksController < ApplicationController
   end
 
   def set_prescription
-    @prescription ||= Prescription.find_by(drug_number: request_params['prescription']['drug_id'])
+    pat = request_params['patient']
+    @patient ||= Patient.where(first_name: pat['first_name'] , 
+      last_name: pat['last_name'], date_of_birth: pat['date_of_birth']).first
+    @prescription ||= @patient.prescriptions.where(drug_number: request_params['prescription']['drug_id']).first unless @patient.nil?
   end
 
   def delete_or_update_pa!

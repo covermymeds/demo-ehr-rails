@@ -6,7 +6,7 @@ class PaRequestsController < ApplicationController
   def index
     # the @requests var holds all requests to be shown to the user
     # if the token parameter is nil, then we don't have access to the request
-    @requests = PaRequest.order(updated_at: :desc)
+    @requests = PaRequest.where('prescription_id IS NOT NULL').order(updated_at: :desc)
     @tokens = @requests.pluck(:cmm_token)
 
     # update the request statuses

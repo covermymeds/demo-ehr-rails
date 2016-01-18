@@ -17,6 +17,7 @@ class PaRequestsController < ApplicationController
       end
     rescue CoverMyMeds::Error::HTTPError => e
       logger.info "Unable to reach CoverMyMeds: #{e.message}"
+      logger.info "@tokens = #{@tokens.to_s}"
       flash_message e.message
     end
   end
@@ -133,17 +134,19 @@ class PaRequestsController < ApplicationController
   def update_local_data cmm_requests
     cmm_requests.each do |cmm_request|
       local = @requests.find_by_cmm_id(cmm_request[:id])
+      if local 
+        # update workflow status & outcome
+        local.update({
+          cmm_workflow_status: cmm_request[:workflow_status],
+          cmm_outcome: cmm_request[:plan_outcome]})
 
-      # update workflow status & outcome
-      local.update_attributes({
-        cmm_workflow_status: cmm_request[:workflow_status],
-        cmm_outcome: cmm_request[:plan_outcome]}) if local
-
-      # update form selection
-      if cmm_request[:form_id]
-        form = CoverMyMeds.default_client.get_form(cmm_request[:form_id])
-        local.update_attributes({form_id: cmm_request[:form_id],
-          form_name: form[:description]}) if local
+        # update form selection
+        if cmm_request[:form_id]
+          form = CoverMyMeds.default_client.get_form(
+            cmm_request[:form_id])
+          local.update({form_id: cmm_request[:form_id],
+            form_name: form[:description]})
+        end
       end
     end
   end

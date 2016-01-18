@@ -36,7 +36,6 @@ class PaRequest < ActiveRecord::Base
     retval = OUTCOME_MAP[outcome] ||
      STATUS_MAP[status] ||
      self.cmm_workflow_status
-      
   end
 
   def set_cmm_values(response)

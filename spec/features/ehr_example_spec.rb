@@ -161,7 +161,7 @@ describe 'eHR Example App' do
       click_link('Patients')
       expect(page).to have_content('Patients')
       # Amber has a prescription
-      page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
+      page.find('#patients-list > table > tbody > tr:nth-child(3) > td:nth-child(2) > a').click
 
       expect(page).to have_content('Prescriptions')
 
@@ -315,7 +315,7 @@ describe 'eHR Example App' do
     before do
       visit doctor_login
       visit '/patients'
-      page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
+      page.find('#patients-list > table > tbody > tr:nth-child(3) > td:nth-child(2) > a').click
       click_link('Add Prescription')
       stub_indicators(drug_name, pa_required)
       stub_drugs(drug_name, stubbed_drug_response)
@@ -330,7 +330,7 @@ describe 'eHR Example App' do
       click_on('Create Prescription')
 
       visit(patients_path)
-      page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
+      page.find('#patients-list > table > tbody > tr:nth-child(3) > td:nth-child(2) > a').click
       expect(page).to have_selector('#patient-show')
     end
 

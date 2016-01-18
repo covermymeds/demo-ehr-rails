@@ -19,7 +19,7 @@
     <% request = prescription.pa_requests.first %>
     <tr>
       <td>
-        <%= link_to prescription.drug_name, edit_patient_prescription_path(@patient, prescription), :class=>"#{(request.sent) ? 'disabled' : ''}" %>
+        <%= link_to prescription.drug_name, edit_patient_prescription_path(@patient, prescription) %>
       </td>
 
       <td class="start">
@@ -27,10 +27,10 @@
           <% if request.nil? %>
             <%= link_to "PA Required", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
           <% else %>
-            <%= link_to cmm_outcome_label(request), patient_prescription_pa_request_path(@patient, prescription, request) %>
+            <%= link_to cmm_outcome_label(request), patient_prescription_pa_request_path(@patient, prescription, request), id: 'start_pa_request' %>
           <% end %>
         <% else %>
-            PA Not Required
+            <%= link_to "No PA Started", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
         <% end %>
       </td>
 

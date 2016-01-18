@@ -48,7 +48,7 @@
   <legend>Prescription</legend>
   <div class="form-group">
     <%= label_tag :prescription_drug_name, "Medication" %><br/>
-    <input type='text' class='form-control' id='prescription_drug_name' name='prescription[drug_name]'>
+    <input type='text' class='form-control' id='prescription_drug_name' name='prescription[drug_name]' placeholder='Drug Name'>
     </input>
     <%= hidden_field :prescription, :drug_number %>
     <span class="help-block">Type at least 4 letters of the name of the drug you wish to prescribe.</span>
@@ -79,12 +79,6 @@
       <% end %>
     </div>
   </div>
-
-  <div class='form-group'>
-    <%= label_tag :pharmacy_id, "Pharmacy to Fill Prescription" %>
-    <%= select :pharmacy, :id, Pharmacy.all.collect {|p| [p.display_name, p.id]}, {prompt:'Select a Pharmacy'}, {:class=>'form-control'} %>
-  </div>
-
 </formset>
 
 <formset>
@@ -92,15 +86,23 @@
 
   <div class='form-group'>
     <%= label_tag :form_name, "Payer" %>
-    <input type='text' id='form_name' class='form-control'></input>
+    <input type='text' id='form_name' class='form-control' placeholder='Payer Name'></input>
     <%= hidden_field :pa_request, :form_id %>
+  </div>
+</formset>
+
+<formset>
+  <div class='form-group'>
+    <%= label_tag :pharmacy_id, "Pharmacy to Fill Prescription" %>
+    <%= select :pharmacy, :id, Pharmacy.all.collect {|p| [p.display_name, p.id]}, {prompt:'Select a Pharmacy'}, {:class=>'form-control'} %>
   </div>
 
 </formset>
 
+
 <div class='form-actions'>
   <%= link_to "Cancel", :back, :class=>'btn btn-default'%>
-  <%= f.submit "Create", :class=>'btn btn-primary', :id=>'create'%>
+  <%= f.submit "Order", :class=>'btn btn-primary', :id=>'create'%>
 </div>
 
 <% end %>

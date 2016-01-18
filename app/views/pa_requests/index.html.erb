@@ -30,10 +30,10 @@
         <%= cmm_outcome_label(request) %>
       </td>
       <td>
-        <%= link_to "#{request.prescription.patient.description}", request.prescription.patient, :class=>'patient-link' %>
+        <%= link_to "#{request.patient.description}", request.patient, :class=>'patient-link' %>
       </td>
       <td>
-        <%= link_to "#{request.prescription.drug_name}", edit_patient_prescription_path(request.prescription.patient, request.prescription) %>
+        <%= link_to "#{request.prescription.drug_name}", edit_patient_prescription_path(request.patient, request.prescription) %>
       </td>
       <td>
         <%= request.form_name %>

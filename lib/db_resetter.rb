@@ -97,6 +97,7 @@ class DbResetter
     new_request = RequestConfigurator.request(prescription, nil, User.doctors.first)
     response = CoverMyMeds.default_client.create_request new_request
     pa_request.set_cmm_values(response)
+    pa_request.prescription = prescription
     pa_request.save!
   end
 end

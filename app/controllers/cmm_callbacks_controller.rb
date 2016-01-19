@@ -72,12 +72,8 @@ class CmmCallbacksController < ApplicationController
     params.require(:request)
   end
 
-  def callback_params
-    params.require(:callback).permit(:id)
-  end
-
   def set_callback
-    @callback = CmmCallback.find(callback_params[:id])
+    @callback = CmmCallback.find(params[:id])
   end
 
   def create_alert(user, message)

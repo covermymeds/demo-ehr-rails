@@ -30,13 +30,14 @@ class PaRequest < ActiveRecord::Base
     updated_at.in_time_zone(Time.zone.name)
   end
 
-  def status
+  def outcome
     outcome = self.cmm_outcome.downcase.parameterize.underscore.to_sym
-    status = self.cmm_workflow_status.downcase.parameterize.underscore.to_sym
+    OUTCOME_MAP[outcome] || self.cmm_outcome
+  end
 
-    retval = OUTCOME_MAP[outcome] ||
-     STATUS_MAP[status] ||
-     self.cmm_workflow_status
+  def status
+    status = self.cmm_workflow_status.downcase.parameterize.underscore.to_sym
+    STATUS_MAP[status] || self.cmm_workflow_status
   end
 
   def set_cmm_values(response)

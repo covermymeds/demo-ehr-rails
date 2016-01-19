@@ -63,7 +63,6 @@ class PaRequest < ActiveRecord::Base
     self.cmm_workflow_status = cb_data['workflow_status'] || "Not Yet Started"
     self.cmm_outcome = cb_data['plan_outcome'] || "Undetermined"
     self.cmm_token = cb_data['tokens'][0]['id']
-    logger.info("updating with form id #{cb_data['form_id']}")
     self.form_id = cb_data['form_id']
     self.state = cb_data['state']
   end

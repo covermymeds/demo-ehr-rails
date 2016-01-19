@@ -100,14 +100,13 @@ class CmmCallbacksController < ApplicationController
   def delete_or_update_pa!
     # if we have a record of the PA, delete it if appropriate
     if is_delete_request?(request_params)
-      logger.debug("PA request #{@pa.cmm_id} was deleted.")
       create_alert(@user, "PA request #{@pa.cmm_id} was deleted.")
       @pa.update_attributes(cmm_token: nil, cmm_id: nil)
     else
       # if it's not a delete, then it's an update
-      logger.debug("PA request #{@pa.cmm_id} was updated.")
       create_alert(@user, "PA request #{@pa.cmm_id} was updated.")
       @pa.update_from_callback(request_params)
+      @pa.save!
     end
   end
 end

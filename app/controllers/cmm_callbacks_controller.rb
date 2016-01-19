@@ -102,7 +102,7 @@ class CmmCallbacksController < ApplicationController
     if is_delete_request?(request_params)
       logger.debug("PA request #{@pa.cmm_id} was deleted.")
       create_alert(@user, "PA request #{@pa.cmm_id} was deleted.")
-      @pa.update_attributes(cmm_token: nil)
+      @pa.update_attributes(cmm_token: nil, cmm_id: nil)
     else
       # if it's not a delete, then it's an update
       logger.debug("PA request #{@pa.cmm_id} was updated.")

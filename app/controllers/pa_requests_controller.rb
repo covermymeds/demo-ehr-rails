@@ -18,7 +18,7 @@ class PaRequestsController < ApplicationController
     rescue CoverMyMeds::Error::HTTPError => e
       logger.info "Unable to reach CoverMyMeds: #{e.message}"
       logger.info "@tokens = #{@tokens.to_s}"
-      flash_message e.message
+      flash_message("e.message: tokens = #{@tokens.to_s}", :error)
     end
   end
 
@@ -124,7 +124,7 @@ class PaRequestsController < ApplicationController
     flash_message('Request successfully removed from your dashboard.')
 
     respond_to do |format|
-      format.html { redirect_to dashboard_path   }
+      format.html { redirect_to dashboard_path }
       format.json { head :no_content }
     end
   end

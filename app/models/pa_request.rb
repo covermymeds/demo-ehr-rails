@@ -57,16 +57,6 @@ class PaRequest < ActiveRecord::Base
     read_attribute(:cmm_outcome) || "Unknown"
   end
 
-  def update_from_callback(cb_data)
-    self.cmm_link = cb_data['tokens'][0]['html_url']
-    self.cmm_id = cb_data['id']
-    self.cmm_workflow_status = cb_data['workflow_status'] || "Not Yet Started"
-    self.cmm_outcome = cb_data['plan_outcome'] || "Undetermined"
-    self.cmm_token = cb_data['tokens'][0]['id']
-    self.form_id = cb_data['form_id']
-    self.state = cb_data['state']
-  end
-
   def init_from_callback(cb_data)
     self.cmm_link = cb_data['tokens'][0]['html_url']
     self.cmm_id = cb_data['id']

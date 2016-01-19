@@ -35,7 +35,7 @@ class CmmCallbacksController < ApplicationController
 
     case handler.call
     when :npi_not_found
-      logger.debug "CmmCallbacksController: NPI #{request_params['prescriber']['npi']} not found."
+      logger.info("CmmCallbacksController: NPI #{request_params['prescriber']['npi']} not found.")
       render(status: 410, text: 'NPI not found') and return
     when :prescription_not_found
       # systems may choose to reject unrecognized prescriptions, 
@@ -43,12 +43,13 @@ class CmmCallbacksController < ApplicationController
       # for this example, we have decided this is a paper Rx
       # so we want to handle PA electronically
       create_alert(@user, "NPI #{@user.npi} was found, but the prescription didn't match. Creating new Rx.")
-      logger.debug "CmmCallbacksController: Prescription Not Found: #{request_params['id']}"
+      logger.info("CmmCallbacksController: Prescription Not Found: #{request_params['id']}")
       @pa.init_from_callback(request_params)
     when :new_retrospective
-      logger.debug "CmmCallbacksController: New Retrospective PA created #{request_params['id']}"
+      logger.info("CmmCallbacksController: New Retrospective PA created #{request_params['id']}")
       @pa.init_from_callback(request_params)
     when :pa_found
+      logger.info("Updating or deleting PA #{@pa.cmm_id}")
       delete_or_update_pa!
     end
     callback = @pa.cmm_callbacks.build(content: request_params.to_json)
@@ -105,8 +106,13 @@ class CmmCallbacksController < ApplicationController
     else
       # if it's not a delete, then it's an update
       create_alert(@user, "PA request #{@pa.cmm_id} was updated.")
-      @pa.update_from_callback(request_params)
-      @pa.save!
+      @pa.update_attributes(cmm_link: request_params['tokens'][0]['html_url'],
+        cmm_id: request_params['id'],
+        cmm_workflow_status: request_params['workflow_status'],
+        cmm_outcome: request_params['plan_outcome'],
+        cmm_token: request_params['tokens'][0]['id'],
+        form_id: request_params['form_id'],
+        state: request_params['state'])
     end
   end
 end

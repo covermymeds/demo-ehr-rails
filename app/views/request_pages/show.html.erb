@@ -1,0 +1,28 @@
+<% content_for :controls do %>
+<button id='show-json-source' class='btn btn-default navbar-btn'>Show JSON</button>
+<% end %>
+<div class='request-pages'>
+  <div class='row'>
+    <div class='col-md-3'>
+      <b>Form</b>: <%= @pa_request.form_id %>
+    </div>
+    <div class='col-md-3'>
+      <b>Token</b>: <%= @pa_request.cmm_token %>
+    </div>
+  </div>
+  <div class='row'>
+  
+    <!-- hidden fields are here for the form-search page, until we implement coded references -->
+    <%= hidden_field_tag "drug_id", @pa_request.prescription.drug_number %>
+    <%= hidden_field_tag "patient_state", @pa_request.state %>
+    <!-- remove the above 2 lines when we implement coded reference properly -->
+
+    <% @forms.each_key do |name| %>
+      <%= render partial: "rp_form", locals: {form_name: name, question_sets: @forms[name][:question_sets], data: @data[name].symbolize_keys} %>
+    <% end %>
+  </div>
+</div>
+
+<code id='json-source'>
+  <%= JSON.pretty_generate(@request_page) %>
+</code>

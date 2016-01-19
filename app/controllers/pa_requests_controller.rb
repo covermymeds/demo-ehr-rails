@@ -11,7 +11,7 @@ class PaRequestsController < ApplicationController
 
     # update the request statuses
     begin
-      if @tokens.presence?
+      if not @tokens.empty?
         @cmm_requests = CoverMyMeds.default_client.get_requests(@tokens)
         update_local_data(@cmm_requests)
       end

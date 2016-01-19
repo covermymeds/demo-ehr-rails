@@ -68,6 +68,7 @@ class RequestPagesController < ApplicationController
         replace_actions @request_page, @pa_request
         @forms = @request_page[:forms]
         @data = @request_page[:data]
+        @actions = @request_page[:actions]
         render :show
       end
 

@@ -5,8 +5,9 @@
         <%= render partial: "question_set", locals: { question_set: question_set, form_name: form_name, data: data } %>
       <% end %>
     </div>
+
     <div class='col-md-3 col-md-offset-2' id='actions'>
-      <%= render partial: "actions", locals: { actions: @actions } %>
+      <%= render partial: "actions", locals: { actions: actions } %>
     </div>
   </form>
 </div>

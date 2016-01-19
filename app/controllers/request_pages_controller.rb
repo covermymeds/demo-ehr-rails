@@ -7,7 +7,7 @@ class RequestPagesController < ApplicationController
 
   def index
     # get the request-page for our current request
-    @request_page_json = CoverMyMeds.default_client.get_request_page @pa_request.cmm_id, @pa_request.cmm_token
+    @request_page_json = CoverMyMeds.default_client.get_request_page(@pa_request.cmm_id, @pa_request.cmm_token)
     
     # redirect to my own controller for executing actions
     replace_actions @request_page_json, @pa_request
@@ -16,6 +16,7 @@ class RequestPagesController < ApplicationController
     @forms = @request_page_json[:forms]
     @data = @request_page_json[:data]
     @validations = @request_page_json[:validations]
+    @actions = @request_page_json[:actions]
 
   rescue CoverMyMeds::Error::HTTPError => e
     flash_message "Error retrieving the request page: #{e.message}", :error
@@ -68,20 +69,16 @@ class RequestPagesController < ApplicationController
         replace_actions @request_page, @pa_request
         @forms = @request_page[:forms]
         @data = @request_page[:data]
+        @validations = @request_page[:validations]
         @actions = @request_page[:actions]
-        render :show
+
+        render :index
       end
 
     end
-  rescue RestClient::Exception => e
-    flash_message("Error retrieving the request page", :error)
-
-    # the body of our response is in request_pages format
-    @request_page_json = JSON.parse(e.response, symbolize_names: true)
-
-    # we got an error back
-    @request_page = @request_page_json[:errors]
-    render :error
+  rescue CoverMyMeds::Error::HTTPError => e
+    flash_message "Error retrieving the request page: #{e.message}", :error
+    redirect_to :back
 
   end
 

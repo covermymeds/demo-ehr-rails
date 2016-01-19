@@ -138,8 +138,7 @@ class PaRequestsController < ApplicationController
         # update workflow status & outcome
         local.update({
           cmm_workflow_status: cmm_request['workflow_status'],
-          cmm_outcome: cmm_request['plan_outcome']},
-          form_id: cmm_request['form_id'])
+          cmm_outcome: cmm_request['plan_outcome']})
 
         # update form selection
         if cmm_request['form_id']

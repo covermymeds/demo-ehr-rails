@@ -11,7 +11,7 @@ class PaRequestsController < ApplicationController
 
     # update the request statuses
     begin
-      if not @tokens.empty?
+      if @tokens.presence?
         @cmm_requests = CoverMyMeds.default_client.get_requests(@tokens)
         update_local_data(@cmm_requests)
       end
@@ -133,19 +133,20 @@ class PaRequestsController < ApplicationController
 
   def update_local_data cmm_requests
     cmm_requests.each do |cmm_request|
-      local = @requests.find_by_cmm_id(cmm_request[:id])
+      local = PaRequest.find_by_cmm_id(cmm_request['id'])
       if local 
         # update workflow status & outcome
         local.update({
-          cmm_workflow_status: cmm_request[:workflow_status],
-          cmm_outcome: cmm_request[:plan_outcome]})
+          cmm_workflow_status: cmm_request['workflow_status'],
+          cmm_outcome: cmm_request['plan_outcome']},
+          form_id: cmm_request['form_id'])
 
         # update form selection
-        if cmm_request[:form_id]
+        if cmm_request['form_id']
           form = CoverMyMeds.default_client.get_form(
-            cmm_request[:form_id])
-          local.update({form_id: cmm_request[:form_id],
-            form_name: form[:description]})
+            cmm_request['form_id'])
+          local.update({form_id: cmm_request['form_id'],
+            form_name: form['description']})
         end
       end
     end

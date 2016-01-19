@@ -43,8 +43,10 @@ class CmmCallbacksController < ApplicationController
       # for this example, we have decided this is a paper Rx
       # so we want to handle PA electronically
       create_alert(@user, "NPI #{@user.npi} was found, but the prescription didn't match. Creating new Rx.")
+      logger.debug "CmmCallbacksController: Prescription Not Found: #{request_params['id']}"
       @pa.init_from_callback(request_params)
     when :new_retrospective
+      logger.debug "CmmCallbacksController: New Retrospective PA created #{request_params['id']}"
       @pa.init_from_callback(request_params)
     when :pa_found
       delete_or_update_pa!
@@ -98,12 +100,14 @@ class CmmCallbacksController < ApplicationController
   def delete_or_update_pa!
     # if we have a record of the PA, delete it if appropriate
     if is_delete_request?(request_params)
+      logger.debug("PA request #{@pa.cmm_id} was deleted.")
+      create_alert(@user, "PA request #{@pa.cmm_id} was deleted.")
       @pa.update_attributes(cmm_token: nil)
-      create_alert(@user, 'A PA was deleted.')
     else
       # if it's not a delete, then it's an update
+      logger.debug("PA request #{@pa.cmm_id} was updated.")
+      create_alert(@user, "PA request #{@pa.cmm_id} was updated.")
       @pa.update_from_callback(request_params)
-      create_alert(@user, 'A PA was updated')
     end
   end
 end

@@ -19,15 +19,19 @@ describe 'Credential Management' do
   end
 
   context 'when adding a new credential', js: true do
-    xit 'allows the prescriber to register a credential' do
+    it 'allows the prescriber to register a credential' do
       visit edit_user_path(user)
 
       check('I would like to receive PAs started at the pharmacy for the below fax numbers.')
       click_link('Add Fax')
-      fill_in('Fax', with: '8005555555')
+
+      find_field('Fax').click
+      find_field('Fax').send_keys '614-555-5555'
+
       click_button 'Update User'
       visit edit_user_path(user)
-      expect(find_field('Fax').value).to eq('800-555-5555')
+      expect(page).to have_field('Fax')
+      expect(find_field('Fax').value).to eq('614-555-5555')
     end
   end
 

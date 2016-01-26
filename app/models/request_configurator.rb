@@ -25,8 +25,8 @@ class RequestConfigurator
   end
 
   def self.assign_request hash, form, patient
-    hash.delete(:form_id) if form.nil?
-    hash.form_id = form unless form.nil?
+    hash.delete(:form_id) if form.blank?
+    hash.form_id = form unless form.blank?
     hash.state = patient.state
   end
 

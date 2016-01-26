@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150912173628) do
+ActiveRecord::Schema.define(version: 20160126053129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 20150912173628) do
     t.string   "still_open_reason"
     t.string   "closed_reason_code",    limit: 2
     t.string   "form_name",                       default: "None Chosen"
+    t.boolean  "display",                         default: true
   end
 
   add_index "pa_requests", ["prescription_id"], name: "index_pa_requests_on_prescription_id", using: :btree

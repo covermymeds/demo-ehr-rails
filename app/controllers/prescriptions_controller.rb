@@ -7,7 +7,7 @@ class PrescriptionsController < ApplicationController
   # GET /prescriptions.json
   def index
     @patient = Patient.find(params[:patient_id])
-    @prescriptions = Prescription.where(patient_id: params[:patient_id]).where(active: true)
+    @prescriptions = @patient.prescriptions.active
   end
 
   # GET /prescriptions/1

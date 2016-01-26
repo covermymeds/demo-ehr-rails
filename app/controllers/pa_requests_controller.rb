@@ -1,56 +1,37 @@
 class PaRequestsController < ApplicationController
   before_action :set_request, only: [:show, :edit, :update, :destroy]
+  before_action :set_patient, only: [:new, :create]
+  before_action :set_prescription, only: [:new, :create]
 
   # GET /requests
   # GET /requests.json
   def index
-    # the @requests var holds all requests to be shown to the user
-    # if the token parameter is nil, then we don't have access to the request
-    @requests = PaRequest.where('prescription_id IS NOT NULL').order(updated_at: :desc)
+    # show all requests for this system
+    @requests = PaRequest.for_display.where('prescription_id IS NOT NULL').order(updated_at: :desc)
     @tokens = @requests.pluck(:cmm_token)
 
     # update the request statuses
     begin
-      if not @tokens.empty?
-        @cmm_requests = CoverMyMeds.default_client.get_requests(@tokens)
-        update_local_data(@cmm_requests)
+      unless @tokens.empty?
+        update_local_data(CoverMyMeds.default_client.get_requests(@tokens))
       end
     rescue CoverMyMeds::Error::HTTPError => e
-      logger.info "Unable to reach CoverMyMeds: #{e.message}"
-      logger.info "@tokens = #{@tokens.to_s}"
+      logger.info "Exception getting requests: #{e.message}"
       flash_message("e.message: tokens = #{@tokens.to_s}", :error)
     end
   end
 
   # GET /patients/1/prescriptions/1/pa_requests/1
-  # GET /patients/1/prescriptions/1/pa_requests/1.json
   def show
-    if session[:use_custom_ui]
-      respond_to do |format|
-        format.html { redirect_to pages_pa_request_path(@pa_request) }
-        format.json { render :show, status: :ok, location: @pa_request }
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to cmm_request_link_for(@pa_request) }
-        format.json { render :show, status: :ok, location: @pa_request }
-      end
+    respond_to do |format|
+      format.html { redirect_to pa_display_page(@pa_request) }
     end
   end
 
   # GET /patients/1/prescriptions/1/pa_requests/new
   def new
-    if params[:patient_id] && params[:prescription_id]
-      @patient = Patient.find(params[:patient_id])
-      @prescription = @patient.prescriptions.find(params[:prescription_id])
-      @pa_request = @prescription.pa_requests.build
-      @pharmacy = @prescription.pharmacy
-    else
-      @patient = Patient.new
-      @prescription = @patient.prescriptions.build
-      @pa_request = @prescription.pa_requests.build
-      @pharmacy = @prescription.pharmacy
-    end
+    @pa_request = @prescription.pa_requests.build
+    @pharmacy = @prescription.pharmacy
     @pa_request.state = @patient.state
     @pa_request.prescription.quantity = 30
   end
@@ -64,11 +45,8 @@ class PaRequestsController < ApplicationController
   # POST /patients/1/prescriptions/1/pa_requests
   # POST /patients/1/prescriptions/1/pa_requests.json
   def create
-    # find the patient we're making a request for
-    @patient = Patient.find(params[:patient][:id])
-
     # create a prescription on the fly, if we need to
-    if params[:prescription][:id] != ""
+    if params[:prescription][:id].presence?
       @prescription = @patient.prescriptions.find(params[:prescription][:id])
     else
       @prescription = @patient.prescriptions.build(prescription_params)
@@ -117,7 +95,7 @@ class PaRequestsController < ApplicationController
     # first, delete the PA request from our CMM dashboard
     client = CoverMyMeds.default_client
     client.revoke_access_token? @pa_request.cmm_token
-    @pa_request.update_attributes(cmm_token: nil)
+    @pa_request.remove_from_dashboard
 
     # delete the PA request from our database
     # we'll delete the PA request when the callback arrives
@@ -131,12 +109,20 @@ class PaRequestsController < ApplicationController
 
   private
 
+  def pa_display_page pa_request
+    if session[:use_custom_ui]
+      pages_pa_request_path(@pa_request)
+    else
+      cmm_request_link_for(@pa_request)
+    end
+  end
+
   def update_local_data cmm_requests
     cmm_requests.each do |cmm_request|
       local = PaRequest.find_by_cmm_id(cmm_request['id'])
-      if local 
+      unless local.nil? 
         # update workflow status & outcome
-        local.update({
+        local.update_attributes({
           cmm_workflow_status: cmm_request['workflow_status'],
           cmm_outcome: cmm_request['plan_outcome']})
 
@@ -144,7 +130,7 @@ class PaRequestsController < ApplicationController
         if cmm_request['form_id']
           form = CoverMyMeds.default_client.get_form(
             cmm_request['form_id'])
-          local.update({form_id: cmm_request['form_id'],
+          local.update_attributes({form_id: cmm_request['form_id'],
             form_name: form['description']})
         end
       end
@@ -152,17 +138,17 @@ class PaRequestsController < ApplicationController
   end
 
   def set_request
-    if params[:patient_id]
-      # sometimes we send the patient & prescription information
-      @patient = Patient.find(params[:patient_id])
-      @prescription = @patient.prescriptions.find(params[:prescription_id])
-      @pa_request = @prescription.pa_requests.find(params[:id])
-    else
-      # sometimes we just show the request from ID alone
-      @pa_request = PaRequest.find(params[:id])
-      @prescription = @pa_request.prescription
-      @patient = @pa_request.prescription.patient
-    end
+    set_patient
+    set_prescription
+    @pa_request = @prescription.pa_requests.find(params[:id])
+  end
+
+  def set_prescription
+    @prescription = @patient.prescriptions.find(params[:prescription_id]) || @patient.prescriptions.build
+  end
+
+  def set_patient
+    @patient = Patient.find(params[:patient_id]) || Patient.new
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

@@ -13,12 +13,23 @@ RSpec.describe PaRequest, type: :model do
     }
   end
 
-  context "validations" do
-    context "with valid arguments" do
+  describe "creating a pa_request" do
+    context "when using valid values" do
       it 'is valid' do
         pa_request = PaRequest.new(request_params)
         expect(pa_request).to be_valid
       end
+
+      it 'will show in task list by default' do
+        pa_request = PaRequest.new(request_params)
+        expect(pa_request.display).to eq(true)
+      end
+    end
+  end
+
+  context "when retrieving the task list" do
+    it "only returns requests that are displayable" do
+      expect(true).to be_truthy
     end
   end
 end

@@ -10,8 +10,8 @@ class User < ActiveRecord::Base
   validate :validate_credentials
 
   belongs_to :role
-  has_many :pa_requests
-  has_many :credentials
+  has_many :pa_requests, inverse_of: :user
+  has_many :credentials, inverse_of: :user
 
   accepts_nested_attributes_for :credentials, reject_if: :all_blank, allow_destroy: true
   has_many :alerts

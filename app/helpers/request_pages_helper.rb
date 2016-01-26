@@ -1,8 +1,34 @@
 module RequestPagesHelper
 
+  def show_question(form_name, question, data)
+    # uncomment the below lines to hide questions
+    # that are either statements, not required, or already answered
+    # form_name != "pa_request" ||
+    #   ( question[:question_type] != "STATEMENT" &&
+    #     question[:flag] == "REQUIRED" && 
+    #     data[question[:question_id].underscore.to_sym].nil? ) ||
+    #   is_patient_name(question)
+
+    true
+  end
+
+  def is_patient_name(question)
+    question["coded_reference"].present? &&
+    question["coded_reference"]["code"] == "prior-auth-header"
+  end
+
+  def has_showable_questions(form_name, question_set, data)
+    (question_set["questions"].count { |q| show_question(form_name, q, data) } ) > 0
+  end
+
+  def show_question_set(form_name, question_set, data)
+    form_name != "pa_request" || 
+    has_showable_questions(form_name, question_set, data)
+  end
+
   def render_question(question, form_name, data)
     # render the correct question based on the type
-    types = {
+    question_type = {
       FREE_TEXT: "free_text",
       FREE_AREA: "free_area",
       DATE: "date",
@@ -11,13 +37,9 @@ module RequestPagesHelper
       CHECKBOX: "checkbox",
       HIDDEN: "hidden",
       FILE: "file"
-    }
-    question_type = question[:question_type].to_sym
-    if types.has_key?(question_type)
-      render partial: types[question_type], locals:{question: question, form_name:form_name, data: data}
-    else
-      render partial: "unknown", locals:{question: question, form_name:form_name, data: data}
-    end
+    }.fetch( question[:question_type].to_sym, :HIDDEN )
+    question_type = :HIDDEN unless show_question(form_name, question, data)
+    render partial: question_type.to_s.downcase, locals:{ question: question, form_name:form_name, data: data }
   end
   
   def display_if_not(display)
@@ -26,6 +48,10 @@ module RequestPagesHelper
 
   def checked_if(checked)
     "checked" if checked != ""
+  end
+
+  def multiple_if(multiple)
+    "multiple" if multiple == "true"
   end
 
   def multiple_checked_if(option, value)

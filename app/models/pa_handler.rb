@@ -1,8 +1,9 @@
 class PaHandler
-  def initialize(pa: pa, user: user, prescription: prescription)
+  def initialize(pa: pa, user: user, prescription: prescription, patient: patient)
     @user = user
     @pa = pa
     @prescription = prescription
+    @patient = patient
   end
 
   def call
@@ -10,7 +11,7 @@ class PaHandler
       :npi_not_found
     elsif !found_prescription?
       :prescription_not_found
-    elsif @pa.new_record?
+    elsif !pa_found?
       :new_retrospective
     else
       :pa_found
@@ -26,4 +27,9 @@ class PaHandler
   def found_prescription?
     npi_found? && @prescription.present?
   end
+
+  def pa_found?
+    @pa.present?
+  end
+  
 end

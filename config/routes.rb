@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
 
+  resources :drugs, only: [:index]
+  resources :forms, only: [:index]
+
+  post '/pa_required' => 'formularies#pa_required'
+
   resources :users do
     post :cancel_registration, on: :member
     resources :credentials
@@ -17,14 +22,18 @@ Rails.application.routes.draw do
   end
 
   resources :pa_requests do
-    resource :request_pages, only: [:show]
+    member do
+      get 'pages', to: 'request_pages#index'
+      post 'pages/:button_title',
+        to: 'request_pages#action', as: 'action'
+    end
   end
 
   resources :alerts
 
-  post '/pa_requests/:pa_request_id/request_pages/:button_title',
-    to: 'request_pages#do_action',
-    as: :pa_request_request_pages_action
+  # post '/pa_requests/:pa_request_id/request_pages/:button_title',
+  #   to: 'request_pages#do_action',
+  #   as: :pa_request_request_pages_action
 
   get '/toggle_ui', to: 'home#toggle_custom_ui'
 
@@ -42,10 +51,9 @@ Rails.application.routes.draw do
 
   get '/home' => 'home#home', as: :home
   put '/home/change_api_env' => 'home#change_api_env'
-  put '/home/resetdb' => 'home#reset_database', as: :reset_db
+  get '/home/resetdb' => 'home#reset_database', as: :reset_db
 
   root 'home#index'
 
-  post '/pa_required' => 'formularies#pa_required'
 
 end

@@ -21,7 +21,7 @@
         <li class='dropdown'>
           <a href='#' class='dropdown-toggle' data-toggle='dropdown'>Prior Authorizations<b class='caret'></b></a>
           <ul class='dropdown-menu'>
-            <li><%= link_to "Dashboard", pa_requests_path %></li>
+            <li><%= link_to "Task List", pa_requests_path %></li>
             <li><%= link_to "New PA Request", new_pa_request_path %></li>
             <li class="divider"></li>
             <li><%= link_to "Contact CoverMyMeds", help_path %></li>
@@ -35,8 +35,8 @@
               <% if current_user %>
               <li><%= link_to "Account Settings", edit_user_path(current_user) %></li>
               <% end %>
-              <li><%= link_to "Sign in as #{@demo_doctor.display_name}", demo_login_path(Role::DOCTOR) %></li>
-              <li><%= link_to "Sign in as Staff", login_path(Role::STAFF) %></li>
+              <li><%= link_to "Sign in as #{@demo_doctor.display_name}", demo_login_path(Role::DOCTOR), id: "dr_login" %></li>
+              <li><%= link_to "Sign in as Staff", login_path(Role::STAFF), id: "staff_login" %></li>
               <% if current_user %>
               <li><%= link_to "Sign out", logout_path %></li>
               <% end %>
@@ -62,7 +62,7 @@
               <% else %>
               <li><%= link_to "Use Request-Pages", toggle_ui_path(return: request.original_url) %></li>
               <% end %>
-              <li><%= link_to "Reset Database", reset_db_path, method: :put, data: { confirm: "Are you sure? \nThis will remove any newly created data. \nThis cannot be undone." } %></li>
+              <li><%= link_to "Reset Database", reset_db_path, method: :get, data: { confirm: "Are you sure? \nThis will remove any newly created data. \nThis cannot be undone." } %></li>
               <li><%= link_to "Callbacks", cmm_callbacks_path %></li>
             </ul>
           </li>

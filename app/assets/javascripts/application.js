@@ -10,20 +10,19 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 //= require jquery-validate
 
 // Loads all Bootstrap javascripts
+//= require bootstrap
 //= require bootstrap-datepicker
 //= require underscore
-//= require select2
 //= require config
-//= require api-jquery-plugins
 //= require signature
 //= require cocoon
 //= require_tree .
-
-
 
 $(function() {
 

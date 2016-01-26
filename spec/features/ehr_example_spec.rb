@@ -1,17 +1,130 @@
 require 'rails_helper'
+require 'spec_helper'
 
 describe 'eHR Example App' do
   fixtures :all
   let(:doctor_login) { "/login/doctor" }
   let(:staff_login) { "/login/staff" }
+  let(:staff) { "Staff" }
+  let(:doctor) { "Dr. Alexander Fleming" }
+  let(:stubbed_pa_request) do
+      '{
+      "requests": [
+        {
+          "memo": "system-specific information",
+          "id": "PF6FK9",
+          "api_id": "1vd9o4427lyi0ccb2uem",
+          "is_epa": false,
+          "state": "OH",
+          "thumbnail_urls": [
+            "https://www.covermymeds.com/async/thumbnail/?request=PF6FK9&mode=plan"
+          ],
+          "pdf_url": "https://www.covermymeds.com/request/send/PF6FK9/",
+          "html_url": "https://www.covermymeds.com/request/view/PF6FK9",
+          "plan_outcome": "Favorable",
+          "workflow_status": "Archived",
+          "href": "https://api.covermymeds.com/requests/PF6FK9",
+          "patient": {
+            "first_name": "Susan",
+            "last_name": "Denmark"
+          },
+          "prescriber": {
+            "npi": null,
+            "first_name": "",
+            "last_name": ""
+          },
+          "prescription": {
+            "name": "Boniva 2.5MG tablets"
+          },
+          "created_at": "2014-02-21T22:48:40Z",
+          "tokens": [
+            {
+              "id": "gq9vmqai2mkwewv1y55x",
+              "request_id": "PF6FK9",
+              "href": "https://api.covermymeds.com/requests/tokens/gq9vmqai2mkwewv1y55x",
+              "html_url": "https://www.covermymeds.com/request/view/PF6FK9?token_id=gq9vmqai2mkwewv1y55x",
+              "pdf_url": "https://www.covermymeds.com/request/send/PF6FK9?token_id=gq9vmqai2mkwewv1y55x",
+              "thumbnail_url": "https://www.covermymeds.com/async/thumbnail/?mode=plan&request=PF6FK9&token_id=gq9vmqai2mkwewv1y55x"
+            }
+          ]
+        }
+      ]
+    }'
+    end
 
-  it 'should allow accessing the site root' do
-    visit('/')
+    let(:stubbed_drug_response) do
+      '{
+  "drugs": [
+    {
+      "id": "131079",
+      "gpi": "49270025103010",
+      "sort_group": null,
+      "sort_order": null,
+      "name": "NexIUM",
+      "route_of_administration": "OR",
+      "dosage_form": "PACK",
+      "strength": "10",
+      "strength_unit_of_measure": "MG",
+      "dosage_form_name": "packets",
+      "full_name": "NexIUM 10MG packets",
+      "href": "https://api.covermymeds.com/drugs/131079"
+    },
+    {
+      "id": "175285",
+      "gpi": "49270025103004",
+      "sort_group": null,
+      "sort_order": null,
+      "name": "NexIUM",
+      "route_of_administration": "OR",
+      "dosage_form": "PACK",
+      "strength": "2.5",
+      "strength_unit_of_measure": "MG",
+      "dosage_form_name": "packets",
+      "full_name": "NexIUM 2.5MG packets",
+      "href": "https://api.covermymeds.com/drugs/175285"
+    },
+    {
+      "id": "070045",
+      "gpi": "49270025106520",
+      "sort_group": null,
+      "sort_order": null,
+      "name": "NexIUM",
+      "route_of_administration": "OR",
+      "dosage_form": "CPDR",
+      "strength": "20",
+      "strength_unit_of_measure": "MG",
+      "dosage_form_name": "dr capsules",
+      "full_name": "NexIUM 20MG dr capsules",
+      "href": "https://api.covermymeds.com/drugs/070045"
+    }]}'
+    end
+
+  let(:chocolate_stubbed_drug_response) do
+      '{
+  "drugs": [
+    {
+      "id": "095553",
+      "gpi": "98330000000900",
+      "sort_group": null,
+      "sort_order": null,
+      "name": "Chocolate Flavor",
+      "route_of_administration": "XX",
+      "dosage_form": "LIQD",
+      "strength": "",
+      "strength_unit_of_measure": "",
+      "dosage_form_name": "liquid",
+      "full_name": "Chocolate Flavor liquid",
+      "href": "https://api.covermymeds.com/drugs/095553"
+    }]}'
+  end
+
+  it 'should have directions at the root' do
+    visit(root_path)
     expect(page).to have_content("Let's pretend that this is your EHR...")
   end
 
   # Test all of the nav links
-  describe 'navigating the site via nav bar' do
+  describe 'when navigating the site via nav bar' do
 
     before(:each) do
       visit '/logout'
@@ -29,8 +142,11 @@ describe 'eHR Example App' do
     end
 
     it 'should navigate to the dashboard view', js: true do
+      stub_request(:post, "https://#{ENV['CMM_API_KEY']}:#{ENV['CMM_API_SECRET']}@api.covermymeds.com/requests/search/?token_ids%5B%5D=random_token&v=1").
+        with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>'0', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Ruby'}).
+        to_return(:status => 200, :body => stubbed_pa_request, :headers => {})
       click_link('Prior Authorizations')
-      click_link('Dashboard')
+      click_link('Task List')
       expect(page).to have_content('Your Prior Auth Dashboard')
     end
 
@@ -45,7 +161,7 @@ describe 'eHR Example App' do
       click_link('Patients')
       expect(page).to have_content('Patients')
       # Amber has a prescription
-      page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
+      page.find('#patients-list > table > tbody > tr:nth-child(3) > td:nth-child(2) > a').click
 
       expect(page).to have_content('Prescriptions')
 
@@ -59,7 +175,7 @@ describe 'eHR Example App' do
       expect(page).to have_content('For assistance using CoverMyMeds')
     end
 
-    context 'Resources' do
+    context 'when using the Resources menu' do
 
       it 'defaults to the custom UI', js: true do
         click_link ('Resources') 
@@ -81,7 +197,7 @@ describe 'eHR Example App' do
         response = Hashie::Mash.new(JSON.parse(File.read('spec/fixtures/created_pa.json')))
         allow_any_instance_of(CoverMyMeds::Client).to receive(:create_request).and_return response
         click_link('Reset Database')
-        Capybara.page.execute_script  'window.confirm = function () { return true }'
+        page.driver.browser.switch_to.alert.accept
         expect(page).to have_content('Database has been reset')
       end
 
@@ -93,12 +209,19 @@ describe 'eHR Example App' do
     end
 
     it 'should navigate to the dashboard view from staff login', js: true do
-      click_link('staff_login')
+      stub_request(:post, "https://#{ENV['CMM_API_KEY']}:#{ENV['CMM_API_SECRET']}@api.covermymeds.com/requests/search/?token_ids%5B%5D=random_token&v=1").
+        with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>'0', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Ruby'}).
+        to_return(:status => 200, :body => stubbed_pa_request, :headers => {})
+      visit '/logout'
+      click_link "Sign in..."
+      click_link "staff_login"
       expect(page).to have_content('Your Prior Auth Dashboard')
     end
 
     it 'should navigate to the patient list from doctor login', js: true do
-      click_link('dr_login')
+      visit '/logout'
+      click_link "Sign in..."
+      click_link "dr_login"
       expect(page).to have_content('Patients')
     end
   end
@@ -125,7 +248,7 @@ describe 'eHR Example App' do
     end
 
     describe 'clicking a patient' do
-      context 'user is doctor' do
+      context 'when the user is a doctor' do
         before do
           visit doctor_login
           visit '/patients'
@@ -137,7 +260,7 @@ describe 'eHR Example App' do
         end
       end
 
-      context "user is staff" do
+      context "when the user is staff" do
         before do
           visit staff_login
           visit '/patients'
@@ -147,15 +270,16 @@ describe 'eHR Example App' do
           click_link('Mike Miller 10/01/1971 OH')
           expect(page).to have_content 'Edit Patient'
         end
+    
+        it 'should delete a patient if remove button is clicked', js: true do
+          within '.table' do
+            click_link('X', match: :first)
+          end
+          expect(page).to have_css('.table tr.patients', count: 9)
+        end
       end
     end
 
-    it 'should delete a patient if remove button is clicked', js: true do
-      within '.table' do
-        click_link('X', match: :first)
-      end
-      expect(page).to have_css('.table tr.patients', count: 9)
-    end
   end
 
   describe 'patients add workflow' do
@@ -184,68 +308,70 @@ describe 'eHR Example App' do
 
   describe 'adding a prescription' do
     let(:drug_name) { 'Nexium' }
+    let(:full_drug_name) { 'NexIUM 2.5MG packets' }
     let(:pa_required) { false }
+
     before do
       visit doctor_login
       visit '/patients'
-      page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
+      page.find('#patients-list > table > tbody > tr:nth-child(3) > td:nth-child(2) > a').click
       click_link('Add Prescription')
-      stub_indicators(drug_name, pa_required)
+      stub_indicators(full_drug_name, pa_required)
+      stub_drugs(drug_name, stubbed_drug_response)
     end
 
     it 'should add a medication to a patient', js: true do
       # Find a drug
-      find('#s2id_prescription_drug_number').click
-      find('.select2-input').set(drug_name)
-      wait_for_ajax
-      expect(page).to have_selector('.select2-result-selectable')
-      within '.select2-results' do
-        find('li:first-child').click
-      end
-      wait_for_ajax
+      fill_autocomplete 'prescription_drug_name', with: drug_name, select: full_drug_name
+      
+      fill_in "prescription_quantity", with: '1'
 
       click_on('Create Prescription')
 
-      visit '/patients'
-      page.find('#patients-list > table > tbody > tr:nth-child(2) > td:nth-child(2) > a').click
+      visit(patients_path)
+      page.find('#patients-list > table > tbody > tr:nth-child(3) > td:nth-child(2) > a').click
       expect(page).to have_selector('#patient-show')
     end
 
     describe 'formulary service' do
       before do
         stub_create_pa_request!
-        find('#s2id_prescription_drug_number').click
-        find('.select2-input').set(drug_name)
-        expect(page).to have_selector('.select2-result-selectable')
-        within '.select2-results' do
-          find('li:first-child').click
-        end
-        wait_for_ajax
+        stub_indicators(full_drug_name, pa_required)
+        fill_autocomplete 'prescription_drug_name', 
+          with: drug_name, select: full_drug_name
       end
 
       context 'drug requires a PA' do
+        let(:drug_name) { 'Chocolate' }
+        let(:full_drug_name) { 'Chocolate Flavor liquid' }
+        let(:stubbed_drug_response) { chocolate_stubbed_drug_response }
         let(:pa_required) { true }
 
         it 'checks the PA Required checkbox', js: true do
+          fill_in('Quantity', with: 1)
           expect(find('#prescription_pa_required')).to be_checked
         end
 
         it 'starts a PA', js: true do
+          fill_in('Quantity', with: 1)
           click_on('Create Prescription')
           expect(page).to have_content("Your prior authorization request was successfully started.")
         end
       end
 
       context 'drug does not require a PA' do
+        let(:drug_name) { 'Nexium' }
+        let(:full_drug_name) { 'NexIUM 2.5MG packets' }
         let(:pa_required) { false }
 
         it 'does not check the pa_required box', js: true do
+          fill_in('Quantity', with: 1)
           expect(find('#prescription_pa_required')).to_not be_checked
         end
 
         it 'does not create a PA', js: true do
           click_on('Create Prescription')
-          expect(page).to have_content("Not Started - Unknown")
+          expect(page).to_not have_content("Your prior authorization request was successfully started.")
         end
       end
     end

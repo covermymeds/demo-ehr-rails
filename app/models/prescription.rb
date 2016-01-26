@@ -1,7 +1,7 @@
 class Prescription < ActiveRecord::Base
-  belongs_to :patient
+  belongs_to :patient, inverse_of: :prescriptions
   belongs_to :pharmacy, inverse_of: :prescriptions
-  has_many :pa_requests, dependent: :destroy
+  has_many :pa_requests, dependent: :destroy, inverse_of: :prescription
 
   validates :drug_number, format: {with: /[0-9]+/ , message: 'Drug Number is invalid'}
 
@@ -14,16 +14,16 @@ class Prescription < ActiveRecord::Base
     ['QID - FOUR A DAY', 'QID'],
     ['PRN - AS NEEDED', 'PRN'],
     ['UD - AS DIRECTED', 'UD']
-  ]
+  ].freeze
 
-  def self.pa_required?(drug_name)
-    (drug_name || "").downcase.include?("banana") || 
-    (drug_name || "").downcase.include?("chocolate") ||
-    (drug_name || "").downcase.include?("abilify")
+  def self.check_pa_required?(drug_name)
+    return false if drug_name.nil?
+    ['banana', 'chocolate', 'abilify'].include?( drug_name.downcase )
   end
 
-  def self.autostart?(drug_name)
-    (drug_name || "").downcase.include?("chocolate")
+  def self.check_autostart?(drug_name)
+    return false if drug_name.nil?
+    ['chocolate'].include?( drug_name.downcase )
   end
 
   def script

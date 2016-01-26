@@ -1,46 +1,29 @@
 require 'rest_client'
 
 class RequestPagesController < ApplicationController
-  skip_before_filter :verify_authenticity_token, only: [:do_action]
+  skip_before_filter :verify_authenticity_token, only: [:action]
   before_action :set_request_pages
   before_action :redirect_if_using_cmm
 
-  def show
+  def index
     # get the request-page for our current request
-    @request_page_json = RequestConfigurator.api_client().get_request_page @pa_request.cmm_id, @pa_request.cmm_token
-    @request_page = @request_page_json
-    replace_actions @request_page, @pa_request
+    @request_page_json = CoverMyMeds.default_client.get_request_page(@pa_request.cmm_id, @pa_request.cmm_token)
+    
+    # redirect to my own controller for executing actions
+    replace_actions @request_page_json, @pa_request
 
-    @forms = @request_page[:forms]
-    @data = @request_page[:data]
-    @validations = @request_page[:validations]
+    # make rendering easy
+    @forms = @request_page_json[:forms]
+    @data = @request_page_json[:data]
+    @validations = @request_page_json[:validations]
+    @actions = @request_page_json[:actions]
 
-  rescue RestClient::Exception => e
-    flash_message("Error retrieving the request page", :error)
-    @request_page_json = RequestConfigurator.api_client(session[:use_integration]).get_request_page @pa_request.cmm_id, @pa_request.cmm_token
-
-    if is_error_form? @request_page_json
-      # show the error page
-      @request_page = @request_page_json[:errors]
-      render :error
-    else
-      @request_page = @request_page_json
-      replace_actions @request_page, @pa_request
-
-      @forms = @request_page[:forms]
-      @data = @request_page[:data]
-      @validations = @request_page[:validations]
-    end
-
-    # the body of our response is in request_pages format
-    @request_page_json = JSON.parse(e.response, symbolize_names: true)
-
-    # we got an error back
-    @request_page = @request_page_json[:errors]
-    render :error
+  rescue CoverMyMeds::Error::HTTPError => e
+    flash_message "Error retrieving the request page: #{e.message}", :error
+    redirect_to :back
   end
 
-  def do_action
+  def action
     bad_request unless params[:button_title]
 
     # look up the action from our list of saved actions for this PA
@@ -57,17 +40,18 @@ class RequestPagesController < ApplicationController
 
     # build an HTTP connection
     conn = RestClient::Resource.new(action[:href], {
-                                      user: Rails.application.secrets.cmm_api_id,
-                                      password: 'x-no-pass',
-                                      headers: headers
-    })
+      user: Rails.application.secrets.cmm_api_id,
+      password: 'x-no-pass',
+      headers: headers})
 
     # important: look up the form data to be included
-    form_data = params[action[:ref]] if action[:ref]
-    method = action[:method].downcase
-
+    form_data = {}
+    if action[:ref]
+      form_data = params[action[:ref]].delete_if { |_, v| v.blank? }
+    end
+    
     # call out to get the next request page
-    response = conn.send method, (form_data || {})
+    response = conn.send( action[:method].downcase, form_data )
 
     # make sure we get a success code
     if [200, 201].include? response.code
@@ -79,25 +63,22 @@ class RequestPagesController < ApplicationController
 
       # if we got back a standard pa_request page, show that
       if is_pa_request_form? @request_page
-        redirect_to pa_request_request_pages_path(@pa_request)
+        redirect_to pages_pa_request_path(@pa_request)
       else
         # otherwise, render the action
         replace_actions @request_page, @pa_request
         @forms = @request_page[:forms]
         @data = @request_page[:data]
-        render :show
+        @validations = @request_page[:validations]
+        @actions = @request_page[:actions]
+
+        render :index
       end
 
     end
-  rescue RestClient::Exception => e
-    flash_message("Error retrieving the request page", :error)
-
-    # the body of our response is in request_pages format
-    @request_page_json = JSON.parse(e.response, symbolize_names: true)
-
-    # we got an error back
-    @request_page = @request_page_json[:errors]
-    render :error
+  rescue CoverMyMeds::Error::HTTPError => e
+    flash_message "Error retrieving the request page: #{e.message}", :error
+    redirect_to :back
 
   end
 
@@ -119,9 +100,9 @@ class RequestPagesController < ApplicationController
 
     # replace actions in json (don't send tokens to browser)
     actions.each do |action|
-      action[:orig_href] = action[:href] # save this so we see it in the JSON source
+      action[:orig_href] = action[:href] # so we see it in the JSON source
       action[:orig_method] = action[:method]
-      action[:href] = pa_request_request_pages_action_path(@pa_request, action[:title])
+      action[:href] = action_pa_request_path(@pa_request, action[:title])
       action[:method] = "GET"
     end
   end
@@ -129,7 +110,7 @@ class RequestPagesController < ApplicationController
   # before actions to set up instance vars & do a redirect
   def set_request_pages
     # pa_request is passed in with the URL
-    @pa_request = PaRequest.find(params[:pa_request_id])
+    @pa_request = PaRequest.find(params[:id])
 
     # patient & prescription are used for debugging mostly
     @patient = @pa_request.prescription.patient

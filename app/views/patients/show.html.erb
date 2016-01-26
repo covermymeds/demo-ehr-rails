@@ -11,29 +11,29 @@
     <thead>
       <tr>
         <th>Medication</th>
-        <th>Formulary Status</th>
-        <th colspan="2">PA Status</th>
+        <th>PA Status</th>
         <th colspan="2">Prescribed On</th>
       </tr>
     </thead>
-    <% @patient.prescriptions.each do |prescription| %>
-    <% request = prescription.pa_requests.first || PaRequest.new %>
+    <% @patient.prescriptions.order('date_prescribed DESC').each do |prescription| %>
+    <% request = prescription.pa_requests.first %>
     <tr>
       <td>
-        <%= link_to prescription.drug_name, edit_patient_prescription_path(@patient, prescription), :class=>"#{(request.sent) ? 'disabled' : ''}" %>
+        <%= link_to prescription.drug_name, edit_patient_prescription_path(@patient, prescription) %>
       </td>
-
-      <td><%= request.cmm_workflow_status %> - <%= request.cmm_outcome %></td>
 
       <td class="start">
-        <% if prescription.pa_required? && request.new_record? %>
-          <%= link_to "PA Required", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
-        <% elsif !request.new_record?  %>
-          <%= link_to "View", patient_prescription_pa_request_path(@patient, prescription, request) %>
+        <% if prescription.pa_required? %>
+          <% if request.nil? %>
+            <%= link_to "PA Required", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
+          <% else %>
+            <%= link_to cmm_outcome_label(request), patient_prescription_pa_request_path(@patient, prescription, request), id: 'start_pa_request' %>
+          <% end %>
         <% else %>
-            PA Not Required
+            <%= link_to "No PA Started", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
         <% end %>
       </td>
+
       <td>
         <%= prescription.date_prescribed && prescription.date_prescribed.strftime("%B %d at %I:%M %p") %></td>
         <td>

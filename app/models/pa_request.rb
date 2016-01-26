@@ -1,7 +1,44 @@
 class PaRequest < ActiveRecord::Base
-  belongs_to :prescription
-  has_many :cmm_callbacks
+  belongs_to :prescription, inverse_of: :pa_requests
+  belongs_to :patient, inverse_of: :pa_requests
+  has_many :cmm_callbacks, inverse_of: :pa_request
   default_scope { where('cmm_token IS NOT NULL') }
+
+  OUTCOME_MAP = {
+    unfavorable:  'Denied',
+    favorable:    'Approved',
+    na:           'Not Needed',
+    unsent:       'Unsent',
+    cancelled:    'Cancelled',
+    unknown:      'Unknown'
+  }.freeze
+
+  STATUS_MAP = {
+    question_request:     'Request',
+    question_response:    'Response',
+    pa_request:           'Request',
+    pa_response:          'Response',
+    appeal_request:       'Request',
+    appeal_response:      'Response',
+    cancel_request_sent:  'Request',
+    provider_cancel:      'Response',
+    sent_to_plan:         'Request',
+    archived:             'Response'
+  }.freeze
+
+  def last_updated
+    updated_at.in_time_zone(Time.zone.name)
+  end
+
+  def outcome
+    outcome = self.cmm_outcome.downcase.parameterize.underscore.to_sym
+    OUTCOME_MAP[outcome] || self.cmm_outcome
+  end
+
+  def status
+    status = self.cmm_workflow_status.downcase.parameterize.underscore.to_sym
+    STATUS_MAP[status] || self.cmm_workflow_status
+  end
 
   def set_cmm_values(response)
     self.cmm_link = response.tokens[0].html_url
@@ -19,16 +56,6 @@ class PaRequest < ActiveRecord::Base
 
   def cmm_outcome
     read_attribute(:cmm_outcome) || "Unknown"
-  end
-
-  def update_from_callback(cb_data)
-    self.cmm_link = cb_data['tokens'][0]['html_url']
-    self.cmm_id = cb_data['id']
-    self.cmm_workflow_status = cb_data['workflow_status'] || "Not Yet Started"
-    self.cmm_outcome = cb_data['plan_outcome'] || "Undetermined"
-    self.cmm_token = cb_data['tokens'][0]['id']
-    self.form_id = cb_data['form_id']
-    self.state = cb_data['state']
   end
 
   def init_from_callback(cb_data)

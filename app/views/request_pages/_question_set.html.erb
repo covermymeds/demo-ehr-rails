@@ -1,6 +1,8 @@
+<% if show_question_set(form_name, question_set, data) %>
 <fieldset class="question-set form-group">
 <legend><%= question_set[:title] %></legend>
   <% question_set[:questions].each do |question| %>
     <%= render partial: "question", locals:{question_set: question_set, question:question, form_name:form_name, data: data} %>
   <% end %>
 </fieldset>
+<% end %>

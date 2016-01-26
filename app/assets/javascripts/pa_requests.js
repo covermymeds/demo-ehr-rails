@@ -20,58 +20,52 @@ $(function () {
       'Appeal': { workflow_statuses: appealed_statuses, data:[]},
     }
   };
+
   $('#dashboard').dashboard(dashboard_options);
 
-  // drug search for the "new pa" form
-  options.drugId = $('#prescription_drug_number').val();
-  options.drugName = $('#prescription_drug_name').val();
-  $('#prescription_drug_number').drugSearch(options);
+  $("#prescription_drug_name").autocomplete({
+    minLength: 4,
+    source: '/drugs',
+    select: function(e, selected) {
+      $("#prescription_drug_number").val(selected.item.id);
+      $("#prescription_drug_name").val(selected.item.full_name);
+      return false;
+    },
+    change: function(e, ui) { 
+      enable_form_pick($("#prescription_drug_number").val(),
+        $("#pa_request_state").val());
+      check_pa_required($('#prescription_drug_number').val(),
+        $('#prescription_drug_name').val(),
+        $('#prescription_patient_id').val());
+    }
+  }).autocomplete("instance")._renderItem = function(ul, item) {
+    return $("<li>").append(item.full_name).appendTo(ul);
+  };
 
-  // if we got here from choosing a patient, the drug will already be filled in
-  if ($('#prescription_drug_number').val()) {
-    $('#pa_request_form_id').formSearch({
-        apiId: options.apiId,
-        apiUrl: options.apiUrl,
-        version: 1,
-        drugId: $('#prescription_drug_number').val(),
-        state: $('#pa_request_state').val()
-      });
-  }
-  else {
-    // when the drug search completes, we activate the formSearch box
-    $('#prescription_drug_number').change(function() {
-      $('#prescription_drug_name').val($('#prescription_drug_number').select2('data').text);
-      $('#pa_request_form_id').formSearch({
-        apiId: options.apiId,
-        apiUrl: options.apiUrl,
-        version: 1,
-        drugId: $('#prescription_drug_number').val(),
-        state: $('#pa_request_state').val()
-      });
-      // if we're on the add prescription page, check if we need to start a PA
-      if(document.URL.indexOf('prescription') != -1) {
-        data = { prescriptions: [{ 'name': $('#prescription_drug_name').val(),
-                                'drug_id': $('#prescription_drug_number').val() }],
-                 patient_id: $('#prescription_patient_id').val() };
-        $.ajax({
-          method: "POST",
-          url: '/pa_required',
-          dataType: 'json',
-          contentType: 'application/json',
-          data: JSON.stringify(data),
-          success: function(data) {
-            if (data.prescriptions[0].pa_required) {
-              $('#pa_required_alert').removeClass('hidden');
-            } else {
-              $('#pa_required_alert').addClass('hidden');
-            }
-            $('input[name="prescription[pa_required]"][type=hidden]').val(data.prescriptions[0].pa_required ? '1' : '0');
-            $('#prescription_autostart').val(data.prescriptions[0].autostart ? '1' : '0');
-            $('#prescription_pa_required').prop('checked', data.prescriptions[0].pa_required).prop('disabled', data.prescriptions[0].autostart);
-          }
-        });
+  function enable_form_pick(drug_id, state) {
+    $("#form_name").autocomplete({
+      source: function(request, response) {
+        $.get("/forms?"+
+          "drug_id="+$("#prescription_drug_number").val()+
+          "&state="+$("#pa_request_state").val()+
+          "&term="+request.term, 
+          function(data, status){
+            response(data);
+          })
+      },
+      select: function(e, selected) {
+        $("#pa_request_form_id").val(selected.item.request_form_id);
+        $("#form_name").val(selected.item.description);
+        return false;
+      },
+      change: function(e, ui) { 
+        check_pa_required(ui.val(), 
+          $('#prescription_drug_name').val(),
+          $('#prescription_patient_id').val());
       }
-    });
+    }).autocomplete("instance")._renderItem = function(ul, item) {
+      return $("<li>").append(item.description).appendTo(ul);
+    };
   }
 
   $('.date').datepicker();

@@ -502,13 +502,6 @@ return __p
                 $(this).select2({
                     placeholder: 'Begin typing the medication name and select from list',
                     minimumInputLength: 4,
-                    initSelection: function(element, callback) {
-                        var data = {
-                          text: options.drugName,
-                          id: options.drugId
-                        };
-                        callback(data);
-                    },
                     ajax: {
                         quietMillis: 250,
                         url: options.url || defaultUrl,

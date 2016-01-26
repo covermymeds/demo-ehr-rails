@@ -30,10 +30,12 @@ class CmmCallbacksController < ApplicationController
   # changes. In that case, we need to update the PA record in our system with the
   # new values in the callback.
   def create
-    handler = PaHandler.new(pa: @pa, user: @user, prescription: @prescription)
+    handler = PaHandler.new(pa: @pa, user: @user, 
+      prescription: @prescription, patient: @patient)
 
     case handler.call
     when :npi_not_found
+      logger.info("CmmCallbacksController: NPI #{request_params['prescriber']['npi']} not found.")
       render(status: 410, text: 'NPI not found') and return
     when :prescription_not_found
       # systems may choose to reject unrecognized prescriptions, 
@@ -41,10 +43,13 @@ class CmmCallbacksController < ApplicationController
       # for this example, we have decided this is a paper Rx
       # so we want to handle PA electronically
       create_alert(@user, "NPI #{@user.npi} was found, but the prescription didn't match. Creating new Rx.")
+      logger.info("CmmCallbacksController: Prescription Not Found: #{request_params['id']}")
       @pa.init_from_callback(request_params)
     when :new_retrospective
+      logger.info("CmmCallbacksController: New Retrospective PA created #{request_params['id']}")
       @pa.init_from_callback(request_params)
     when :pa_found
+      logger.info("Updating or deleting PA #{@pa.cmm_id}")
       delete_or_update_pa!
     end
     callback = @pa.cmm_callbacks.build(content: request_params.to_json)
@@ -70,11 +75,6 @@ class CmmCallbacksController < ApplicationController
     params.require(:request)
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def callback_params
-    params.require(:callback)
-  end
-
   def set_callback
     @callback = CmmCallback.find(params[:id])
   end
@@ -92,18 +92,27 @@ class CmmCallbacksController < ApplicationController
   end
 
   def set_prescription
-    @prescription ||= Prescription.find_by(drug_number: request_params['prescription']['drug_id'])
+    pat = request_params['patient']
+    @patient ||= Patient.where(first_name: pat['first_name'] , 
+      last_name: pat['last_name'], date_of_birth: pat['date_of_birth']).first
+    @prescription ||= @patient.prescriptions.where(drug_number: request_params['prescription']['drug_id']).first unless @patient.nil?
   end
 
   def delete_or_update_pa!
     # if we have a record of the PA, delete it if appropriate
     if is_delete_request?(request_params)
-      @pa.update_attributes(cmm_token: nil)
-      create_alert(@user, 'A PA was deleted.')
+      create_alert(@user, "PA request #{@pa.cmm_id} was deleted.")
+      @pa.update_attributes(cmm_token: nil, cmm_id: nil)
     else
       # if it's not a delete, then it's an update
-      @pa.update_from_callback(request_params)
-      create_alert(@user, 'A PA was updated')
+      create_alert(@user, "PA request #{@pa.cmm_id} was updated.")
+      @pa.update_attributes(cmm_link: request_params['tokens'][0]['html_url'],
+        cmm_id: request_params['id'],
+        cmm_workflow_status: request_params['workflow_status'],
+        cmm_outcome: request_params['plan_outcome'],
+        cmm_token: request_params['tokens'][0]['id'],
+        form_id: request_params['form_id'],
+        state: request_params['state'])
     end
   end
 end

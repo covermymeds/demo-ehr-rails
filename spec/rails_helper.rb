@@ -7,15 +7,6 @@ require 'capybara/rspec'
 require 'capybara/poltergeist'
 require 'shoulda/matchers'
 
-Capybara.configure do |config|
-  config.run_server = true
-  config.javascript_driver = :poltergeist
-  config.default_driver = :webkit
-  config.app_host = 'http://localhost:3001' # change url
-
-  config.server_port = 3001
-end
-
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -28,6 +19,13 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
@@ -54,4 +52,18 @@ end
 # CMM_API environment keys
 %w(CMM_API_KEY CMM_API_SECRET).each do |required_env_key|
   ENV[required_env_key] or fail "YOU MUST SPECIFY #{required_env_key} IN YOUR ENVIRONMENT"
+end
+
+
+def fill_autocomplete(field, options = {})
+  fill_in field, with: options[:with]
+  
+  page.execute_script %Q{ $('##{field}').trigger('focus') }
+  page.execute_script %Q{ $('##{field}').trigger('keydown') }
+  selector = %Q{ul.ui-autocomplete li.ui-menu-item:contains("#{options[:select]}")}
+
+  expect(page).to have_selector('ul.ui-autocomplete li.ui-menu-item')
+
+  page.execute_script %Q{ $('#{selector}').trigger('mouseenter').click() }
+
 end

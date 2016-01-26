@@ -3,7 +3,7 @@
 <% if @_use_custom_ui %>
 <!-- draw our own dashboard -->
 <div id="parequests-list">
-    <%= link_to "New Request", new_pa_request_path, :class=>'btn btn-small btn-success' %>
+  <%= link_to "New Request", new_pa_request_path, :class=>'btn btn-small btn-success' %>
 
   <% if @requests.empty? %>
   <h2>None Yet</h2>
@@ -13,10 +13,10 @@
     <tr class="header">
       <th>ID</th>
       <th>Status</th>
-      <th>Outcome</th>
       <th>Patient Name</th>
       <th>Prescription</th>
-      <th>Created</th>
+      <th>Payer</th>
+      <th>Updated</th>
       <th class='remove'>Remove</th>
     </tr>
 
@@ -27,10 +27,7 @@
         <%= pa_request_edit_link(request, request.cmm_id) %>
       </td>
       <td>
-        <span class="label label-info"><%= request.cmm_workflow_status %></span>
-      </td>
-      <td>
-        <%= cmm_outcome_label(request.cmm_outcome) %>
+        <%= cmm_outcome_label(request) %>
       </td>
       <td>
         <%= link_to "#{request.prescription.patient.description}", request.prescription.patient, :class=>'patient-link' %>
@@ -39,7 +36,10 @@
         <%= link_to "#{request.prescription.drug_name}", edit_patient_prescription_path(request.prescription.patient, request.prescription) %>
       </td>
       <td>
-        <%= request.created_at.in_time_zone(Time.zone.name).strftime("%m/%d/%Y at %I:%M%p") %>
+        <%= request.form_name %>
+      </td>
+      <td>
+        <%= request.last_updated.strftime("%m/%d/%Y at %I:%M%p") %>
       </td>
       <td class="remove">
         <%= link_to "X", patient_prescription_pa_request_path(request.prescription.patient, request.prescription, request), method: :delete, :class=>'btn btn-xs btn-danger' %>

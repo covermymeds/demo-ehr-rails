@@ -4,7 +4,7 @@ class PatientsController < ApplicationController
   # GET /patients
   # GET /patients.json
   def index
-    @patients = Patient.page(params[:page])
+    @patients = Patient.order(first_name: :asc).page(params[:page])
   end
 
   # GET /patients/1
@@ -69,7 +69,7 @@ class PatientsController < ApplicationController
   def destroy
     @patient.destroy
     respond_to do |format|
-      flash_message 'Patient was successfully destroyed.'
+      flash_message 'Patient record was successfully deleted.'
       format.html { redirect_to patients_url }
       format.json { head :no_content }
     end

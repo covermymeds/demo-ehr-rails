@@ -10,7 +10,7 @@ class RequestPagesController < ApplicationController
     @request_page_json = CoverMyMeds.default_client.get_request_page(@pa_request.cmm_id, @pa_request.cmm_token)
     
     # redirect to my own controller for executing actions
-    replace_actions @request_page_json, @pa_request
+    mask_actions @request_page_json, @pa_request
 
     # make rendering easy
     @forms = @request_page_json[:forms]
@@ -46,7 +46,7 @@ class RequestPagesController < ApplicationController
 
     # important: look up the form data to be included
     form_data = {}
-    if action[:ref]
+    unless action[:ref].nil? || params[action[:ref]].nil?
       form_data = params[action[:ref]].delete_if { |_, v| v.blank? }
     end
     
@@ -66,7 +66,7 @@ class RequestPagesController < ApplicationController
         redirect_to pages_pa_request_path(@pa_request)
       else
         # otherwise, render the action
-        replace_actions @request_page, @pa_request
+        mask_actions @request_page, @pa_request
         @forms = @request_page[:forms]
         @data = @request_page[:data]
         @validations = @request_page[:validations]
@@ -93,7 +93,7 @@ class RequestPagesController < ApplicationController
   end
 
   # proxy actions through this controller, keeping tokens in the server
-  def replace_actions request_page, pa_request
+  def mask_actions request_page, pa_request
     # keep track of actions, so we can execute actions
     actions = request_page[:actions]
     pa_request.update_attributes request_pages_actions: actions.to_json

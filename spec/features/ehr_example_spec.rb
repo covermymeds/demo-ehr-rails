@@ -310,14 +310,13 @@ describe 'eHR Example App' do
     let(:drug_name) { 'Nexium' }
     let(:full_drug_name) { 'NexIUM 2.5MG packets' }
     let(:pa_required) { false }
-    let(:pa_required_drug_name) { 'Chocolate' }
-    let(:pa_required_full_drug_name) { 'Chocolate Flavor Liquid' }
+
     before do
       visit doctor_login
       visit '/patients'
       page.find('#patients-list > table > tbody > tr:nth-child(3) > td:nth-child(2) > a').click
       click_link('Add Prescription')
-      stub_indicators(drug_name, pa_required)
+      stub_indicators(full_drug_name, pa_required)
       stub_drugs(drug_name, stubbed_drug_response)
     end
 
@@ -337,8 +336,9 @@ describe 'eHR Example App' do
     describe 'formulary service' do
       before do
         stub_create_pa_request!
-        stub_indicators(drug_name, pa_required)
-        fill_autocomplete 'prescription_drug_name', with: drug_name, select: full_drug_name
+        stub_indicators(full_drug_name, pa_required)
+        fill_autocomplete 'prescription_drug_name', 
+          with: drug_name, select: full_drug_name
       end
 
       context 'drug requires a PA' do
@@ -347,26 +347,31 @@ describe 'eHR Example App' do
         let(:stubbed_drug_response) { chocolate_stubbed_drug_response }
         let(:pa_required) { true }
 
-        xit 'checks the PA Required checkbox', js: true do
+        it 'checks the PA Required checkbox', js: true do
+          fill_in('Quantity', with: 1)
           expect(find('#prescription_pa_required')).to be_checked
         end
 
-        xit 'starts a PA', js: true do
+        it 'starts a PA', js: true do
+          fill_in('Quantity', with: 1)
           click_on('Create Prescription')
           expect(page).to have_content("Your prior authorization request was successfully started.")
         end
       end
 
       context 'drug does not require a PA' do
+        let(:drug_name) { 'Nexium' }
+        let(:full_drug_name) { 'NexIUM 2.5MG packets' }
         let(:pa_required) { false }
 
-        xit 'does not check the pa_required box', js: true do
+        it 'does not check the pa_required box', js: true do
+          fill_in('Quantity', with: 1)
           expect(find('#prescription_pa_required')).to_not be_checked
         end
 
-        xit 'does not create a PA', js: true do
+        it 'does not create a PA', js: true do
           click_on('Create Prescription')
-          expect(page).to have_content("PA Not Required")
+          expect(page).to_not have_content("Your prior authorization request was successfully started.")
         end
       end
     end

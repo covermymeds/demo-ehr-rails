@@ -18,16 +18,6 @@ class Prescription < ActiveRecord::Base
     ['UD - AS DIRECTED', 'UD']
   ].freeze
 
-  def self.check_pa_required? drug_name
-    return false if drug_name.nil?
-    ['banana', 'chocolate', 'abilify'].include?( drug_name.downcase )
-  end
-
-  def self.check_autostart? drug_name
-    return false if drug_name.nil?
-    ['chocolate'].include?( drug_name.downcase )
-  end
-
   def initiate_pa current_user
     pa_request = pa_requests.build(
       user: current_user,

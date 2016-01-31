@@ -28,7 +28,37 @@ class Prescription < ActiveRecord::Base
     ['chocolate'].include?( drug_name.downcase )
   end
 
+  def days_supply
+    case frequency
+    when 'qD'
+      quantity
+    when 'BID'
+      (quantity / 2).ceil
+    when 'TID'
+      (quantity / 3).ceil
+    when 'QID'
+      (quantity / 4).ceil
+    else 
+      quantity
+    end
+  end
+
+  def quantity_unit_of_measure
+    "C48480" # Capsule    
+  end
+
+  def diagnosis9
+    "800.14"
+  end
+
+  def diagnosis10
+    "V91.37"
+  end
+
   def script
     "#{drug_name} #{frequency}, Quantity: #{quantity}, Refills: #{refills.to_s}"
   end
+
+  private
+
 end

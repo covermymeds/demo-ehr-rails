@@ -151,6 +151,13 @@ RSpec.describe RequestConfigurator, type: :model do
       expect(request.prescriber.fax_number).to eq(fax_number)
     end
 
+    it 'populates patient' do
+      expect(request.patient.first_name).to eq(first_name)
+      expect(request.patient.last_name).to eq(last_name)
+      expect(request.patient.date_of_birth).to eq(date_of_birth)
+      expect(request.patient.address.state).to eq(state)
+    end
+
   end
 
 end

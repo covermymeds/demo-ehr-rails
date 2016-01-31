@@ -3,7 +3,6 @@ class PaRequestsController < ApplicationController
   before_action :set_prescription, only: [:new, :create]
 
   # GET /requests
-  # GET /requests.json
   def index
     if params[:archived].present?
       @requests = PaRequest.archived.order(updated_at: :desc)
@@ -19,7 +18,7 @@ class PaRequestsController < ApplicationController
         update_local_data(CoverMyMeds.default_client.get_requests(@tokens))
       end
     rescue CoverMyMeds::Error::HTTPError => e
-      logger.info "Exception getting requests: #{e.message}"
+      logger.info "Exception updating requests: #{e.message}"
       flash_message("e.message: tokens = #{@tokens.to_s}", :error)
     end
   end
@@ -43,18 +42,13 @@ class PaRequestsController < ApplicationController
   end
 
   # POST /patients/1/prescriptions/1/pa_requests
-  # POST /patients/1/prescriptions/1/pa_requests.json
   def create
-    # create a pa request
     @pa_request = @prescription.pa_requests.build(pa_request_params)
 
-    # create the request in the API
     begin
       response = CoverMyMeds.default_client.create_request  RequestConfigurator.new(@pa_request).request
-      flash_message "Your prior authorization request was successfully started."
-
-      # stash away the token, id, link, and workflow status from the return
       @pa_request.set_cmm_values(response)
+      flash_message "Your prior authorization request was successfully started."
     
       respond_to do |format|
         if @pa_request.save
@@ -73,11 +67,7 @@ class PaRequestsController < ApplicationController
 
   # DELETE /pa_request/:pa_request_id/pa_requests/1
   def destroy
-    # first, delete the PA request from our CMM dashboard
     @pa_request.remove_from_dashboard
-
-    # delete the PA request from our database
-    # we'll delete the PA request when the callback arrives
     flash_message('Request successfully removed.')
 
     respond_to do |format|

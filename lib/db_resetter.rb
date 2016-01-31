@@ -15,12 +15,12 @@ class DbResetter
       patients = [
         {first_name:'Autopick', last_name:'Smith', gender:'f', date_of_birth:'10/01/1971',
           street_1:'221 Baker St.', street_2:'Apt B', city:'London', state:'OH', zip:'43210',
-          phone_number:'614-555-1212', email:'test@covermymeds.com', bin:'111111', pcn:'SAMP001',
-          group_id:'NOTREAL'},
+          phone_number:'614-555-1212', email:'test@covermymeds.com', bin:'773836', pcn:'MOCKPBM',
+          group_id:'ABC1'},
         {first_name:'Autopick', last_name:'Johnson', gender:'m', date_of_birth:'10/01/1971',
           street_1:'221 Baker St.', street_2:'Apt B', city:'London', state:'OH', zip:'43210',
-          phone_number:'614-555-1212', email:'test@covermymeds.com', bin:'111111', pcn:'SAMP001',
-          group_id:'NOTREAL'},
+          phone_number:'614-555-1212', email:'test@covermymeds.com', bin:'773836', pcn:'MOCKPBM',
+          group_id:'ABC1'},
         {first_name:'Amber', last_name:'Williams', gender:'f', date_of_birth:'10/01/1971',
           street_1:'221 Baker St.', street_2:'Apt B', city:'London', state:'OH', zip:'43210',
           phone_number:'614-555-1212', email:'test@covermymeds.com'},
@@ -73,7 +73,19 @@ class DbResetter
         Pharmacy.create! pharmacy
       end
 
-      User.create!(first_name: 'Alexander', last_name: 'Fleming', role: Role.doctor, npi: '1234567890')
+      User.create!(first_name: 'Alexander', 
+                   last_name: 'Fleming', 
+                   role: Role.doctor, 
+                   npi: '1234567890',
+                   email: 'afleming@example.com',
+                   practice_name: 'CoverMyClinic',
+                   practice_phone_number: '614-999-9999',
+                   practice_street_1: '2 Miranova Pl.',
+                   practice_street_2: 'Suite 1200',
+                   practice_city: 'Columbus',
+                   practice_state: 'OH',
+                   practice_zip: '43215')
+      
       User.create!(first_name: 'Staff', role: Role.staff, npi: nil)
 
       drugs = [

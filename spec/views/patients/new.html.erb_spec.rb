@@ -7,9 +7,9 @@ RSpec.describe "patients/new", type: :view do
       last_name: "MyString",
       date_of_birth: "10/11/1971",
       state: "OH",
-      bin: '111111',
-      pcn: 'SAMP001',
-      group_id: 'NOTREAL'
+      bin: '773836',
+      pcn: 'MOCKPBM',
+      group_id: 'ABC1'
     ))
   end
 

@@ -2,7 +2,7 @@ class FormulariesController < ApplicationController
   
   def pa_required
     patient = Patient.find(params[:patient_id])
-
+    
     result = CoverMyMeds.default_client.post_indicators(
       prescription: { drug_id: params[:drug_id], name: params[:drug_name] }, 
       patient: patient.to_patient_hash, 

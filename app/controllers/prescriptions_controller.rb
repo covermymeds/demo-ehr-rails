@@ -54,7 +54,7 @@ class PrescriptionsController < ApplicationController
   def update
     respond_to do |format|
       if @prescription.update(prescription_params)
-        if @prescription.pa_required && @prescription.pa_requests.empty?
+        if @prescription.pa_required && @prescription.pa_requests.for_display.empty?
           start_pa(@prescription)
         end
         flash_message('Prescription successfully updated.')
@@ -97,7 +97,10 @@ class PrescriptionsController < ApplicationController
     def start_pa(prescription)
       # call out to the request pages API to create a request, given
       # the information we have about the patient and prescription
-      pa_request = prescription.pa_requests.build(urgent: false)
+      pa_request = prescription.pa_requests.build(
+        user: current_user,
+        state: @patient.state,
+        urgent: false)
 
       # create the request in the API
       # in your application, you will likely do this asynchronously, but

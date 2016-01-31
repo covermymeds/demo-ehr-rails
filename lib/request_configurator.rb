@@ -1,5 +1,5 @@
 class RequestConfigurator
-    
+
     attr_reader :request
 
     def initialize pa_request
@@ -7,6 +7,7 @@ class RequestConfigurator
         @pa = pa_request
 
         assign_request_metadata
+        assign_patient
         assign_prescriber 
         assign_payer
         assign_prescription
@@ -22,7 +23,8 @@ class RequestConfigurator
         @request.urgent = @pa.urgent
     end
 
-    def assign_patient patient
+    def assign_patient
+        patient = @pa.prescription.patient
         @request.patient.first_name        = patient.first_name
         @request.patient.last_name         = patient.last_name
         @request.patient.address.state     = patient.state
@@ -65,11 +67,10 @@ class RequestConfigurator
         @request.prescriber.address.zip = @pa.user.practice_zip
 
         @request.prescriber.each_key do |key|
-          if @request.prescriber[key].blank?
-            @request.prescriber[key] = prescriber.as_json.fetch(key, defaults[key])
-          end
+            if @request.prescriber[key].blank?
+                @request.prescriber[key] = prescriber.as_json.fetch(key, defaults[key])
+            end
         end
-
 
         unless prescriber.credentials.empty?
             @request.prescriber.fax_number = prescriber.credentials.first.fax 
@@ -94,6 +95,10 @@ class RequestConfigurator
         @request.prescription.frequency  = prescription.frequency
         @request.prescription.refills    = prescription.refills
         @request.prescription.dispense_as_written = prescription.dispense_as_written
+        @request.prescription.days_supply = prescription.days_supply
+        @request.prescription.quantity_unit_of_measure = prescription.quantity_unit_of_measure
+        @request.enumerated_fields.icd9_0 = prescription.diagnosis9
+        @request.enumerated_fields.icd10_0 = prescription.diagnosis10
     end
 
     def assign_pharmacy 

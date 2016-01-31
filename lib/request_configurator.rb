@@ -17,26 +17,30 @@ class RequestConfigurator
     private
 
     def assign_request_metadata
-        @request.form_id = @pa.form_id
-        @request.delete(:form_id) if @pa.form_id.blank?
-        @request.state = @pa.prescription.patient.state
-        @request.urgent = @pa.urgent
+        @request.tap do | r |
+            r.form_id = @pa.form_id
+            r.delete(:form_id) if @pa.form_id.blank?
+            r.state = @pa.prescription.patient.state
+            r.urgent = @pa.urgent
+        end
     end
 
     def assign_patient
-        patient = @pa.prescription.patient
-        @request.patient.first_name        = patient.first_name
-        @request.patient.last_name         = patient.last_name
-        @request.patient.address.state     = patient.state
-        @request.patient.date_of_birth     = patient.date_of_birth
-        @request.patient.address.street_1  = patient.street_1
-        @request.patient.address.street_2  = patient.street_2
-        @request.patient.address.city      = patient.city
-        @request.patient.address.state     = patient.state
-        @request.patient.address.zip       = patient.zip
-        @request.patient.email             = patient.email
-        @request.patient.gender            = patient.gender
-        @request.patient.phone_number      = patient.phone_number
+        @request.patient.tap do | p |
+            patient = @pa.prescription.patient
+            p.first_name        = patient.first_name
+            p.last_name         = patient.last_name
+            p.address.state     = patient.state
+            p.date_of_birth     = patient.date_of_birth
+            p.address.street_1  = patient.street_1
+            p.address.street_2  = patient.street_2
+            p.address.city      = patient.city
+            p.address.state     = patient.state
+            p.address.zip       = patient.zip
+            p.email             = patient.email
+            p.gender            = patient.gender
+            p.phone_number      = patient.phone_number
+        end
     end
 
     def assign_prescriber 
@@ -58,22 +62,24 @@ class RequestConfigurator
                 :zip => '43215',
             }
         }
-        @request.prescriber.phone_number = prescriber.practice_phone_number
-        @request.prescriber.clinic_name = prescriber.practice_name
-        @request.prescriber.address.street_1 = @pa.user.practice_street_1
-        @request.prescriber.address.street_2 = @pa.user.practice_street_2
-        @request.prescriber.address.city = @pa.user.practice_city
-        @request.prescriber.address.state = @pa.user.practice_state
-        @request.prescriber.address.zip = @pa.user.practice_zip
+        @request.prescriber.tap do | p |
+            p.phone_number = prescriber.practice_phone_number
+            p.clinic_name = prescriber.practice_name
+            p.address.street_1 = @pa.user.practice_street_1
+            p.address.street_2 = @pa.user.practice_street_2
+            p.address.city = @pa.user.practice_city
+            p.address.state = @pa.user.practice_state
+            p.address.zip = @pa.user.practice_zip
 
-        @request.prescriber.each_key do |key|
-            if @request.prescriber[key].blank?
-                @request.prescriber[key] = prescriber.as_json.fetch(key, defaults[key])
+            p.each_key do |key|
+                if p[key].blank?
+                    p[key] = prescriber.as_json.fetch(key, defaults[key])
+                end
             end
-        end
 
-        unless prescriber.credentials.empty?
-            @request.prescriber.fax_number = prescriber.credentials.first.fax 
+            unless prescriber.credentials.empty?
+                p.fax_number = prescriber.credentials.first.fax 
+            end
         end
     end
 
@@ -87,29 +93,35 @@ class RequestConfigurator
     end
 
     def assign_prescription 
+        return if @pa.prescription.nil?
         prescription = @pa.prescription
-        return if prescription.nil?
-        @request.prescription.drug_id    = prescription.drug_number
-        @request.prescription.name       = prescription.drug_name
-        @request.prescription.quantity   = prescription.quantity
-        @request.prescription.frequency  = prescription.frequency
-        @request.prescription.refills    = prescription.refills
-        @request.prescription.dispense_as_written = prescription.dispense_as_written
-        @request.prescription.days_supply = prescription.days_supply
-        @request.prescription.quantity_unit_of_measure = prescription.quantity_unit_of_measure
-        @request.enumerated_fields.icd9_0 = prescription.diagnosis9
-        @request.enumerated_fields.icd10_0 = prescription.diagnosis10
+        @request.prescription.tap do | p |
+            p.drug_id    = prescription.drug_number
+            p.name       = prescription.drug_name
+            p.quantity   = prescription.quantity
+            p.frequency  = prescription.frequency
+            p.refills    = prescription.refills
+            p.dispense_as_written = prescription.dispense_as_written
+            p.days_supply = prescription.days_supply
+            p.quantity_unit_of_measure = prescription.quantity_unit_of_measure
+        end
+        @request.enumerated_fields.tap do | e |
+            e.icd9_0 = prescription.diagnosis9
+            e.icd10_0 = prescription.diagnosis10
+        end
     end
 
     def assign_pharmacy 
+        return if @pa.prescription.pharmacy.nil?
         pharmacy = @pa.prescription.pharmacy
-        return if pharmacy.nil?
-        @request.pharmacy.name             = pharmacy.name
-        @request.pharmacy.fax_number       = pharmacy.fax
-        @request.pharmacy.phone_number     = pharmacy.phone
-        @request.pharmacy.address.street_1 = pharmacy.street
-        @request.pharmacy.address.city     = pharmacy.city
-        @request.pharmacy.address.state    = pharmacy.state
-        @request.pharmacy.address.zip      = pharmacy.zip
+        @request.pharmacy.tap do | p |
+            p.name             = pharmacy.name
+            p.fax_number       = pharmacy.fax
+            p.phone_number     = pharmacy.phone
+            p.address.street_1 = pharmacy.street
+            p.address.city     = pharmacy.city
+            p.address.state    = pharmacy.state
+            p.address.zip      = pharmacy.zip
+        end
     end
 end

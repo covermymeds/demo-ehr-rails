@@ -18,7 +18,7 @@ class RequestConfigurator
     def assign_request_metadata
         @request.form_id = @pa.form_id
         @request.delete(:form_id) if @pa.form_id.blank?
-        @request.state = @pa.state
+        @request.state = @pa.prescription.patient.state
         @request.urgent = @pa.urgent
     end
 

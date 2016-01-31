@@ -34,7 +34,7 @@ class Patient < ActiveRecord::Base
     }.delete_if { |k, v| v.blank? }
   end
 
-  def create_from_callback patient, payer
+  def self.create_from_callback patient, payer
     patient = Patient.create!({
       first_name:   patient['first_name'],
       last_name:    patient['last_name'],

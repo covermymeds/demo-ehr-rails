@@ -1,13 +1,13 @@
 class PaRequestsController < ApplicationController
   before_action :set_request, only: [:show, :edit, :update, :destroy]
-  before_action :set_patient, only: [:new, :create]
-  before_action :set_prescription, only: [:new, :create]
+  before_action :set_patient, only: [:create]
+  before_action :set_prescription, only: [:create]
 
   # GET /requests
   # GET /requests.json
   def index
     # show all requests for this system
-    @requests = PaRequest.for_display.where('prescription_id IS NOT NULL').order(updated_at: :desc)
+    @requests = PaRequest.for_display.order(updated_at: :desc)
     @tokens = @requests.pluck(:cmm_token)
 
     # update the request statuses
@@ -30,10 +30,7 @@ class PaRequestsController < ApplicationController
 
   # GET /patients/1/prescriptions/1/pa_requests/new
   def new
-    @pa_request = @prescription.pa_requests.build
-    @pharmacy = @prescription.pharmacy
-    @pa_request.state = @patient.state
-    @pa_request.prescription.quantity = 30
+    @pa_request = PaRequest.new 
   end
 
   # GET /patients/1/prescriptions/1/pa_requests/1/edit
@@ -140,6 +137,7 @@ class PaRequestsController < ApplicationController
   end
 
   def set_patient
+    binding.pry
     @patient = Patient.find(params[:patient_id]) || Patient.new
   end
 

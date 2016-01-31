@@ -5,7 +5,7 @@ class PaRequest < ActiveRecord::Base
   has_many :cmm_callbacks, inverse_of: :pa_request
 
   scope :for_display, -> (){
-    where(display: true)
+    where(display: true).where('prescription_id IS NOT NULL')
   }
 
   OUTCOME_MAP = {
@@ -74,13 +74,13 @@ class PaRequest < ActiveRecord::Base
 
     # look up the patient & prescription, if they exist
     patient_info = cb_data['patient']
-    patient = Patient.where(first_name: patient_info['first_name'],
-      last_name: patient_info['last_name'],
-      date_of_birth: patient_info['date_of_birth']).first
+    patient = Patient.where(
+      first_name: patient_info['first_name'],
+      last_name: patient_info['last_name']).first
 
-    if patient.nil?
-      Patient.create_from_callback!(patient_info, payer_info)
-    end
+    payer_info = cb_data['payer']
+
+    patient ||= Patient.create_from_callback(patient_info, payer_info)
 
     prescription_data = cb_data['prescription']
     prescription = patient.prescriptions.where(

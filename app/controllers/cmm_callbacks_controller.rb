@@ -8,7 +8,8 @@ class CmmCallbacksController < ApplicationController
   # GET /callbacks
   # GET /callbacks.json
   def index
-    @callbacks = CmmCallback.order('created_at DESC').page(params[:page])
+    @callbacks = CmmCallback.order(created_at: :desc)
+                            .page(params[:page])
   end
 
   # GET /callbacks/1
@@ -92,9 +93,11 @@ class CmmCallbacksController < ApplicationController
   end
 
   def set_prescription
-    pat = request_params['patient']
-    @patient ||= Patient.where(first_name: pat['first_name'] , 
-      last_name: pat['last_name'], date_of_birth: pat['date_of_birth']).first
+    patient = request_params['patient']
+    @patient ||= Patient.where(first_name: patient['first_name'] , 
+                               last_name: patient['last_name'], 
+                               date_of_birth: patient['date_of_birth'])
+                        .first
     @prescription ||= @patient.prescriptions.where(drug_number: request_params['prescription']['drug_id']).first unless @patient.nil?
   end
 

@@ -29,9 +29,10 @@ class PrescriptionsController < ApplicationController
   # POST /patient/:patient_id/prescriptions.json
   def create
     @patient = Patient.find(params[:patient_id])
-    @prescription = @patient.prescriptions.build(prescription_params.merge({
-      date_prescribed: Time.zone.now, 
-      active: true}))
+    @prescription = @patient.prescriptions.build(
+      prescription_params.merge({
+        date_prescribed: Time.zone.now, 
+        active: true}))
     
     respond_to do |format|
       if @prescription.save

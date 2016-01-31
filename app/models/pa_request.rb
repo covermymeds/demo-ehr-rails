@@ -105,8 +105,7 @@ class PaRequest < ActiveRecord::Base
   end
 
   def remove_from_dashboard
-    CoverMyMeds.default_client
-      .revoke_access_token? @pa_request.cmm_token
+    CoverMyMeds.default_client.revoke_access_token?(cmm_token)
     update_attributes(display: false)
   end
 

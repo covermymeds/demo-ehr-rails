@@ -336,7 +336,7 @@ describe 'eHR Example App' do
 
         it 'checks the PA Required checkbox', js: true do
           fill_in('Quantity', with: 1)
-          expect(find('#prescription_pa_required')).to be_checked
+          expect(find('#start_pa')).to be_checked
         end
 
         it 'starts a PA', js: true do
@@ -353,7 +353,7 @@ describe 'eHR Example App' do
 
         it 'does not check the pa_required box', js: true do
           fill_in('Quantity', with: 1)
-          expect(find('#prescription_pa_required')).to_not be_checked
+          expect(find('#start_pa')).to_not be_checked
         end
 
         it 'does not create a PA', js: true do

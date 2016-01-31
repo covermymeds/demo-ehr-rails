@@ -1,15 +1,6 @@
 <%= form_for [@patient, @prescription], :class=>'form-vertical', :role=>'form' do |f| %>
 
-<% if @prescription.errors.any? %>
-<div id="error_explanation">
-  <h2><%= pluralize(@prescription.errors.count, "error") %> prohibited this prescription from being saved:</h2>
-  <ul>
-    <% @prescription.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-    <% end %>
-  </ul>
-</div>
-<% end %>
+  <%= render 'shared/errors', object: f.object %>
 
 <div id="request-add" class="template">
 
@@ -28,21 +19,26 @@
         <div id='pa_required_alert' class='alert alert-warning <%= hidden_unless_pa_required(@prescription) %>'>
           This medication requires prior authorization
         </div>
+        <div id='pa_not_required_alert' class='alert alert-warning <%= hidden_unless_pa_not_required(@prescription) %>'>
+          No prior authorization required
+        </div>
       </li>
     </ul>
     <div class='checkbox'>
-      <%= f.label :pa_required do %>
+      <%= label_tag :start_pa do %>
         <% if @prescription.autostart %>
-          <%= f.hidden_field :pa_required %>
-          <%= check_box_tag 'prescription_pa_required', '1', true, disabled: true %>
+          <%= hidden_field_tag :start_pa, 1 %>
+          <%= check_box_tag :start_pa, '1', true, disabled: true %>
           <b>Start PA?</b>
         <% else %>
-          <%= f.check_box :pa_required %>
+          <%= hidden_field_tag :start_pa, 0 %>
+          <%= check_box_tag :start_pa %>
           <b>Start PA?</b>
         <% end %>
       <% end %>
     </div>
 
+    <%= f.hidden_field :pa_required, value: (@prescription.pa_required ? 1 : 0) %>
     <%= f.hidden_field :autostart, value: (@prescription.autostart ? 1 : 0) %>
 
     <div class='row'>

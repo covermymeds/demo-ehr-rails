@@ -18,14 +18,30 @@ class Prescription < ActiveRecord::Base
     ['UD - AS DIRECTED', 'UD']
   ].freeze
 
-  def self.check_pa_required?(drug_name)
+  def self.check_pa_required? drug_name
     return false if drug_name.nil?
     ['banana', 'chocolate', 'abilify'].include?( drug_name.downcase )
   end
 
-  def self.check_autostart?(drug_name)
+  def self.check_autostart? drug_name
     return false if drug_name.nil?
     ['chocolate'].include?( drug_name.downcase )
+  end
+
+  def initiate_pa current_user
+    pa_request = pa_requests.build(
+      user: current_user,
+      state: patient.state,
+      urgent: false)
+
+    begin
+      response = CoverMyMeds.default_client.create_request RequestConfigurator.new(pa_request).request
+
+      pa_request.set_cmm_values(response)
+      pa_request.save
+    rescue CoverMyMeds::Error::HTTPError => e
+      false
+    end
   end
 
   def days_supply

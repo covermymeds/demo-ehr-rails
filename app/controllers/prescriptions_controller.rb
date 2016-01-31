@@ -96,18 +96,17 @@ class PrescriptionsController < ApplicationController
     def start_pa(prescription)
       # call out to the request pages API to create a request, given
       # the information we have about the patient and prescription
-      new_request = RequestConfigurator.request(prescription, nil, current_user)
+      pa_request = prescription.pa_requests.build(urgent: false)
 
       # create the request in the API
       # in your application, you will likely do this asynchronously, but
       # we are doing this inline for brevity
-      response = CoverMyMeds.default_client.create_request new_request
+      response = CoverMyMeds.default_client.create_request RequestConfigurator.new(pa_request).request
       flash_message("Your prior authorization request was successfully started.")
 
       # stash away the token, id, link, and workflow status from the return
-      pa_request = prescription.pa_requests.build(urgent: false, state: response.state, form_id: response.form_id)
       pa_request.set_cmm_values(response)
-      pa_request.save
+      pa_request.save!
     end
 
     # Use callbacks to share common setup or constraints between actions.

@@ -12,15 +12,26 @@ RSpec.describe Patient, type: :model do
                     state: state, date_of_birth: date_of_birth)}
 
   it 'allows first and last name, state, and date_of_birth' do
+    # setup
+    patient = Patient.new(first_name:'john', 
+      last_name:'doe', 
+      state:'OH', 
+      date_of_birth:'01/01/1970')
+
+    # exercise
+    patient.save
+
     # verify
     expect(patient).to be_valid
   end
 
-  describe 'with nil first name' do
-    let(:first) { nil }
-    it 'signals error' do
-      expect(patient).not_to be_valid
-    end
+  it 'requires first name' do
+    patient = Patient.new(
+      last_name:'doe', 
+      state:'OH', 
+      date_of_birth:'01/01/1970')
+    patient.save
+    expect(patient).not_to be_valid
   end
 
   describe 'with nil last name' do 

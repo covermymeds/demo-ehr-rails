@@ -1,6 +1,7 @@
 class PaRequest < ActiveRecord::Base
   belongs_to :prescription, inverse_of: :pa_requests
   belongs_to :patient, inverse_of: :pa_requests
+  belongs_to :user, inverse_of: :pa_requests, foreign_key: :prescriber_id
   has_many :cmm_callbacks, inverse_of: :pa_request
 
   scope :for_display, -> (){

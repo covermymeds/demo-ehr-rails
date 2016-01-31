@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   validates :role_id, presence: true
   validates :first_name, presence: true
   validates :last_name, presence: { message: 'Prescribers must have a last name' }, if: :prescriber?
-  validates :npi, presence: { message: 'Prescribers must have an npi' }, if: :prescriber?
+  validates_presence_of :npi, message: 'Prescribers must have an npi'
   validate :valid_npi?, if: :prescriber?
   validate :validate_credentials
 

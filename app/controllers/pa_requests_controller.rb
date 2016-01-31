@@ -85,16 +85,8 @@ class PaRequestsController < ApplicationController
     # create a pa request
     @pa_request = @prescription.pa_requests.build(pa_request_params)
 
-    # call out to the request pages API to create a request with CMM, given
-    # the information we have about the patient and prescription
-    new_request = RequestConfigurator.request(@prescription,
-                      @pa_request.form_id,
-                      User.find(params[:pa_request][:prescriber_id]))
-
     # create the request in the API
-    # in your application, you will likely do this asynchronously, but
-    # we are doing this inline for brevity
-    response = CoverMyMeds.default_client.create_request new_request
+    response = CoverMyMeds.default_client.create_request  RequestConfigurator.new(@pa_request).request
     flash_message "Your prior authorization request was successfully started."
 
     # stash away the token, id, link, and workflow status from the return

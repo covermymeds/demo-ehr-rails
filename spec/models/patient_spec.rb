@@ -4,7 +4,10 @@ RSpec.describe Patient, type: :model do
   # Prefix class methods with a '.'
   it 'allows first and last name, state, and date_of_birth' do
     # setup
-    patient = Patient.new(first_name:'john', last_name:'doe', state:'OH', date_of_birth:'01/01/1970')
+    patient = Patient.new(first_name:'john', 
+      last_name:'doe', 
+      state:'OH', 
+      date_of_birth:'01/01/1970')
 
     # exercise
     patient.save
@@ -16,7 +19,10 @@ RSpec.describe Patient, type: :model do
   end
 
   it 'requires first name' do
-    patient = Patient.new(last_name:'doe', state:'OH', date_of_birth:'01/01/1970')
+    patient = Patient.new(
+      last_name:'doe', 
+      state:'OH', 
+      date_of_birth:'01/01/1970')
     patient.save
     expect(patient).not_to be_valid
   end

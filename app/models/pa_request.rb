@@ -5,7 +5,11 @@ class PaRequest < ActiveRecord::Base
   has_many :cmm_callbacks, inverse_of: :pa_request
 
   scope :for_display, -> (){
-    where(display: true).where('prescription_id IS NOT NULL')
+    where(display: true)
+  }
+
+  scope :archived, -> (){
+    where(display: false)
   }
 
   OUTCOME_MAP = {
@@ -101,6 +105,8 @@ class PaRequest < ActiveRecord::Base
   end
 
   def remove_from_dashboard
+    CoverMyMeds.default_client
+      .revoke_access_token? @pa_request.cmm_token
     update_attributes(display: false)
   end
 

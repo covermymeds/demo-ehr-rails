@@ -5,6 +5,8 @@ class Prescription < ActiveRecord::Base
 
   validates :drug_number, format: {with: /[0-9]+/ , message: 'Drug Number is invalid'}
 
+  default_scope { order(date_prescribed: :desc) }
+
   scope :active, -> { where(active: true) }
 
   FREQUENCIES = [

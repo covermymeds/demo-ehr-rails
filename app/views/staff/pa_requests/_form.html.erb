@@ -1,0 +1,97 @@
+<%= form_for @pa_request, url: staff_pa_requests_path(@pa_request) do |f| %>
+<%= render 'shared/errors', object: f.object %>
+
+<div class='row'>
+  <div class='col-md-6'>
+    <formset>
+      <legend>Request Settings</legend>
+      <div class='form-group'>
+        <%= f.label :prescriber_id, "Prescriber" %><br/>
+        <%= f.collection_select :prescriber_id, User.doctors.all, :id, :display_name, {prompt: 'Select a Prescriber'}, class: 'form-control' %>
+      </div>
+
+      <div class='checkbox'>
+        <%= f.label :urgent do %>
+        <%= f.check_box :urgent, :class=>'checkbox' %>
+        <b><span class='large'>This request is urgent?</span></b>
+        <% end %>
+      </div>
+    </formset>
+  </div>
+
+  <div class='col-md-6'>
+    <formset>
+      <legend>Patient | <%= link_to "New ...", new_patient_path %>
+      </legend>
+
+      <div class='form-group'>
+        <%= f.label :patient_id, "Name" %><br/>
+        <%= collection_select :patient, :id, Patient.all, :id, :description, {prompt: 'Select a Patient'}, {class: 'form-control'} %>
+      </div>
+      <div class='form-group'>
+        <%= f.label :state, "State"%><br/>
+        <%= f.subregion_select :state, 'US', {priority: %w(@patient.state), prompt:'Choose state patient lives in'}, :class=>'form-control' %>
+      </div>
+
+    </formset>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='col-md-6'>
+    <formset>
+      <legend>Prescription</legend>
+      <div class="form-group">
+        <%= label_tag :prescription_drug_name, "Medication" %><br/>
+        <input type='text' class='form-control' id='prescription_drug_name' name='prescription[drug_name]' placeholder='Drug Name'></input>
+        <%= hidden_field :prescription, :drug_number %>
+        <span class="help-block">Type at least 4 letters of the name of the drug you wish to prescribe.</span>
+      </div>
+
+      <div class='row'>
+        <div class="form-group col-md-2">
+          <%= label_tag :prescription_quantity, "Quantity" %><br>
+          <%= number_field :prescription, :quantity, in: 1..90, :class=>'form-control' %>
+        </div>
+
+        <div class="form-group col-md-4">
+          <%= label_tag :prescription_frequency , "Directions"%><br>
+          <%= select :prescription, :frequency, Prescription::FREQUENCIES, {}, {class: 'form-control'} %>
+        </div>
+
+        <div class="form-group col-md-2">
+          <%= label_tag :prescription_refills, "Refills" %><br>
+          <%= select :prescription, :refills, options_for_select((1..10)), {}, {class: 'form-control'} %>
+        </div>
+
+        <div class='checkbox form-group col-md-4'>
+          <%= label_tag :prescription_dispense_as_written, "Dispense As Written" do %>
+          <%= check_box_tag :dispense_as_written, 1, true, {:name => 'prescription[dispense_as_written]'} %>
+          <b>Dispense as Written</b>
+          <% end %>
+        </div>
+      </div>
+    </formset>
+  </div>
+  <div class='col-md-6'>
+    <formset>
+      <legend>Payer</legend>
+      <div class='form-group'>
+        <%= label_tag :form_name, "Payer" %>
+        <input type='text' id='form_name' class='form-control' placeholder='Payer Name'></input>
+        <%= hidden_field :pa_request, :form_id %>
+      </div>
+    </formset>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <div class='form-actions'>
+      <%= link_to "Cancel", :back %>
+      <%= f.submit "Create PA", :class=>'btn btn-primary', :id=>'create'%>
+    </div>
+  </div>
+</div>
+
+<% end %>

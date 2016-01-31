@@ -1,0 +1,39 @@
+<% request = prescription.pa_requests.for_display.first %>
+<tr>
+  <td>
+    <%= link_to prescription.drug_name, edit_patient_prescription_path(@patient, prescription) %>
+  </td>
+
+  <td class="start">
+    <% if prescription.pa_required? %>
+      <% if prescription.pa_requests.for_display.empty? %>
+        <%= link_to "PA Required", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
+      <% end %>
+    <% end %>
+  </td>
+
+  <td>
+    <%= prescription.date_prescribed && prescription.date_prescribed.strftime("%B %d at %I:%M %p") %></td>
+    <td>
+      <%= link_to [@patient, prescription], method: :delete, :class=>'btn btn-xs btn-danger' do %>
+        <i class='glyphicon glyphicon-remove'></i>
+      <% end %>
+    </td>
+  </tr>
+
+  <% prescription.pa_requests.for_display.each do | pa | %>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+        <%= link_to request.cmm_id, patient_prescription_pa_request_path(@patient, prescription, request), id: 'start_pa_request' %>
+      </td>
+      <td>
+        <%= cmm_outcome_label(request) %> 
+      </td>
+      <td>
+        <%= link_to patient_prescription_pa_request_path(request.prescription.patient, request.prescription, request), method: :delete, :class=>'btn btn-xs btn-danger' do %>
+          <i class='glyphicon glyphicon-remove'></i>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>

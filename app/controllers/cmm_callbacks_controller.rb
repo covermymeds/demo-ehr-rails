@@ -105,7 +105,7 @@ class CmmCallbacksController < ApplicationController
     # if we have a record of the PA, delete it if appropriate
     if is_delete_request?(request_params)
       create_alert(@user, "PA request #{@pa.cmm_id} was deleted.")
-      @pa.remove_from_dashboard
+      @pa.remove_from_dashboard if @pa.display
     else
       # if it's not a delete, then it's an update
       create_alert(@user, "PA request #{@pa.cmm_id} was updated.")

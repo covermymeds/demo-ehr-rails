@@ -14,7 +14,9 @@ class Patient < ActiveRecord::Base
   end
 
   def requests
-    self.pa_requests.where("cmm_workflow_status IN ('New', 'PA Request', 'Question Request', 'Sent to Plan')").count
+    self.pa_requests
+        .where("cmm_workflow_status IN ('New', 'PA Request', 'Question Request', 'Sent to Plan')")
+        .count
   end
 
   def to_patient_hash
@@ -33,4 +35,23 @@ class Patient < ActiveRecord::Base
       group_id: group_id || "ABC1"
     }.delete_if { |k, v| v.blank? }
   end
+
+  def self.create_from_callback patient, payer
+    patient = Patient.create!({
+      first_name:   patient['first_name'],
+      last_name:    patient['last_name'],
+      date_of_birth: patient['date_of_birth'],
+      street_1:     patient['address']['street_1'],
+      street_2:     patient['address']['street_2'],
+      city:         patient['address']['city'],
+      state:        patient['address']['state'],
+      zip:          patient['address']['city'],
+      gender:       patient['gender'],
+      phone_number: patient['phone_number'],
+      bin:          payer['bin'],
+      pcn:          payer['pcn'],
+      group_id:     payer['group_id']
+    })
+  end
+
 end

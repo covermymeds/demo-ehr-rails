@@ -7,41 +7,22 @@
   <% if @patient.prescriptions.empty? %>
   <h5>No prescriptions have been added for this patient yet.</h5>
   <%  else  %>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Medication</th>
-        <th>PA Status</th>
-        <th colspan="2">Prescribed On</th>
-      </tr>
-    </thead>
-    <% @patient.prescriptions.order('date_prescribed DESC').each do |prescription| %>
-    <% request = prescription.pa_requests.first %>
-    <tr>
-      <td>
-        <%= link_to prescription.drug_name, edit_patient_prescription_path(@patient, prescription) %>
-      </td>
-
-      <td class="start">
-        <% if prescription.pa_required? %>
-          <% if request.nil? %>
-            <%= link_to "PA Required", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
-          <% else %>
-            <%= link_to cmm_outcome_label(request), patient_prescription_pa_request_path(@patient, prescription, request), id: 'start_pa_request' %>
-          <% end %>
-        <% else %>
-            <%= link_to "No PA Started", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Medication</th>
+          <th>PA Status</th>
+          <th colspan="2">Prescribed On</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @patient.prescriptions.each do |prescription| %>
+          <%= render partial: 'prescription', locals: { prescription: prescription } %>
         <% end %>
-      </td>
-
-      <td>
-        <%= prescription.date_prescribed && prescription.date_prescribed.strftime("%B %d at %I:%M %p") %></td>
-        <td>
-          <%= link_to "X", [@patient, prescription], method: :delete, :class=>'btn btn-xs btn-danger' %>
-        </td>
-      </tr>
-      <% end %>
+      </tbody>
     </table>
     <% end %>
-    <%= link_to "Add Prescription", new_patient_prescription_path(@patient), :class=>'btn btn-success' if current_user && current_user.role == Role.doctor %>
+    <% if current_user && current_user.role == Role.doctor %>
+      <%= link_to "Add Prescription", new_patient_prescription_path(@patient), :class=>'btn btn-success' if current_user && current_user.role == Role.doctor %>
+    <% end %>
   </div>

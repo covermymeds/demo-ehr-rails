@@ -21,6 +21,10 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :staff do
+    resources :pa_requests, only: [:new, :create]
+  end
+
   resources :pa_requests do
     member do
       get 'pages', to: 'request_pages#index'

@@ -32,8 +32,6 @@ $(function () {
       return false;
     },
     change: function(e, ui) { 
-      enable_form_pick($("#prescription_drug_number").val(),
-        $("#pa_request_state").val());
       check_pa_required($('#prescription_drug_number').val(),
         $('#prescription_drug_name').val(),
         $('#prescription_patient_id').val());
@@ -42,31 +40,30 @@ $(function () {
     return $("<li>").append(item.full_name).appendTo(ul);
   };
 
-  function enable_form_pick(drug_id, state) {
-    $("#form_name").autocomplete({
-      source: function(request, response) {
-        $.get("/forms?"+
-          "drug_id="+$("#prescription_drug_number").val()+
-          "&state="+$("#pa_request_state").val()+
-          "&term="+request.term, 
-          function(data, status){
-            response(data);
-          })
-      },
-      select: function(e, selected) {
-        $("#pa_request_form_id").val(selected.item.request_form_id);
-        $("#form_name").val(selected.item.description);
-        return false;
-      },
-      change: function(e, ui) { 
-        check_pa_required(ui.val(), 
-          $('#prescription_drug_name').val(),
-          $('#prescription_patient_id').val());
-      }
-    }).autocomplete("instance")._renderItem = function(ul, item) {
-      return $("<li>").append(item.description).appendTo(ul);
-    };
-  }
+  $("#form_name").autocomplete({
+    source: function(request, response) {
+      $.get("/forms?"+
+        "drug_id="+$("#prescription_drug_number").val()+
+        "&state="+$("#pa_request_state").val()+
+        "&term="+request.term, 
+        function(data, status){
+          response(data);
+        })
+    },
+    select: function(e, selected) {
+      $("#pa_request_form_id").val(selected.item.request_form_id);
+      $("#form_name").val(selected.item.description);
+      return false;
+    },
+    change: function(e, ui) { 
+      check_pa_required(ui.val(), 
+        $('#prescription_drug_name').val(),
+        $('#prescription_patient_id').val());
+    }
+  }).autocomplete("instance")._renderItem = function(ul, item) {
+    return $("<li>").append(item.description).appendTo(ul);
+  };
+
 
   $('.date').datepicker();
 

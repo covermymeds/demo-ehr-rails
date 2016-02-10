@@ -29,10 +29,10 @@
 
     },
     "payer": {
-      "form_search_text": "111111, SAMP001, NOTREAL",
-      "bin": "111111",
-      "pcn": "SAMP001,",
-      "group_id": "NOTREAL",
+      "form_search_text": "773836 MOCKPBM ABC1",
+      "bin": "773836",
+      "pcn": "MOCKPBM,",
+      "group_id": "ABC1",
       "medical_benefit_name": "",
       "drug_benefit_name": ""
 

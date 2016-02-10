@@ -1,0 +1,64 @@
+<!-- draw our own dashboard -->
+<div class='row'>
+  <div class='col-md-2 col-md-offset-2'>
+    <%= link_to "New Request", new_staff_pa_request_path, :class=>'btn btn-small btn-success' %>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='col-md-10 col-md-offset-2'>
+    <hr/>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='col-md-2'>
+    <ul class="nav nav-pills nav-stacked">
+      <%= pill_link_to "Active", pa_requests_path %>
+      <%= pill_link_to "Archived", pa_requests_path(archived: true) %>
+    </ul>
+  </div>
+
+  <div class='col-md-10'>
+    <div id="parequests-list">
+      <table class="table table-striped table-responsive">
+        <tr class="header">
+          <th>Status</th>
+          <th>Patient Name</th>
+          <th>Prescription</th>
+          <th>Payer</th>
+          <th>Updated</th>
+          <th></th>
+        </tr>
+
+        <% @requests.each do |request| %>
+
+        <tr class="request">
+          <td>
+            <%= cmm_outcome_label(request) %> <%= pa_request_edit_link(request, request.cmm_id) %>
+          </td>
+          <td>
+            <%= link_to "#{request.prescription.patient.description}", request.prescription.patient, :class=>'patient-link' %>
+          </td>
+          <td>
+            <%= link_to "#{request.prescription.drug_name}", edit_patient_prescription_path(request.prescription.patient, request.prescription) %>
+          </td>
+          <td>
+            <%= request.form_name %>
+          </td>
+          <td>
+            <%= request.last_updated.strftime("%m/%d/%Y at %I:%M%p") %>
+          </td>
+          <td class="remove">
+            <% unless request.display == false %>
+              <%= link_to patient_prescription_pa_request_path(request.prescription.patient, request.prescription, request), method: :delete, :class=>'btn btn-xs btn-danger' do %>
+                <i class='glyphicon glyphicon-remove'></i>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+</div>

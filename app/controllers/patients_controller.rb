@@ -10,16 +10,9 @@ class PatientsController < ApplicationController
   # GET /patients/1
   # GET /patients/1.json
   def show
-    if @patient.prescriptions.count == 0 && current_user && current_user.role == Role.doctor
-      respond_to do |format|
-        format.html { redirect_to new_patient_prescription_path(@patient) }
-        format.json { render :show, status: :ok, location: @patient }
-      end
-    else
-      respond_to do |format|
-        format.html { render :show }
-        format.json { render :show, status: :ok, location: @patient }
-      end
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render :show, status: :ok, location: @patient }
     end
   end
 
@@ -41,25 +34,20 @@ class PatientsController < ApplicationController
       if @patient.save
         flash_message 'Patient created successfully.'
         format.html { redirect_to patients_url }
-        format.json { render :show, status: :created, location: @patient }
       else
         format.html { render :new }
-        format.json { render json: @patient.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # PATCH/PUT /patients/1
-  # PATCH/PUT /patients/1.json
   def update
     respond_to do |format|
       if @patient.update(patient_params)
         flash_message 'Patient was successfully updated.'
         format.html { redirect_to patients_url }
-        format.json { render :show, status: :ok, location: @patient }
       else
         format.html { render :edit }
-        format.json { render json: @patient.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -68,10 +56,9 @@ class PatientsController < ApplicationController
   # DELETE /patients/1.json
   def destroy
     @patient.destroy
+    flash_message 'Patient record was successfully deleted.'
     respond_to do |format|
-      flash_message 'Patient record was successfully deleted.'
       format.html { redirect_to patients_url }
-      format.json { head :no_content }
     end
   end
 
@@ -84,6 +71,20 @@ class PatientsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def patient_params
-      params.require(:patient).permit(:first_name, :last_name, :date_of_birth, :street_1, :street_2, :city, :state, :zip, :phone_number, :email, :gender, :bin, :pcn, :group_id)
+      params.require(:patient).permit(
+        :first_name,
+        :last_name,
+        :date_of_birth,
+        :street_1,
+        :street_2,
+        :city,
+        :state,
+        :zip,
+        :phone_number,
+        :email,
+        :gender,
+        :bin,
+        :pcn,
+        :group_id)
     end
   end

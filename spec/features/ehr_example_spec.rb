@@ -156,19 +156,6 @@ describe 'eHR Example App' do
       expect(page).to have_content('New PA Request')
     end
 
-    it 'should navigate to the new prior auth view', js: true do
-      prescriptions(:prescriptions_Amber).update_attribute(:pa_required, true)
-      click_link('Patients')
-      expect(page).to have_content('Patients')
-      # Amber has a prescription
-      page.find('#patients-list > table > tbody > tr:nth-child(3) > td:nth-child(2) > a').click
-
-      expect(page).to have_content('Prescriptions')
-
-      find('#start_pa_request', match: :first).click
-      expect(page).to have_content('New PA Request')
-    end
-
     it 'should navigate to the contact cmm view', js: true do
       click_link('Prior Authorizations')
       click_link('Contact CoverMyMeds')
@@ -254,9 +241,9 @@ describe 'eHR Example App' do
           visit '/patients'
         end
 
-        it "should navigate to the new prescription form if patient is clicked with no prescriptions assigned" do
+        it "should navigate to the patient view if patient is clicked with no prescriptions assigned" do
           click_link('Mike Miller 10/01/1971 OH')
-          expect(page).to have_content 'Prescription -'
+          expect(page).to have_content 'Add Prescription'
         end
       end
 
@@ -296,9 +283,9 @@ describe 'eHR Example App' do
       end
 
       within_fieldset 'insurance' do
-        fill_in('BIN', with:'111111')
-        fill_in('PCN', with: 'SAMP001')
-        fill_in('Group Rx ID', with: 'NOTREAL')
+        fill_in('BIN', with:'773836')
+        fill_in('PCN', with: 'MOCKPBM')
+        fill_in('Group Rx ID', with: 'ABC1')
       end
 
       click_on('Create')
@@ -349,7 +336,7 @@ describe 'eHR Example App' do
 
         it 'checks the PA Required checkbox', js: true do
           fill_in('Quantity', with: 1)
-          expect(find('#prescription_pa_required')).to be_checked
+          expect(find('#start_pa')).to be_checked
         end
 
         it 'starts a PA', js: true do
@@ -366,7 +353,7 @@ describe 'eHR Example App' do
 
         it 'does not check the pa_required box', js: true do
           fill_in('Quantity', with: 1)
-          expect(find('#prescription_pa_required')).to_not be_checked
+          expect(find('#start_pa')).to_not be_checked
         end
 
         it 'does not create a PA', js: true do

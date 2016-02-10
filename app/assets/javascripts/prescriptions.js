@@ -11,14 +11,25 @@ function check_pa_required(drug_number, drug_name, patient_id) {
     data,
     function(data) {
       if (data.indicator.prescription.pa_required) {
+        $('#prescription_pa_required').val(1);
         $('#pa_required_alert').removeClass('hidden');
+        $('#pa_not_required_alert').addClass('hidden');
+        $('#start_pa[type="checkbox"]').prop('checked', true);
+
+        if (data.indicator.prescription.autostart) {
+          $('#prescription_autostart').val(1);
+          $('#start_pa[type="checkbox"]').prop('disabled', true);
+          $('input[name="start_pa"][type=hidden]').val('1');
+        }
+        else {
+          $('#start_pa[type="checkbox"]').prop('disabled', false);
+          $('input[name="start_pa"][type=hidden]').val('0');
+        }
       } 
       else {
         $('#pa_required_alert').addClass('hidden');
+        $('#pa_not_required_alert').removeClass('hidden');
       }
-      $('input[name="prescription[pa_required]"][type=hidden]').val(data.indicator.prescription.pa_required ? '1' : '0');
-      $('#prescription_autostart').val(data.indicator.prescription.autostart ? '1' : '0');
-      $('#prescription_pa_required').prop('checked', data.indicator.prescription.pa_required).prop('disabled', data.indicator.prescription.autostart);
     },
     'json');
 }

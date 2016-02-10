@@ -6,21 +6,23 @@ class RequestPagesController < ApplicationController
   before_action :redirect_if_using_cmm
 
   def index
-    # get the request-page for our current request
-    @request_page_json = CoverMyMeds.default_client.get_request_page(@pa_request.cmm_id, @pa_request.cmm_token)
-    
-    # redirect to my own controller for executing actions
-    replace_actions @request_page_json, @pa_request
+    begin
+      # get the request-page for our current request
+      @request_page_json = CoverMyMeds.default_client.get_request_page(@pa_request.cmm_id, @pa_request.cmm_token)
+      
+      # redirect to my own controller for executing actions
+      mask_actions @request_page_json, @pa_request
 
-    # make rendering easy
-    @forms = @request_page_json[:forms]
-    @data = @request_page_json[:data]
-    @validations = @request_page_json[:validations]
-    @actions = @request_page_json[:actions]
+      # make rendering easy
+      @forms = @request_page_json[:forms]
+      @data = @request_page_json[:data]
+      @validations = @request_page_json[:validations]
+      @actions = @request_page_json[:actions]
 
-  rescue CoverMyMeds::Error::HTTPError => e
-    flash_message "Error retrieving the request page: #{e.message}", :error
-    redirect_to :back
+    rescue CoverMyMeds::Error::HTTPError => e
+      flash_message "Error retrieving the request page: #{e.message}", :error
+      redirect_to :back
+    end
   end
 
   def action
@@ -46,12 +48,19 @@ class RequestPagesController < ApplicationController
 
     # important: look up the form data to be included
     form_data = {}
-    if action[:ref]
+    unless action[:ref].nil? || params[action[:ref]].nil?
       form_data = params[action[:ref]].delete_if { |_, v| v.blank? }
     end
     
-    # call out to get the next request page
-    response = conn.send( action[:method].downcase, form_data )
+    begin
+      # call out to get the next request page
+      response = conn.send( action[:method].downcase, form_data )
+
+    rescue CoverMyMeds::Error::HTTPError => e
+      flash_message "Error retrieving the request page: #{e.message}", :error
+      redirect_to pages_pa_request_path(@pa_request)
+
+    end
 
     # make sure we get a success code
     if [200, 201].include? response.code
@@ -66,7 +75,7 @@ class RequestPagesController < ApplicationController
         redirect_to pages_pa_request_path(@pa_request)
       else
         # otherwise, render the action
-        replace_actions @request_page, @pa_request
+        mask_actions @request_page, @pa_request
         @forms = @request_page[:forms]
         @data = @request_page[:data]
         @validations = @request_page[:validations]
@@ -76,10 +85,6 @@ class RequestPagesController < ApplicationController
       end
 
     end
-  rescue CoverMyMeds::Error::HTTPError => e
-    flash_message "Error retrieving the request page: #{e.message}", :error
-    redirect_to :back
-
   end
 
   private
@@ -93,7 +98,7 @@ class RequestPagesController < ApplicationController
   end
 
   # proxy actions through this controller, keeping tokens in the server
-  def replace_actions request_page, pa_request
+  def mask_actions request_page, pa_request
     # keep track of actions, so we can execute actions
     actions = request_page[:actions]
     pa_request.update_attributes request_pages_actions: actions.to_json

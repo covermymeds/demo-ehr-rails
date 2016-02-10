@@ -1,5 +1,16 @@
 module ApplicationHelper
 
+  def pill_link_to label, link_params, html_options = {}
+    if request.fullpath == link_params
+      html_options[:class] ||= ''
+      html_options[:class] << ' active '
+    end
+
+    content_tag(:li, html_options) do
+      link_to(label, link_params)
+    end
+  end
+
   def current_user
     @current_user ||= User.find_by_id(session["user_id"])
     @current_user

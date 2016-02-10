@@ -5,6 +5,8 @@ class Prescription < ActiveRecord::Base
 
   validates :drug_number, format: {with: /[0-9]+/ , message: 'Drug Number is invalid'}
 
+  default_scope { order(date_prescribed: :desc) }
+
   scope :active, -> { where(active: true) }
 
   FREQUENCIES = [
@@ -16,17 +18,53 @@ class Prescription < ActiveRecord::Base
     ['UD - AS DIRECTED', 'UD']
   ].freeze
 
-  def self.check_pa_required?(drug_name)
-    return false if drug_name.nil?
-    ['banana', 'chocolate', 'abilify'].include?( drug_name.downcase )
+  def initiate_pa current_user
+    pa_request = pa_requests.build(
+      user: current_user,
+      state: patient.state,
+      urgent: false)
+
+    begin
+      response = CoverMyMeds.default_client.create_request RequestConfigurator.new(pa_request).request
+
+      pa_request.set_cmm_values(response)
+      pa_request.save
+    rescue CoverMyMeds::Error::HTTPError => e
+      false
+    end
   end
 
-  def self.check_autostart?(drug_name)
-    return false if drug_name.nil?
-    ['chocolate'].include?( drug_name.downcase )
+  def days_supply
+    case frequency
+    when 'qD'
+      quantity
+    when 'BID'
+      (quantity / 2).ceil
+    when 'TID'
+      (quantity / 3).ceil
+    when 'QID'
+      (quantity / 4).ceil
+    else 
+      quantity
+    end
+  end
+
+  def quantity_unit_of_measure
+    "C48480" # Capsule    
+  end
+
+  def diagnosis9
+    "800.14"
+  end
+
+  def diagnosis10
+    "V91.37"
   end
 
   def script
     "#{drug_name} #{frequency}, Quantity: #{quantity}, Refills: #{refills.to_s}"
   end
+
+  private
+
 end

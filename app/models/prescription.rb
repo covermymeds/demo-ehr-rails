@@ -4,6 +4,7 @@ class Prescription < ActiveRecord::Base
   has_many :pa_requests, dependent: :destroy, inverse_of: :prescription
 
   validates :drug_number, format: {with: /[0-9]+/ , message: 'Drug Number is invalid'}
+  validates_presence_of :patient
 
   default_scope { order(date_prescribed: :desc) }
 

@@ -4,7 +4,8 @@ require 'spec_helper'
 RSpec.describe CmmCallbacksController, type: :controller do
   describe 'POST create' do
     fixtures :roles, :users
-
+    let!(:patient) { Patient.create!(first_name:'Autopick', last_name:'Smith', date_of_birth:'10/01/1971', state:'OH')
+}
     # This should return the minimal set of values that should be in the session
     # in order to pass any filters (e.g. authentication) defined in
     # PatientsController. Be sure to keep this updated too.
@@ -20,7 +21,10 @@ RSpec.describe CmmCallbacksController, type: :controller do
 
     context 'when a prescription exists' do
       before do
-        Prescription.create!(drug_number: '085705')
+        Prescription.create!(drug_number: '085705', patient: patient)
+        stub_request(:delete, "https://#{ENV['CMM_API_KEY']}:#{ENV['CMM_API_SECRET']}@api.covermymeds.com/requests/tokens/?v=1").
+          with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+          to_return(:status => 200, :body => "", :headers => {})
       end
       # in both of these tests (adds.. and deletes...) the controller redirects to show the
       # request that was created by the callback, or that was updated by the callback.
@@ -46,7 +50,10 @@ RSpec.describe CmmCallbacksController, type: :controller do
 
       context 'when a prescription exists' do
         before do
-          Prescription.create!(drug_number: '085705')
+          Prescription.create!(drug_number: '085705', patient: patient)
+          stub_request(:delete, "https://#{ENV['CMM_API_KEY']}:#{ENV['CMM_API_SECRET']}@api.covermymeds.com/requests/tokens/foo?v=1").
+            with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+            to_return(:status => 200, :body => "", :headers => {})
         end
         # in both of these tests (adds.. and deletes...) the controller redirects to show the
         # request that was created by the callback, or that was updated by the callback.

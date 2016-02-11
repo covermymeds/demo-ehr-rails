@@ -21,7 +21,8 @@ RSpec.describe "patients/show", type: :view do
       frequency: 'qD',
       refills: '3',
       dispense_as_written: true,
-      pharmacy_id: @pharmacy.id
+      pharmacy_id: @pharmacy.id,
+      patient: @patient
     ))
     @patient.prescriptions.push(@prescription)
     @prescriptions = @patient.prescriptions

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "prescriptions/index", type: :view do
   before(:each) do
-    assign(:patient, Patient.create!(
+    @patient = assign(:patient, Patient.create!(
       first_name: 'Mark',
       last_name: 'Harris',
       date_of_birth: '10/11/1971',

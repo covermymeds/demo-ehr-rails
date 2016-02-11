@@ -18,7 +18,7 @@ RSpec.describe "prescriptions/show", type: :view do
       frequency: "qD",
       refills: 2,
       dispense_as_written: false,
-      patient: nil,
+      patient: @patient,
       pharmacy: @pharmacy
     ))
   end

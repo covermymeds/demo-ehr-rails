@@ -47,6 +47,7 @@ class CmmCallbacksController < ApplicationController
       logger.info("CmmCallbacksController: Prescription Not Found: #{request_params['id']}")
       @pa.init_from_callback(request_params)
     when :new_retrospective
+      create_alert(@user, "NPI #{@user.npi} was found, but the PA wasn't, so it's a new retro")
       logger.info("CmmCallbacksController: New Retrospective PA created #{request_params['id']}")
       @pa.init_from_callback(request_params)
     when :pa_found

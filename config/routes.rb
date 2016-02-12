@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   end
 
   namespace :staff do
-    resources :pa_requests, only: [:new, :create]
+    resources :pa_requests, only: [:new, :create, :show]
   end
 
   resources :pa_requests do

@@ -30,6 +30,10 @@ module Staff
       end
     end
 
+    def show
+      @pa_request = PaRequest.find(params[:id])
+    end
+
     private
 
     def patient_params

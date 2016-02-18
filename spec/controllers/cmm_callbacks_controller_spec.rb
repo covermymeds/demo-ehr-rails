@@ -46,7 +46,8 @@ RSpec.describe CmmCallbacksController, type: :controller do
       let(:role)        { Role.doctor }
       let!(:user)       { User.find_by_npi(npi) }
       let(:do_request)  { post :create, valid_request, format: :json }
-      let!(:pa_request) { PaRequest.create!(cmm_id: request_id, cmm_token: 'foo') }
+      let!(:prescription)    { Prescription.create! patient: patient, drug_number: '123456', quantity: 30, frequency: 'qD', refills: 2, dispense_as_written: true, drug_name: 'My Drug' }
+      let!(:pa_request) { PaRequest.create!(cmm_id: request_id, cmm_token: 'foo', prescription: prescription) }
 
       context 'when a prescription exists' do
         before do

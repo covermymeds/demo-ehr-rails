@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe PaRequest, type: :model do
+  fixtures :patients
+  fixtures :prescriptions
+  let(:patient) { Patient.find_by(first_name: 'Amber' ) }
+  let!(:prescription) { patient.prescriptions.create!(drug_number: "012345") }
   let(:request_params) do
     {
       cmm_link: 'https://blah',
@@ -10,6 +14,7 @@ RSpec.describe PaRequest, type: :model do
       cmm_id: '123ABC',
       form_id: 'this_is_a_form',
       prescriber_id: 1,
+      prescription_id: prescription.id
     }
   end
 

@@ -4,6 +4,8 @@ class PaRequest < ActiveRecord::Base
   belongs_to :user, inverse_of: :pa_requests, foreign_key: :prescriber_id
   has_many :cmm_callbacks, inverse_of: :pa_request
 
+  validates_presence_of :prescription
+
   scope :for_display, -> (){
     where(display: true)
   }

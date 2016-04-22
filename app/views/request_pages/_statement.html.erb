@@ -1,13 +1,11 @@
 <% if(question[:question_text])  %>
-<div class="col-md-3">
-  <span> <%= question[:question_text] %> </span>
-</div>
-<div class="col-md-9">
+<div class="col-md-12">
   <div
     data-default-next-id="<%= massage(question[:default_next_question_id], form_name) %>"
     name="<%= massage(question[:question_id], form_name) %>"
     <%= render_coded_reference(question[:coded_reference]) %>
   >
+  <span><%= question[:question_text] %></span>
   <%= (question[:content_html]).html_safe if question[:content_html] %>
   </div>
 </div>

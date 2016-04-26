@@ -8,6 +8,7 @@ class DbResetter
       Pharmacy.destroy_all
       User.destroy_all
       CmmCallback.destroy_all
+      Alert.destroy_all
 
       Role.create! description: Role::DOCTOR
       Role.create! description: Role::STAFF

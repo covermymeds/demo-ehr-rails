@@ -19,7 +19,6 @@
 //= require bootstrap
 //= require bootstrap-datepicker
 //= require underscore
-//= require config
 //= require signature
 //= require cocoon
 //= require_tree .

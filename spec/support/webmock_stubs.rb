@@ -7,8 +7,7 @@ module WebmockStubs
   def stub_drugs drug_name, body   
     base_api_url =  URI.parse(ENV['CMM_API_URL']).host
     base_api_scheme = URI.parse(ENV['CMM_API_URL']).scheme
-    stub_request(:get, "#{base_api_scheme}://#{ENV['CMM_API_KEY']}:#{ENV['CMM_API_SECRET']}@#{base_api_url}/drugs/?q=#{drug_name}&v=1").
-      with(headers: {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+    stub_request(:get, "#{base_api_scheme}://#{base_api_url}/drugs/?q=#{drug_name}&v=1").
       to_return(status: 200, body: body, headers: {})
   end
 end

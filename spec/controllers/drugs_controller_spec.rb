@@ -28,9 +28,7 @@ RSpec.describe DrugsController, :type => :controller do
 
   describe "GET index" do
     it "returns http success" do
-
-      stub_request(:get, "#{base_api_scheme}://#{ENV['CMM_API_KEY']}:#{ENV['CMM_API_SECRET']}@#{base_api_url}/drugs/?q=#{term}&v=1").
-           with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+      stub_request(:get, "#{base_api_scheme}://#{base_api_url}/drugs/?q=spironolactone&v=1").
            to_return(:status => 200, :body => spironolactone, :headers => {})
 
       get :index, term: term

@@ -8,5 +8,7 @@ def stub_indicators(drug_name, pa_required)
       } 
     } 
   }
-  allow_any_instance_of(CoverMyMeds::Client).to receive(:post_indicators).and_return(Hashie::Mash.new(indicator_result))
+  allow_any_instance_of(CoverMyMeds::Client).
+    to receive(:post_indicators).
+    and_return(Hashie::Mash.new(indicator_result))
 end

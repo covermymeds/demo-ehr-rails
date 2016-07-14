@@ -142,8 +142,7 @@ describe 'eHR Example App' do
     end
 
     it 'should navigate to the dashboard view', js: true do
-      stub_request(:post, "https://#{ENV['CMM_API_KEY']}:#{ENV['CMM_API_SECRET']}@api.covermymeds.com/requests/search/?token_ids%5B%5D=random_token&v=1").
-        with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>'0', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Ruby'}).
+      stub_request(:post, "https://api.covermymeds.com/requests/search/?token_ids%5B%5D=random_token&v=1").
         to_return(:status => 200, :body => stubbed_pa_request, :headers => {})
       click_link('Prior Authorizations')
       click_link('Task List')
@@ -196,8 +195,7 @@ describe 'eHR Example App' do
     end
 
     it 'should navigate to the dashboard view from staff login', js: true do
-      stub_request(:post, "https://#{ENV['CMM_API_KEY']}:#{ENV['CMM_API_SECRET']}@api.covermymeds.com/requests/search/?token_ids%5B%5D=random_token&v=1").
-        with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>'0', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Ruby'}).
+      stub_request(:post, "https://api.covermymeds.com/requests/search/?token_ids%5B%5D=random_token&v=1").
         to_return(:status => 200, :body => stubbed_pa_request, :headers => {})
       visit '/logout'
       click_link "Sign in..."

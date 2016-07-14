@@ -3,6 +3,9 @@ require 'rails_helper'
 describe Formulary do
 
   describe '.pa_required?' do
+    let(:base_api_url) { URI.parse(ENV['CMM_API_URL']).host }
+    let(:base_api_scheme) { URI.parse(ENV['CMM_API_URL']).scheme }
+
     let(:result) { described_class.pa_required?(patient, drug) }
     let(:drug_number) { junk(:int, size: 6, format: :string) }
     let(:drug_name) { junk }
@@ -41,8 +44,8 @@ describe Formulary do
       }
     end
     before(:each) do 
-      stub_request(:post, "https://#{ENV['CMM_API_KEY']}:#{ENV['CMM_API_SECRET']}@api.covermymeds.com/indicators/?v=1")
-             .to_return(status: 200, body: result_params.to_json, :headers => {})
+      stub_request(:post, "#{base_api_scheme}://#{base_api_url}/indicators/?v=1").
+        to_return(status: 200, body: result_params.to_json, :headers => {})
     end
 
     context 'when the drug is chocolate flavored' do

@@ -9,6 +9,20 @@
   <%= stylesheet_link_tag    'application' %>
   <%= csrf_meta_tags %>
 
+  <script>
+    (function (window) {
+      /**
+       * For security, it's best to remove this file, and store your API ID and
+       * secret in a server-side API middleman endpoint.
+       */   
+      window.config = {
+         
+        apiId:'<%= ENV['CMM_API_KEY'] %>',
+        apiUrl:'<%= ENV['CMM_API_URL'] %>',
+        version: 1
+      };
+    }(window));  
+  </script>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

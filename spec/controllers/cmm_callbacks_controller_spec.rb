@@ -22,9 +22,8 @@ RSpec.describe CmmCallbacksController, type: :controller do
     context 'when a prescription exists' do
       before do
         Prescription.create!(drug_number: '085705', patient: patient)
-        stub_request(:delete, "https://#{ENV['CMM_API_KEY']}:#{ENV['CMM_API_SECRET']}@api.covermymeds.com/requests/tokens/?v=1").
-          with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
-          to_return(:status => 200, :body => "", :headers => {})
+        stub_request(:delete, "https://api.covermymeds.com/requests/tokens/?v=1").
+         to_return(:status => 200, :body => "", :headers => {})
       end
       # in both of these tests (adds.. and deletes...) the controller redirects to show the
       # request that was created by the callback, or that was updated by the callback.
@@ -52,8 +51,8 @@ RSpec.describe CmmCallbacksController, type: :controller do
       context 'when a prescription exists' do
         before do
           Prescription.create!(drug_number: '085705', patient: patient)
-          stub_request(:delete, "https://#{ENV['CMM_API_KEY']}:#{ENV['CMM_API_SECRET']}@api.covermymeds.com/requests/tokens/foo?v=1").
-            with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+
+          stub_request(:delete, "https://api.covermymeds.com/requests/tokens/foo?v=1").
             to_return(:status => 200, :body => "", :headers => {})
         end
         # in both of these tests (adds.. and deletes...) the controller redirects to show the

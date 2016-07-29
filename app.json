@@ -1,0 +1,64 @@
+{
+  "name": "demo-ehr-rails",
+  "description": "",
+  "scripts": {
+  },
+  "env": {
+    "CMM_API_KEY": {
+      "required": true
+    },
+    "CMM_API_SECRET": {
+      "required": true
+    },
+    "CMM_API_URL": {
+      "required": true
+    },
+    "DATABASE_URL": {
+      "required": true
+    },
+    "INTEGRATION_CMM_API_KEY": {
+      "required": true
+    },
+    "INTEGRATION_CMM_API_SECRET": {
+      "required": true
+    },
+    "LANG": {
+      "required": true
+    },
+    "LOG_LEVEL": {
+      "required": true
+    },
+    "RACK_ENV": {
+      "required": true
+    },
+    "RAILS_ENV": {
+      "required": true
+    },
+    "ROOT_URL": {
+      "required": true
+    },
+    "SECRET_KEY_BASE": {
+      "required": true
+    },
+    "STAGING": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    },
+    "worker": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "heroku-postgresql",
+    "papertrail"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    }
+  ]
+}

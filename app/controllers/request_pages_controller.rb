@@ -55,16 +55,8 @@ class RequestPagesController < ApplicationController
     begin
       # call out to get the next request page
       response = conn.send( action[:method].downcase, form_data )
-
-    rescue CoverMyMeds::Error::HTTPError => e
-      flash_message "Error retrieving the request page: #{e.message}", :error
-      redirect_to pages_pa_request_path(@pa_request)
-
-    end
-
-    # make sure we get a success code
-    if [200, 201].include? response.code
-      flash_message("The action completed successfully", :notice)
+      
+      flash_message("#{action[:title]} completed successfully", :notice)
 
       # the body of our response is in request_pages format
       @request_page_json = JSON.parse(response.body, symbolize_names: true)
@@ -84,7 +76,19 @@ class RequestPagesController < ApplicationController
         render :index
       end
 
+    rescue CoverMyMeds::Error::HTTPError => e
+      flash_message "API error retrieving the request page: #{e.message}:#{e.response}", :error
+      redirect_to pages_pa_request_path(@pa_request)
+
+    rescue RestClient::Exception => e
+      flash_message "Network error retrieving the request page: #{e.message}:#{e.response}", :error
+      redirect_to pages_pa_request_path(@pa_request)
+
+    rescue StandardError => e
+      flash_message "An unknown error occurred: #{e.message}", :error
+      redirect_to pages_pa_request_path(@pa_request)
     end
+
   end
 
   private

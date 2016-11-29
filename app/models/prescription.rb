@@ -59,7 +59,7 @@ class Prescription < ActiveRecord::Base
   end
 
   def diagnosis10
-    "V91.37"
+    "K80.67"
   end
 
   def script

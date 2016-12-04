@@ -31,13 +31,16 @@ class CmmCallbacksController < ApplicationController
   # changes. In that case, we need to update the PA record in our system with the
   # new values in the callback.
   def create
-    handler = PaHandler.new(pa: @pa, user: @user, 
-      prescription: @prescription, patient: @patient)
+    handler = PaHandler.new(@pa,
+                            @user,
+                            @prescription,
+                            @patient)
 
     case handler.call
     when :npi_not_found
-      logger.info("CmmCallbacksController: NPI #{request_params['prescriber']['npi']} not found.")
-      render(status: 410, text: 'NPI not found') and return
+      logger.info('CmmCallbacksController: ' \
+                  "NPI #{request_params['prescriber']['npi']} not found.")
+      render(status: 410, text: 'NPI not found') && return
     when :prescription_not_found
       # systems may choose to reject unrecognized prescriptions, 
       # to add them to the system, or to have a un-attached PA

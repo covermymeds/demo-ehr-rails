@@ -1,5 +1,5 @@
 class PaHandler
-  def initialize(pa: pa, user: user, prescription: prescription, patient: patient)
+  def initialize(pa, user, prescription, patient)
     @user = user
     @pa = pa
     @prescription = prescription

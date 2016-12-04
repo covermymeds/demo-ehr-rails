@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-ruby '2.0.0'
+ruby '2.2.5'
 
-gem 'rails', '4.1.1'
+gem 'rails', '4.2.7.1'
 
 # Use PG in case you want to deploy to Heroku
 gem 'pg'
@@ -56,13 +56,14 @@ gem 'dotenv-rails'
 group :development, :test do 
   # run with the thin web server
   gem 'database_cleaner', :git => 'git://github.com/bmabey/database_cleaner.git'
+  gem 'rb-readline'
   gem 'pry-rails'
   gem 'pry-byebug'
   gem 'rspec-rails', '~> 3.0'
   gem 'capybara'
   gem 'capybara-webkit'
   gem 'poltergeist'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '~> 2.0'
   gem 'rack_session_access'
 end
 

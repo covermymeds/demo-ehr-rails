@@ -25,12 +25,12 @@ RSpec.describe RequestConfigurator, type: :model do
     let(:urgent) { junk :bool }
 
     let(:npi) { junk(:int, size: 10).to_s }
-    
+
     let(:date_of_birth) do
-      year = junk :int, size: 4
+      year = 1965
       month = junk :int, min: 1, max: 12
       day = junk :int, min:1, max: 28
-      junk ->{ Date.new(1965, month, day).strftime('%d/%m/%Y') }
+      junk -> { Date.new(year, month, day).strftime('%d/%m/%Y') }
     end
 
     let(:credential) { Credential.create! fax: fax_number }
@@ -116,7 +116,7 @@ RSpec.describe RequestConfigurator, type: :model do
     end
 
     it 'populates prescription' do
-      expect(request.prescription.drug_id).to eq(drug_number)
+      expect(request.prescription.drug_id).to eq(drug_number.to_s)
       expect(request.prescription.name).to eq(drug_name)
     end
 

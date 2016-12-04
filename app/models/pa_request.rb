@@ -6,13 +6,9 @@ class PaRequest < ActiveRecord::Base
 
   validates_presence_of :prescription
 
-  scope :for_display, -> (){
-    where(display: true)
-  }
+  scope :for_display, -> () { where(display: true) }
 
-  scope :archived, -> (){
-    where(display: false)
-  }
+  scope :archived, -> () { where(display: false) }
 
   OUTCOME_MAP = {
     unfavorable:  'Denied',

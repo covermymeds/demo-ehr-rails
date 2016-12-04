@@ -3,7 +3,9 @@ class Patient < ActiveRecord::Base
   has_many :pa_requests, through: :prescriptions, inverse_of: :patient
 
   validates_presence_of :first_name, :last_name, :state
-  validates :date_of_birth, presence: true, format: {with: /[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/, message: "must be DD/MM/YYYY"}
+  validates :date_of_birth, presence: true, format: {
+    with: /[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/, message: 'must be DD/MM/YYYY'
+  }
 
   def full_name
     "#{first_name} #{last_name}"
@@ -14,9 +16,10 @@ class Patient < ActiveRecord::Base
   end
 
   def requests
-    self.pa_requests
-        .where("cmm_workflow_status IN ('New', 'PA Request', 'Question Request', 'Sent to Plan')")
-        .count
+    pa_requests
+      .where("cmm_workflow_status IN ('New', 'PA Request',
+        'Question Request', 'Sent to Plan')")
+      .count
   end
 
   def to_patient_hash
@@ -29,15 +32,15 @@ class Patient < ActiveRecord::Base
   end
 
   def to_payer_hash
-    { 
-      bin: bin || "773836",
-      pcn: pcn || "MOCKPBM",
-      group_id: group_id || "ABC1"
-    }.delete_if { |k, v| v.blank? }
+    {
+      bin: bin || '773836',
+      pcn: pcn || 'MOCKPBM',
+      group_id: group_id || 'ABC1'
+    }.delete_if { |_, v| v.blank? }
   end
 
   def self.create_from_callback patient, payer
-    patient = Patient.create!({
+    Patient.create!(
       first_name:   patient['first_name'],
       last_name:    patient['last_name'],
       date_of_birth: patient['date_of_birth'],
@@ -51,7 +54,7 @@ class Patient < ActiveRecord::Base
       bin:          payer['bin'],
       pcn:          payer['pcn'],
       group_id:     payer['group_id']
-    })
+    )
   end
 
 end

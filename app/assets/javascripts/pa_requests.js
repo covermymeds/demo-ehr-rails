@@ -35,10 +35,13 @@ $(function () {
       check_pa_required($('#prescription_drug_number').val(),
         $('#prescription_drug_name').val(),
         $('#prescription_patient_id').val());
+    },
+    create: function () {
+      $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
+        return $("<li>").append(item.full_name).appendTo(ul);
+      }
     }
-  }).autocomplete("instance")._renderItem = function(ul, item) {
-    return $("<li>").append(item.full_name).appendTo(ul);
-  };
+  });
 
   $("#form_name").autocomplete({
     source: function(request, response) {
@@ -59,10 +62,13 @@ $(function () {
       check_pa_required(ui.val(), 
         $('#prescription_drug_name').val(),
         $('#prescription_patient_id').val());
+    },
+    create: function () {
+      $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
+        return $("<li>").append(item.description).appendTo(ul);
+      }
     }
-  }).autocomplete("instance")._renderItem = function(ul, item) {
-    return $("<li>").append(item.description).appendTo(ul);
-  };
+  });
 
 
   $('.date').datepicker();

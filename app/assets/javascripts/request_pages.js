@@ -27,10 +27,16 @@ $(function() {
         $("#form_id").val(selected.item.request_form_id);
         $("#form_name").val(selected.item.description);
         return false;
+      },
+      create: function () {
+        $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
+          return $( "<li>" )
+            .data( "ui-autocomplete-item", item.description )
+            .append(item.description)
+            .appendTo( ul );
+          };
       }
-    }).autocomplete("instance")._renderItem = function(ul, item) {
-      return $("<li>").append(item.description).appendTo(ul);
-    };
+    });
 
   // show all appropriate questions initially
   var formSelector = "div#form-block form"

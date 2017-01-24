@@ -16,10 +16,7 @@ class Patient < ActiveRecord::Base
   end
 
   def requests
-    pa_requests
-      .where("cmm_workflow_status IN ('New', 'PA Request',
-        'Question Request', 'Sent to Plan')")
-      .count
+    pa_requests.for_display.count
   end
 
   def to_patient_hash

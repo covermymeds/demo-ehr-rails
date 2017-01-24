@@ -8,18 +8,17 @@
     <% if prescription.pa_required? %>
       <% if prescription.pa_requests.for_display.empty? %>
         <%= link_to "PA Required", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
-      <% end %>
-    <% else %>
-      <% prescription.pa_requests.for_display.each do | pa | %>
-        <%= link_to pa.cmm_id, patient_prescription_pa_request_path(@patient, prescription, pa), id: 'start_pa_request' %>
-        <%= cmm_outcome_label(request) %>
-        <%= link_to patient_prescription_pa_request_path(pa.prescription.patient, pa.prescription, pa), method: :delete, :class=>'btn btn-xs btn-danger' do %>
-          <i class='glyphicon glyphicon-remove'></i>
+      <% else %>
+        <% prescription.pa_requests.for_display.each do | pa | %>
+          <%= link_to pa.cmm_id, patient_prescription_pa_request_path(@patient, prescription, pa), id: 'start_pa_request' %>
+          <%= cmm_outcome_label(request) %>
+          <%= link_to patient_prescription_pa_request_path(pa.prescription.patient, pa.prescription, pa), method: :delete, :class=>'btn btn-xs btn-danger' do %>
+            <i class='glyphicon glyphicon-remove'></i>
+          <% end %>
+          <br/>
         <% end %>
-        <br/>
       <% end %>
     <% end %>
-
   </td>
 
   <td>

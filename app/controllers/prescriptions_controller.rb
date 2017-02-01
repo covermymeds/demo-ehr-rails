@@ -28,14 +28,16 @@ class PrescriptionsController < ApplicationController
   # POST /patient/:patient_id/prescriptions.json
   def create
     @prescription = @patient.prescriptions.build(
-      prescription_params.merge({
-        date_prescribed: Time.zone.now, 
-        active: true}))
-    
+      prescription_params.merge(
+        date_prescribed: Time.zone.now,
+        active: true
+      )
+    )
+
     respond_to do |format|
       if @prescription.save
         flash_message('Prescription successfully created')
-        if params[:start_pa] == "1"
+        if params[:start_pa] == '1'
           if @prescription.initiate_pa(current_user)
             flash_message('Your prior authorization request was successfully started.')
           end
@@ -65,7 +67,7 @@ class PrescriptionsController < ApplicationController
   # DELETE /patient/:patient_id/prescriptions/1
   def destroy
     # first, delete the PA request from our CMM dashboard
-    @prescription.pa_requests.each do |pa_request|
+    @prescription.pa_requests.for_display.each do |pa_request|
       pa_request.remove_from_dashboard
       flash_message("Request #{pa_request.cmm_id} removed from your dashboard.")
     end

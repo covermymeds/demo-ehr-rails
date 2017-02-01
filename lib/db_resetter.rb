@@ -100,7 +100,7 @@ class DbResetter
           drug_name: "Bacon Flavor",  active: true },
       ]
       Patient.first(drugs.count).zip(drugs).each do |patient, drug|
-        create_pa(patient.prescriptions.create!(drug.merge(date_prescribed: rand(1.year).seconds.ago)))
+        create_pa(patient.prescriptions.create!(drug.merge(date_prescribed: rand(1.year).seconds.ago, pa_required: true)))
       end
     end
   end

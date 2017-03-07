@@ -21,6 +21,14 @@ class Prescription < ActiveRecord::Base
     ['UD - AS DIRECTED',  'UD']
   ].freeze
 
+  PERDAY = {
+    qd:  1,
+    bid: 2,
+    tid: 3,
+    qid: 4
+  }.freeze
+
+
   def initiate_pa(current_user)
     pa_request = pa_requests.build(user: current_user,
                                    state: patient.state,
@@ -36,22 +44,13 @@ class Prescription < ActiveRecord::Base
   end
 
   def days_supply
-    case frequency
-    when 'qD'
-      quantity
-    when 'BID'
-      (quantity / 2).ceil
-    when 'TID'
-      (quantity / 3).ceil
-    when 'QID'
-      (quantity / 4).ceil
-    else
-      quantity
-    end
+    return quantity if frequency.nil?
+    per_day = PERDAY.fetch(frequency.downcase.to_sym, 1)
+    (quantity / per_day)
   end
 
   def quantity_unit_of_measure
-    'C48480' # Capsule
+    'C48480' # Capsule from Quantity Unit Of Measure NCPDP codes
   end
 
   def diagnosis9
@@ -63,6 +62,6 @@ class Prescription < ActiveRecord::Base
   end
 
   def script
-    "#{drug_name} #{frequency}, Quantity: #{quantity}, Refills: #{refills.to_s}"
+    "#{drug_name} #{frequency}, Quantity: #{quantity}, Refills: #{refills}"
   end
 end

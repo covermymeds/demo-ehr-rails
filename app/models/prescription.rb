@@ -3,8 +3,8 @@ class Prescription < ActiveRecord::Base
   belongs_to :pharmacy, inverse_of: :prescriptions
   has_many :pa_requests, dependent: :destroy, inverse_of: :prescription
 
-  validates :drug_number, format: { 
-    with: /[0-9]+/, message: 'Drug Number is invalid'
+  validates :drug_number, format: {
+    with: /[0-9]+/, message: 'Drug number must be a DDID or NDC'
   }
   validates_presence_of :patient
 
@@ -25,20 +25,17 @@ class Prescription < ActiveRecord::Base
     pa_request = pa_requests.build(user: current_user,
                                    state: patient.state,
                                    urgent: false)
-    begin
-      response = CoverMyMeds
-                 .default_client
-                 .create_request RequestConfigurator.new(pa_request).request
+    response = CoverMyMeds
+               .default_client
+               .create_request RequestConfigurator.new(pa_request).request
 
-      pa_request.set_cmm_values(response).save
-    rescue CoverMyMeds::Error::HTTPError => e
-      logger.error("Unable to create PA request: #{e.message}")
-      false
-    end
+    pa_request.set_cmm_values(response).save
+  rescue CoverMyMeds::Error::HTTPError => e
+    logger.error("Unable to create PA request: #{e.message}")
+    false
   end
 
   def days_supply
-    
     case frequency
     when 'qD'
       quantity

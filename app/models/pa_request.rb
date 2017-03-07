@@ -54,6 +54,7 @@ class PaRequest < ActiveRecord::Base
     self.cmm_token = response.tokens[0].id
     self.form_id = response.form_id
     self.state = response.state
+    self
   end
 
   def cmm_workflow_status

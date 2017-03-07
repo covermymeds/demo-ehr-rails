@@ -28,7 +28,6 @@ class Prescription < ActiveRecord::Base
     qid: 4
   }.freeze
 
-
   def initiate_pa(current_user)
     pa_request = pa_requests.build(user: current_user,
                                    state: patient.state,

@@ -37,20 +37,20 @@ class PaRequest < ActiveRecord::Base
   end
 
   def outcome
-    outcome = self.cmm_outcome.downcase.parameterize.underscore.to_sym
-    OUTCOME_MAP[outcome] || self.cmm_outcome
+    outcome = cmm_outcome.downcase.parameterize.underscore.to_sym
+    OUTCOME_MAP[outcome] || cmm_outcome
   end
 
   def status
-    status = self.cmm_workflow_status.downcase.parameterize.underscore.to_sym
-    STATUS_MAP[status] || self.cmm_workflow_status
+    status = cmm_workflow_status.downcase.parameterize.underscore.to_sym
+    STATUS_MAP[status] || cmm_workflow_status
   end
 
   def set_cmm_values(response)
     self.cmm_link = response.tokens[0].html_url
     self.cmm_id = response.id
-    self.cmm_workflow_status = response.workflow_status || "Not Yet Started"
-    self.cmm_outcome = response.plan_outcome || "Undetermined"
+    self.cmm_workflow_status = response.workflow_status || 'Not Yet Started'
+    self.cmm_outcome = response.plan_outcome || 'Undetermined'
     self.cmm_token = response.tokens[0].id
     self.form_id = response.form_id
     self.state = response.state
@@ -58,7 +58,7 @@ class PaRequest < ActiveRecord::Base
   end
 
   def cmm_workflow_status
-    read_attribute(:cmm_workflow_status) || "Not Started"
+    read_attribute(:cmm_workflow_status) || 'Not Started'
   end
 
   def cmm_outcome

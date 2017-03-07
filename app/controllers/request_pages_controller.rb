@@ -6,23 +6,21 @@ class RequestPagesController < ApplicationController
   before_action :redirect_if_using_cmm
 
   def index
-    begin
-      # get the request-page for our current request
-      @request_page_json = CoverMyMeds.default_client.get_request_page(@pa_request.cmm_id, @pa_request.cmm_token)
-      
-      # redirect to my own controller for executing actions
-      mask_actions @request_page_json, @pa_request
+    # get the request-page for our current request
+    @request_page_json = CoverMyMeds.default_client.get_request_page(@pa_request.cmm_id, @pa_request.cmm_token)
 
-      # make rendering easy
-      @forms = @request_page_json[:forms]
-      @data = @request_page_json[:data]
-      @validations = @request_page_json[:validations]
-      @actions = @request_page_json[:actions]
+    # redirect to my own controller for executing actions
+    mask_actions @request_page_json, @pa_request
 
-    rescue CoverMyMeds::Error::HTTPError => e
-      flash_message "Error retrieving the request page: #{e.message}", :error
-      redirect_to :back
-    end
+    # make rendering easy
+    @forms = @request_page_json[:forms]
+    @data = @request_page_json[:data]
+    @validations = @request_page_json[:validations]
+    @actions = @request_page_json[:actions]
+
+  rescue CoverMyMeds::Error::HTTPError => e
+    flash_message "Error retrieving the request page: #{e.message}", :error
+    redirect_to :back
   end
 
   def action
@@ -41,21 +39,22 @@ class RequestPagesController < ApplicationController
     }
 
     # build an HTTP connection
-    conn = RestClient::Resource.new(action[:href], {
-      user: Rails.application.secrets.cmm_api_id,
-      password: 'x-no-pass',
-      headers: headers})
+    conn = RestClient::Resource.new(action[:href],
+                                    user: Rails.application.secrets.cmm_api_id,
+                                    password: 'x-no-pass',
+                                    headers: headers
+    )
 
     # important: look up the form data to be included
     form_data = {}
     unless action[:ref].nil? || params[action[:ref]].nil?
       form_data = params[action[:ref]].delete_if { |_, v| v.blank? }
     end
-    
+
     begin
       # call out to get the next request page
       response = conn.send( action[:method].downcase, form_data )
-      
+
       flash_message("#{action[:title]} completed successfully", :notice)
 
       # the body of our response is in request_pages format
@@ -63,7 +62,7 @@ class RequestPagesController < ApplicationController
       @request_page = @request_page_json[:request_page]
 
       # if we got back a standard pa_request page, show that
-      if is_pa_request_form? @request_page
+      if pa_request_form? @request_page
         redirect_to pages_pa_request_path(@pa_request)
       else
         # otherwise, render the action
@@ -97,7 +96,7 @@ class RequestPagesController < ApplicationController
     raise ActionController::BadRequest.new('Bad Request')
   end
 
-  def is_pa_request_form?(request_page)
+  def pa_request_form?(request_page)
     request_page[:forms].has_key?(:pa_request)
   end
 
@@ -112,7 +111,7 @@ class RequestPagesController < ApplicationController
       action[:orig_href] = action[:href] # so we see it in the JSON source
       action[:orig_method] = action[:method]
       action[:href] = action_pa_request_path(@pa_request, action[:title])
-      action[:method] = "GET"
+      action[:method] = 'GET'
     end
   end
 
@@ -127,9 +126,8 @@ class RequestPagesController < ApplicationController
   end
 
   def redirect_if_using_cmm
-    if @_use_custom_ui == false
-      redirect_to @pa_request.cmm_link
-    end
+    return unless @_use_custom_ui == false
+    redirect_to @pa_request.cmm_link
   end
 
 end

@@ -5,9 +5,9 @@
   </td>
 
   <td class="start">
-    <% if prescription.pa_required? %>
+    <% if prescription.pa_required? || prescription.pa_requests.for_display.any? %>
       <% if prescription.pa_requests.for_display.empty? %>
-        <%= link_to "PA Required", new_patient_prescription_pa_request_path(@patient, prescription), :id => 'start_pa_request' %>
+        <%= link_to "PA Required", new_patient_prescription_pa_request_path(@patient, prescription), id: 'start_pa_request', class: 'btn btn-md btn-primary' %>
       <% else %>
         <% prescription.pa_requests.for_display.each do | pa | %>
           <%= link_to pa.cmm_id, patient_prescription_pa_request_path(@patient, prescription, pa), id: 'start_pa_request' %>
@@ -18,7 +18,9 @@
           <br/>
         <% end %>
       <% end %>
-    <% end %>
+    <% else %>
+      <%= link_to "Start PA", new_patient_prescription_pa_request_path(@patient, prescription), id: 'start_pa_request', class: 'btn btn-md btn-primary' %>
+    <% end # if prescription.pa_required? %>
   </td>
 
   <td>

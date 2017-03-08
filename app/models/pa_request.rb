@@ -6,7 +6,7 @@ class PaRequest < ActiveRecord::Base
 
   validates_presence_of :prescription
 
-  scope :for_display, -> () { where(display: true) }
+  default_scope { where(display: true).order(updated_at: :desc) }
 
   scope :archived, -> () { where(display: false) }
 

@@ -4,13 +4,9 @@ class PaRequestsController < ApplicationController
 
   # GET /requests
   def index
-    if params[:archived].present?
-      @requests = PaRequest.archived.order(updated_at: :desc)
-    else
-      @requests = PaRequest.for_display.order(updated_at: :desc)
-    end
+    @requests = fetch_requests(params)
 
-    @tokens = @requests.for_display.pluck(:cmm_token)
+    @tokens = @requests.pluck(:cmm_token)
 
     # update the request statuses
     begin
@@ -46,10 +42,12 @@ class PaRequestsController < ApplicationController
     @pa_request = @prescription.pa_requests.build(pa_request_params)
 
     begin
-      response = CoverMyMeds.default_client.create_request  RequestConfigurator.new(@pa_request).request
+      response = CoverMyMeds.default_client.create_request(
+        RequestConfigurator.new(@pa_request).request
+      )
       @pa_request.set_cmm_values(response)
-      flash_message "Your prior authorization request was successfully started."
-    
+      flash_message 'Your prior authorization request was successfully started.'
+
       respond_to do |format|
         if @pa_request.save
           format.html { redirect_to @patient }
@@ -77,29 +75,49 @@ class PaRequestsController < ApplicationController
 
   private
 
-  def pa_display_page pa_request
-    session[:use_custom_ui] ? 
-      pages_pa_request_path(@pa_request) : 
-      cmm_request_link_for(@pa_request)
+  def pa_display_page(pa_request)
+    if session[:use_custom_ui]
+      pages_pa_request_path(pa_request)
+    else
+      cmm_request_link_for(pa_request)
+    end
   end
 
-  def update_local_data cmm_requests
+  def update_local_data(cmm_requests)
     cmm_requests.each do |cmm_request|
       local = PaRequest.find_by_cmm_id(cmm_request['id'])
-      unless local.nil? 
-        # update workflow status & outcome
-        local.update_attributes({
-          cmm_workflow_status: cmm_request['workflow_status'],
-          cmm_outcome: cmm_request['plan_outcome']})
+      next if local.nil?
 
-        # update form selection
-        if cmm_request['form_id']
-          form = CoverMyMeds.default_client.get_form(
-            cmm_request['form_id'])
-          local.update_attributes({form_id: cmm_request['form_id'],
-            form_name: form['description']})
-        end
-      end
+      # update workflow status & outcome
+      local.update_attributes(
+        cmm_workflow_status: cmm_request['workflow_status'],
+        cmm_outcome: cmm_request['plan_outcome']
+      )
+
+      # update form selection
+      next unless cmm_request['form_id']
+
+      form = CoverMyMeds.default_client.get_form(cmm_request['form_id'])
+      local.update_attributes(
+        form_id: cmm_request['form_id'],
+        form_name: form['description']
+      )
+    end
+  end
+
+  def fetch_requests(params)
+    if params[:new].present?
+      @requests = PaRequest.where("cmm_workflow_status = 'New' OR cmm_workflow_status = 'Shared'")
+    elsif params[:need_input].present?
+      @requests = PaRequest.where("cmm_workflow_status like '%response%'")
+    elsif params[:awaiting_response].present?
+      @requests = PaRequest.where("cmm_workflow_status like '%request%' OR cmm_workflow_status like '%sent%'")
+    elsif params[:outcome].present?
+      @requests = PaRequest.where('cmm_outcome is not null')
+    elsif params[:archived].present?
+      @requests = PaRequest.archived
+    else
+      @requests = PaRequest.where("cmm_workflow_status = 'New' OR cmm_workflow_status = 'Shared'")
     end
   end
 
@@ -116,7 +134,10 @@ class PaRequestsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def pa_request_params
-    params.require(:pa_request).permit(:patient_id, :prescription_id, :form_id, :prescriber_id, :urgent, :state, :sent, :cmm_token, :cmm_link, :cmm_id, :cmm_workflow_status, :cmm_outcome)
+    params.require(:pa_request).permit(:patient_id, :prescription_id, :form_id,
+                                       :prescriber_id, :urgent, :state, :sent,
+                                       :cmm_token, :cmm_link, :cmm_id,
+                                       :cmm_workflow_status, :cmm_outcome)
   end
 
 end

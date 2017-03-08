@@ -116,6 +116,8 @@ class PaRequestsController < ApplicationController
       @requests = PaRequest.where('cmm_outcome is not null')
     elsif params[:archived].present?
       @requests = PaRequest.archived
+    elsif params[:all].present?
+      @requests = PaRequest.all
     else
       @requests = PaRequest.where("cmm_workflow_status = 'New' OR cmm_workflow_status = 'Shared'")
     end

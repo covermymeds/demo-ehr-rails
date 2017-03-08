@@ -5,7 +5,6 @@
   </div>
   <div class='col-md-10'>
     <ul class="nav nav-pills nav-justified">
-      <%= pill_link_to "New >", pa_requests_path %>
       <%= pill_link_to "Need Input >", pa_requests_path(need_input: true) %>
       <%= pill_link_to "Awaiting Response >", pa_requests_path(awaiting_response: true) %>
       <%= pill_link_to "Determined >", pa_requests_path(outcome: true) %>

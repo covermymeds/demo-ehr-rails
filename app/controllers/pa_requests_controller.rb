@@ -107,19 +107,19 @@ class PaRequestsController < ApplicationController
 
   def fetch_requests(params)
     if params[:new].present?
-      @requests = PaRequest.where("cmm_workflow_status = 'New' OR cmm_workflow_status = 'Shared'")
+      @requests = PaRequest.new_pas
     elsif params[:need_input].present?
-      @requests = PaRequest.where("cmm_workflow_status like '%response%'")
+      @requests = PaRequest.need_input
     elsif params[:awaiting_response].present?
-      @requests = PaRequest.where("cmm_workflow_status like '%request%' OR cmm_workflow_status like '%sent%'")
+      @requests = PaRequest.awaiting_response
     elsif params[:outcome].present?
-      @requests = PaRequest.where('cmm_outcome is not null')
+      @requests = PaRequest.determined
     elsif params[:archived].present?
       @requests = PaRequest.archived
     elsif params[:all].present?
       @requests = PaRequest.all
     else
-      @requests = PaRequest.where("cmm_workflow_status = 'New' OR cmm_workflow_status = 'Shared'")
+      @requests = PaRequest.new_pas
     end
   end
 

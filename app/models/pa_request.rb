@@ -111,4 +111,22 @@ class PaRequest < ActiveRecord::Base
     update_attributes(display: false)
   end
 
+  def self.for_status(status)
+    case status.to_sym
+    when :need_input
+      PaRequest.need_input
+    when :awaiting_response
+      PaRequest.awaiting_response
+    when :determined
+      PaRequest.determined
+    when :archived
+      PaRequest.archived
+    when :all
+      PaRequest.all
+    else
+      PaRequest.need_input
+    end
+  end
+
+
 end

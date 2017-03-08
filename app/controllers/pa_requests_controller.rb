@@ -7,14 +7,13 @@ class PaRequestsController < ApplicationController
     if params[:status].nil?
       redirect_to pa_requests_path(status: :need_input)
     else
-      @requests = fetch_requests(params[:status])
-      return unless @requests
+      @requests = PaRequest.for_status(params[:status])
+      return if @requests.nil? || @requests.empty?
       @tokens = @requests.pluck(:cmm_token)
       update_local_data(CoverMyMeds.default_client.get_requests(@tokens))
     end
   rescue CoverMyMeds::Error::HTTPError => e
     logger.info "Exception updating requests: #{e.message}"
-    flash_message("e.message: tokens = #{@tokens}", :error)
   end
 
   # GET /patients/1/prescriptions/1/pa_requests/1
@@ -101,23 +100,6 @@ class PaRequestsController < ApplicationController
         form_name: form['description']
       )
     end
-  end
-
-  def fetch_requests(status)
-    @requests = case status.to_sym
-                when :need_input
-                  PaRequest.need_input
-                when :awaiting_response
-                  PaRequest.awaiting_response
-                when :determined
-                  PaRequest.determined
-                when :archived
-                  PaRequest.archived
-                when :all
-                  PaRequest.all
-                else
-                  PaRequest.need_input
-                end
   end
 
   def set_request

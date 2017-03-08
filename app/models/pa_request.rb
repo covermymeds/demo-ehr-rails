@@ -11,7 +11,7 @@ class PaRequest < ActiveRecord::Base
   scope :archived, -> () { where(cmm_workflow_status: 'Archived') }
   scope :need_input,  -> () { where("(cmm_workflow_status = 'New' OR cmm_workflow_status = 'Shared' OR cmm_workflow_status ilike '%response%') and cmm_outcome is null") }
   scope :awaiting_response, -> () { where("cmm_workflow_status ilike '%request%' OR cmm_workflow_status ilike '%sent%'") }
-  scope :determined, -> () { where("cmm_outcome is not null and cmm_workflow_status not ilike 'Archived'") }
+  scope :determined, -> () { where("cmm_workflow_status ilike 'Expired' or (cmm_outcome is not null and cmm_workflow_status not ilike 'Archived')") }
 
   OUTCOME_MAP = {
     unfavorable:  'Denied',

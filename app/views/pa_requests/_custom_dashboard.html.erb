@@ -5,11 +5,11 @@
   </div>
   <div class='col-md-10'>
     <ul class="nav nav-pills nav-justified">
-      <%= pill_link_to "Need Input >", pa_requests_path(need_input: true) %>
-      <%= pill_link_to "Awaiting Response >", pa_requests_path(awaiting_response: true) %>
-      <%= pill_link_to "Determined >", pa_requests_path(outcome: true) %>
-      <%= pill_link_to "Archived", pa_requests_path(archived: true) %>
-      <%= pill_link_to "All", pa_requests_path(all: true) %>
+      <%= pill_link_to "Need Input >", pa_requests_path(status: :need_input) %>
+      <%= pill_link_to "Awaiting Response >", pa_requests_path(status: :awaiting_response) %>
+      <%= pill_link_to "Determined >", pa_requests_path(status: :determined) %>
+      <%= pill_link_to "Archived", pa_requests_path(status: :archived) %>
+      <%= pill_link_to "All", pa_requests_path(status: :all) %>
     </ul>
   </div>
 </div>

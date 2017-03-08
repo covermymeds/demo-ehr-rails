@@ -4,11 +4,14 @@ class PaRequestsController < ApplicationController
 
   # GET /requests
   def index
-    @requests = fetch_requests(params)
-    return unless @requests
-    return if @requests.empty?
-    @tokens = @requests.pluck(:cmm_token)
-    update_local_data(CoverMyMeds.default_client.get_requests(@tokens))
+    if params[:status].nil?
+      redirect_to pa_requests_path(status: :need_input)
+    else
+      @requests = fetch_requests(params[:status])
+      return unless @requests
+      @tokens = @requests.pluck(:cmm_token)
+      update_local_data(CoverMyMeds.default_client.get_requests(@tokens))
+    end
   rescue CoverMyMeds::Error::HTTPError => e
     logger.info "Exception updating requests: #{e.message}"
     flash_message("e.message: tokens = #{@tokens}", :error)
@@ -100,20 +103,21 @@ class PaRequestsController < ApplicationController
     end
   end
 
-  def fetch_requests(params)
-    if params[:need_input].present?
-      @requests = PaRequest.need_input
-    elsif params[:awaiting_response].present?
-      @requests = PaRequest.awaiting_response
-    elsif params[:outcome].present?
-      @requests = PaRequest.determined
-    elsif params[:archived].present?
-      @requests = PaRequest.archived
-    elsif params[:all].present?
-      @requests = PaRequest.all
-    else
-      @requests = PaRequest.need_input
-    end
+  def fetch_requests(status)
+    @requests = case status.to_sym
+                when :need_input
+                  PaRequest.need_input
+                when :awaiting_response
+                  PaRequest.awaiting_response
+                when :determined
+                  PaRequest.determined
+                when :archived
+                  PaRequest.archived
+                when :all
+                  PaRequest.all
+                else
+                  PaRequest.need_input
+                end
   end
 
   def set_request

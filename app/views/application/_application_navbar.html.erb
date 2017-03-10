@@ -55,15 +55,20 @@
             <ul class='dropdown-menu'>
               <li><%= link_to "API Documentation", api_documentation_path %></li>
               <li><%= link_to "Source Code", source_code_path %></li>
+            </ul>
+          </li>
+           <li class='dropdown'>
+            <a href='#' class='dropdown-toggle' data-toggle='dropdown'>Demo<b class='caret'></b></a>
+            <ul class='dropdown-menu'>
+              <li><%= link_to "Initiate Retrospective", 'https://claim-test.herokuapp.com'%></li>
+              <li><%= link_to "See Callbacks", cmm_callbacks_path %></li>
               <% if @_use_custom_ui %>
               <li class='divider'></li>
-              <li><%= link_to "Retrospective Demo", 'https://claim-test.herokuapp.com'%></li>
               <li><%= link_to "Use CoverMyMeds Request Page", toggle_ui_path(return: request.original_url) %></li>
               <% else %>
               <li><%= link_to "Use Request-Pages", toggle_ui_path(return: request.original_url) %></li>
               <% end %>
               <li><%= link_to "Reset Database", reset_db_path, method: :get, data: { confirm: "Are you sure? \nThis will remove any newly created data. \nThis cannot be undone." } %></li>
-              <li><%= link_to "Callbacks", cmm_callbacks_path %></li>
             </ul>
           </li>
           <li>

@@ -37,10 +37,11 @@
 
         <tr class="request">
           <td>
+            <%= retrospective_label(request) %>
             <%= cmm_outcome_label(request) %> <%= pa_request_edit_link(request, request.cmm_id) %>
           </td>
           <td>
-            <%= link_to "#{request.prescription.patient.description}", request.prescription.patient, :class=>'patient-link' %>
+            <%= link_to "#{request.prescription.patient.description}", request.prescription.patient, class: 'patient-link' %>
           </td>
           <td>
             <%= link_to "#{request.prescription.drug_name}", edit_patient_prescription_path(request.prescription.patient, request.prescription) %>

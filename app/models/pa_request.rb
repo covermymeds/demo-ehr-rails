@@ -68,7 +68,7 @@ class PaRequest < ActiveRecord::Base
     read_attribute(:cmm_outcome) || "Unknown"
   end
 
-  def init_from_callback(cb_data)
+  def init_from_callback(cb_data, options = {})
     self.cmm_id = cb_data['id']
     self.cmm_workflow_status = cb_data['workflow_status']
     self.cmm_outcome = cb_data['plan_outcome']
@@ -77,6 +77,7 @@ class PaRequest < ActiveRecord::Base
     self.form_id = cb_data['form_id']
     self.urgent = cb_data['urgent']
     self.state = cb_data['state']
+    self.is_retrospective = options[:retro].present?
 
     # look up the patient & prescription, if they exist
     patient_info = cb_data['patient']

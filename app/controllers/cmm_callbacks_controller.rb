@@ -42,7 +42,7 @@ class CmmCallbacksController < ApplicationController
                   "NPI #{request_params['prescriber']['npi']} not found.")
       render(status: 410, text: 'NPI not found') && return
     when :prescription_not_found
-      # systems may choose to reject unrecognized prescriptions, 
+      # systems may choose to reject unrecognized prescriptions,
       # to add them to the system, or to have a un-attached PA
       # for this example, we have decided this is a paper Rx
       # so we want to handle PA electronically

@@ -1,15 +1,15 @@
-<% request = prescription.pa_requests.for_display.first %>
+<% request = prescription.pa_requests.first %>
 <tr>
   <td>
     <%= link_to prescription.drug_name, edit_patient_prescription_path(@patient, prescription) %>
   </td>
 
   <td class="start">
-    <% if prescription.pa_required? || prescription.pa_requests.for_display.any? %>
-      <% if prescription.pa_requests.for_display.empty? %>
+    <% if prescription.pa_required? || prescription.pa_requests.any? %>
+      <% if prescription.pa_requests.empty? %>
         <%= link_to "PA Required", new_patient_prescription_pa_request_path(@patient, prescription), id: 'start_pa_request', class: 'btn btn-md btn-primary' %>
       <% else %>
-        <% prescription.pa_requests.for_display.each do | pa | %>
+        <% prescription.pa_requests.each do | pa | %>
           <%= link_to pa.cmm_id, patient_prescription_pa_request_path(@patient, prescription, pa), id: 'start_pa_request' %>
           <%= cmm_outcome_label(request) %>
           <%= link_to patient_prescription_pa_request_path(pa.prescription.patient, pa.prescription, pa), method: :delete, :class=>'btn btn-xs btn-danger' do %>

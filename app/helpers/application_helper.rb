@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  def pill_link_to label, link_params, html_options = {}
+  def pill_link_to(label, link_params, html_options = {})
     if request.fullpath == link_params
       html_options[:class] ||= ''
       html_options[:class] << ' active '
@@ -23,7 +23,16 @@ module ApplicationHelper
   end
 
   def cmm_request_link_for(request)
-    params = {
+    if request.cmm_link
+      request.cmm_link
+    else
+      "#{ENV['CMM_API_URL']}/requests/#{request.cmm_id}?v=1" \
+      "&#{default_link_params.to_query}"
+    end
+  end
+
+  def default_link_params
+    return {
       api_id: Rails.application.secrets.api_id,
       token_id: request.cmm_token,
       remote_user: {
@@ -31,18 +40,16 @@ module ApplicationHelper
         phone_number: '614-555-1212'
       }
     }
-    if request.cmm_link
-      request.cmm_link
-    else
-      "#{ENV['CMM_API_URL']}/requests/#{request.cmm_id}?v=1&#{params.to_query}"
-    end
   end
 
-  def pa_request_edit_link(request, title = "View")
+  def pa_request_edit_link(request, title = 'View')
     if @_use_custom_ui
       link_to title, pages_pa_request_path(request), id: 'edit_pa_request'
     else
-      link_to title, patient_prescription_pa_request_path(request.prescription.patient, request.prescription, request), id: 'edit_pa_request'
+      link_to title, patient_prescription_pa_request_path(
+        request.prescription.patient,
+        request.prescription, request
+      ), id: 'edit_pa_request'
     end
   end
 
@@ -51,8 +58,7 @@ module ApplicationHelper
   end
 
   def pluralize_without_count(count, noun, text = nil)
-    if count != 0
-      count == 1 ? "#{noun}#{text}" : "#{noun.pluralize}#{text}"
-    end
+    return if count.zero?
+    count == 1 ? "#{noun}#{text}" : "#{noun.pluralize}#{text}"
   end
 end

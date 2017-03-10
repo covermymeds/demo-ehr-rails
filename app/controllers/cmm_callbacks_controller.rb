@@ -35,7 +35,6 @@ class CmmCallbacksController < ApplicationController
                             @user,
                             @prescription,
                             @patient)
-
     case handler.call
     when :npi_not_found
       logger.info('CmmCallbacksController: ' \
@@ -52,7 +51,8 @@ class CmmCallbacksController < ApplicationController
     when :new_retrospective
       create_alert(@user, "NPI #{@user.npi} was found, but the PA wasn't, so it's a new retro")
       logger.info("CmmCallbacksController: New Retrospective PA created #{request_params['id']}")
-      @pa.init_from_callback(request_params)
+      @pa = PaRequest.create(cmm_id: request_params['id'])
+      @pa.init_from_callback(request_params, retro: true)
     when :pa_found
       logger.info("Updating or deleting PA #{@pa.cmm_id}")
       delete_or_update_pa!
@@ -93,7 +93,7 @@ class CmmCallbacksController < ApplicationController
   end
 
   def set_pa
-    @pa ||= PaRequest.find_or_initialize_by(cmm_id: request_params['id'])
+    @pa ||= PaRequest.find_by(cmm_id: request_params['id'])
   end
 
   def set_prescription

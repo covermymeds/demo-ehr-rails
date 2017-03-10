@@ -47,8 +47,8 @@ class CmmCallbacksController < ApplicationController
       # so we want to handle PA electronically
       create_alert(@user, "NPI #{@user.npi} was found, but the prescription didn't match. Creating new Rx.")
       logger.info("CmmCallbacksController: Prescription Not Found: #{request_params['id']}")
-      @pa = PaRequest.create(cmm_id: request_params['id'], retro: true)
-      @pa.init_from_callback(request_params)
+      @pa = PaRequest.create(cmm_id: request_params['id'])
+      @pa.init_from_callback(request_params, retro: true)
     when :new_retrospective
       create_alert(@user, "NPI #{@user.npi} was found, but the PA wasn't, so it's a new retro")
       logger.info("CmmCallbacksController: New Retrospective PA created #{request_params['id']}")

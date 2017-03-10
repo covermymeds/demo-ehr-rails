@@ -47,12 +47,23 @@ RSpec.describe PaRequestsController, type: :controller do
     }'
   }
   describe "GET 'index'" do
-    it "returns http success" do
-      stub_request(:post, "https://#{ENV['CMM_API_KEY']}:#{ENV['CMM_API_SECRET']}@#{URI.parse(ENV['CMM_API_URL']).host}/requests/search/?token_ids%5B%5D=&v=1")
-               .with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>'0', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Ruby'})
-               .to_return(:status => 200, :body => requests, :headers => {})      
-      get 'index'
-      
+    it 'returns http success' do
+      host = URI.parse(ENV['CMM_API_URL']).host
+      api_id = ENV['CMM_API_KEY']
+      api_secret = ENV['CMM_API_SECRET']
+      authorization = Base64.encode64("#{api_id}:#{api_secret}")
+
+      stub_request(:post, "https://#{host}/requests/search/?v=1")
+        .with(headers: {
+                'Authorization': 'Basic ' + authorization,
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Expect': '',
+                'User-Agent': 'Faraday v0.10.0'
+              })
+        .to_return(status: 200, body: '', headers: {})
+
+      get :index, status: 'all'
+
       expect(response).to be_success
     end
   end

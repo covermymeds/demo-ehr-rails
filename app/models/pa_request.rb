@@ -6,9 +6,12 @@ class PaRequest < ActiveRecord::Base
 
   validates_presence_of :prescription
 
-  scope :for_display, -> () { where(display: true) }
+  default_scope { where(display: true).order(updated_at: :desc) }
 
-  scope :archived, -> () { where(display: false) }
+  scope :archived, -> () { where(cmm_workflow_status: 'Archived') }
+  scope :need_input,  -> () { where("(cmm_workflow_status = 'New' OR cmm_workflow_status = 'Shared' OR cmm_workflow_status ilike '%response%') and cmm_outcome is null") }
+  scope :awaiting_response, -> () { where("cmm_workflow_status ilike '%request%' OR cmm_workflow_status ilike '%sent%'") }
+  scope :determined, -> () { where("cmm_workflow_status ilike 'Expired' or (cmm_outcome is not null and cmm_workflow_status not ilike 'Archived')") }
 
   OUTCOME_MAP = {
     unfavorable:  'Denied',
@@ -107,5 +110,23 @@ class PaRequest < ActiveRecord::Base
     CoverMyMeds.default_client.revoke_access_token?(cmm_token)
     update_attributes(display: false)
   end
+
+  def self.for_status(status)
+    case status.to_sym
+    when :need_input
+      PaRequest.need_input
+    when :awaiting_response
+      PaRequest.awaiting_response
+    when :determined
+      PaRequest.determined
+    when :archived
+      PaRequest.archived
+    when :all
+      PaRequest.all
+    else
+      PaRequest.need_input
+    end
+  end
+
 
 end

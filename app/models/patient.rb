@@ -16,7 +16,7 @@ class Patient < ActiveRecord::Base
   end
 
   def requests
-    pa_requests.for_display.count
+    pa_requests.count
   end
 
   def to_patient_hash

@@ -31,5 +31,4 @@ class PaHandler
   def pa_found?
     @pa.present?
   end
-  
 end

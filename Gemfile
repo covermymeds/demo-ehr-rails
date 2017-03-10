@@ -69,6 +69,6 @@ end
 
 group :test do
   gem 'shoulda-matchers', require: false
-  gem 'junklet'
+  gem 'rspec-junklet'
   gem 'webmock'
 end

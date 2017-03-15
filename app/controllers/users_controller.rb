@@ -25,13 +25,15 @@ class UsersController < ApplicationController
 
   def update
     respond_to do |format|
-      if @user.update(user_params)
-        cmm_registrar = CmmRegistrar.new(user: @user)
-        cmm_registrar.handle_registration
+      if @user.update(user_params) &&
+         CmmRegistrar.new(user: @user).handle_registration
         format.html { redirect_to root_url, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
-        format.html { render :edit }
+        format.html do
+          flash[:error] = 'Unable to register provider. Check the NPI. It must start with 9 in this demo application.'
+          render :edit
+        end
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
@@ -41,7 +43,8 @@ class UsersController < ApplicationController
     client = CoverMyMeds.default_client
     client.delete_credential(@user.npi)
     @user.update_attributes(registered_with_cmm: false)
-    redirect_to edit_user_path(@user), notice: 'User registration with CMM has been cancelled'
+    redirect_to edit_user_path(@user),
+                notice: 'User registration with CMM has been cancelled'
   end
 
   private

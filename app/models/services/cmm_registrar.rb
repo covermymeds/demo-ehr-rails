@@ -19,15 +19,15 @@ class CmmRegistrar
                                  contact_hint: @user.contact_hint)
   rescue CoverMyMeds::Error::HTTPError => e
     Rails.logger.info "Error registering the user with CMM: #{e.message}"
+    false
   end
 
   def unregister_with_cmm
     @user.update_attributes(registered_with_cmm: false)
-    begin
-      api_client.delete_credential(@user.npi)
-    rescue CoverMyMeds::Error::HTTPError => e
-      Rails.logger.info "Error unregistering with CMM: #{e.message}"
-    end
+    api_client.delete_credential(@user.npi)
+  rescue CoverMyMeds::Error::HTTPError => e
+    Rails.logger.info "Error unregistering with CMM: #{e.message}"
+    false
   end
 
   private

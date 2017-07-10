@@ -21,6 +21,14 @@ class Prescription < ActiveRecord::Base
     ['UD - AS DIRECTED',  'UD']
   ].freeze
 
+
+  RXBC_TEST_CASE_DRUGS = {
+    'flonase': { drug_number: '54868371800', rxnorm: nil },
+    'eliquis': { drug_number: '00003089321', rxnorm: '1364441'},
+    'tegretol': { drug_number: '00078051005', rxnorm: '866303'},
+    'vytorin': { drug_number: '54868525901', rxnorm: '1245449' },
+  }.freeze
+
   PERDAY = {
     qd:  1,
     bid: 2,
@@ -63,5 +71,11 @@ class Prescription < ActiveRecord::Base
 
   def script
     "#{drug_name} #{frequency}, Quantity: #{quantity}, Refills: #{refills}"
+  end
+
+  def rxbc_test_case_drug
+    drug = RXBC_TEST_CASE_DRUGS.detect { |key, value| drug_name.downcase.include?(key.to_s) }.try(:last)
+    return Hash[drug_number: drug_number, rxnorm: nil] if drug.nil?
+    Hash[drug_number: drug[:drug_number], rxnorm: drug[:rxnorm]]
   end
 end

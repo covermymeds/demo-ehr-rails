@@ -1,3 +1,27 @@
 // Place all the styles related to the prescriptions controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.panel-primary {
+     text-align: center;
+     margin-left: 10;
+     padding-right: 0;
+}
+
+.panel-row-custom {
+    height: 75px;
+    font-size: 20px;
+}
+
+.panel-rxbc-info {
+    font-size: 20px;
+}
+
+.rxbc-row-custom {
+  height: 65px;
+}
+
+
+.rxbc-small-font {
+  font-size: 11px;
+}

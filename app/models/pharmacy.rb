@@ -5,4 +5,18 @@ class Pharmacy < ActiveRecord::Base
     "#{name} - #{street}, #{city}, fax: #{fax}"
   end
 
+  def to_pharmacy_hash
+    {
+      name: name,
+      fax_number: fax,
+      phone_number: phone,
+      address: {
+        street_1: street,
+        city: city,
+        state: state,
+        zip: zip
+      }
+    }
+  end
+
 end

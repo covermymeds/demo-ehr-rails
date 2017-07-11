@@ -1,8 +1,15 @@
 GIT
-  remote: git://github.com/bmabey/database_cleaner.git
-  revision: 98d6a84158cbe8e99a22bda7aee8ed84914a158c
+  remote: https://github.com/jenpayne/cover_my_meds
+  revision: 11c7fd651ecb6ff58334a235d3269398a999f704
+  branch: add_rxnorm_to_indicators_create
   specs:
-    database_cleaner (1.5.3)
+    cover_my_meds (3.2.1)
+      activesupport
+      faraday (~> 0.11)
+      faraday_middleware
+      hashie (>= 3.4.0)
+      mime-types
+      typhoeus
 
 GEM
   remote: https://rubygems.org/
@@ -85,13 +92,6 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
-    cover_my_meds (3.2.0)
-      activesupport
-      faraday (~> 0.11)
-      faraday_middleware
-      hashie (>= 3.4.0)
-      mime-types
-      typhoeus
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     diff-lcs (1.3)
@@ -105,7 +105,7 @@ GEM
     ethon (0.10.1)
       ffi (>= 1.3.0)
     execjs (2.7.0)
-    faraday (0.11.0)
+    faraday (0.12.1)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.11.0.1)
       faraday (>= 0.7.4, < 1.0)
@@ -297,8 +297,7 @@ DEPENDENCIES
   carmen-rails
   cocoon
   coffee-rails (~> 4.0.0)
-  cover_my_meds (>= 1.0)
-  database_cleaner!
+  cover_my_meds!
   dotenv-rails
   jbuilder (~> 2.0)
   jquery-rails
@@ -318,7 +317,7 @@ DEPENDENCIES
   rspec-rails (~> 3.0)
   sass-rails (>= 3.2)
   sdoc (~> 0.4.0)
-  selenium-webdriver (~> 2.0)
+  selenium-webdriver (~> 2.53)
   shoulda-matchers
   spring (~> 1.3.6)
   uglifier (>= 1.3.0)
@@ -328,4 +327,4 @@ RUBY VERSION
    ruby 2.2.6p396
 
 BUNDLED WITH
-   1.13.6
+   1.15.1

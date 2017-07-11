@@ -33,7 +33,7 @@ module ApplicationHelper
 
   def default_link_params
     return {
-      api_id: Rails.application.secrets.api_id,
+      api_id: Rails.application.secrets.cmm_api_id,
       token_id: request.cmm_token,
       remote_user: {
         display_name: 'Johnny Rocket',

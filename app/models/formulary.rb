@@ -1,13 +1,18 @@
 class Formulary
 
-  def self.pa_required? patient, prescription
+  def self.pa_required? patient, prescription, pharmacy
+    rxbc_drug = prescription.rxbc_test_case_drug
     result = CoverMyMeds.default_client.post_indicators(
-      prescription: { 
-        drug_id: prescription.drug_number,
-        name: prescription.drug_name
-      }, 
-      patient: patient.to_patient_hash, 
-      payer: patient.to_payer_hash)
+      prescription: {
+        drug_id: rxbc_drug[:drug_number],
+        name: prescription.drug_name,
+        quantity: prescription.quantity
+      },
+      patient: patient.to_patient_hash,
+      payer: patient.to_payer_hash,
+      prescriber: patient.to_prescriber_hash,
+      pharmacy: pharmacy.to_pharmacy_hash,
+      rxnorm: rxbc_drug[:rxnorm])
 
     # for purposes of demonstration, vanilla flavors require PA
     # while chocolate flavors are auto-started and require Patient

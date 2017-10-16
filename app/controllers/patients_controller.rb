@@ -85,6 +85,7 @@ class PatientsController < ApplicationController
         :gender,
         :bin,
         :pcn,
-        :group_id)
+        :group_id,
+        :member_id)
     end
   end

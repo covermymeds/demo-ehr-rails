@@ -23,6 +23,20 @@ $(function () {
 
   $('#dashboard').dashboard(dashboard_options);
 
+  $('#prescription_dispense_as_written').click(function(e, ui) {
+      check_pa_required($('#prescription_drug_number').val(),
+        $('#prescription_drug_name').val(),
+        $('#prescription_patient_id').val(),
+        $('#prescription_pharmacy_id').val());
+  });
+
+  $('#prescription_pharmacy_id').change(function(e, ui) {
+      check_pa_required($('#prescription_drug_number').val(),
+        $('#prescription_drug_name').val(),
+        $('#prescription_patient_id').val(),
+        $('#prescription_pharmacy_id').val());
+  });
+
   $("#prescription_drug_name").autocomplete({
     minLength: 4,
     source: '/drugs',
@@ -31,10 +45,11 @@ $(function () {
       $("#prescription_drug_name").val(selected.item.full_name);
       return false;
     },
-    change: function(e, ui) { 
+    change: function(e, ui) {
       check_pa_required($('#prescription_drug_number').val(),
         $('#prescription_drug_name').val(),
-        $('#prescription_patient_id').val());
+        $('#prescription_patient_id').val(),
+        $('#prescription_pharmacy_id').val());
     },
     create: function () {
       $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
@@ -48,7 +63,7 @@ $(function () {
       $.get("/forms?"+
         "drug_id="+$("#prescription_drug_number").val()+
         "&state="+$("#pa_request_state").val()+
-        "&term="+request.term, 
+        "&term="+request.term,
         function(data, status){
           response(data);
         })
@@ -58,10 +73,11 @@ $(function () {
       $("#form_name").val(selected.item.description);
       return false;
     },
-    change: function(e, ui) { 
-      check_pa_required(ui.val(), 
+    change: function(e, ui) {
+      check_pa_required(ui.val(),
         $('#prescription_drug_name').val(),
-        $('#prescription_patient_id').val());
+        $('#prescription_patient_id').val(),
+        $('#prescription_pharmacy_id').val());
     },
     create: function () {
       $(this).data('ui-autocomplete')._renderItem = function (ul, item) {

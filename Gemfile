@@ -32,6 +32,7 @@ gem 'jquery-ui-rails'
 gem 'carmen-rails'
 
 # cover my meds api gem
+# Need to use rxnorm
 gem 'cover_my_meds', git: "https://github.com/jenpayne/cover_my_meds", branch: "add_rxnorm_to_indicators_create"
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '~> 2.2.6'
+ruby '~> 2.3.0'
 
 gem 'rails', '4.2.7.1'
 
@@ -31,7 +31,7 @@ gem 'jquery-ui-rails'
 
 gem 'carmen-rails'
 
-# cover my meds api gem
+# cover my meds api gem - Will update once change from jenpayne/cover_my_meds is in
 gem 'cover_my_meds', git: "https://github.com/jenpayne/cover_my_meds", branch: "add_rxnorm_to_indicators_create"
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -55,7 +55,7 @@ gem 'dotenv-rails'
 
 group :development, :test do
   # run with the thin web server
- # gem 'database_cleaner', :git => 'git://github.com/bmabey/database_cleaner.git'
+  gem 'database_cleaner', :git => 'git://github.com/bmabey/database_cleaner.git'
   gem 'rb-readline'
   gem 'pry-rails'
   gem 'pry-byebug'
@@ -65,6 +65,7 @@ group :development, :test do
   gem 'poltergeist'
   gem 'selenium-webdriver', '~> 2.53'
   gem 'rack_session_access'
+  gem 'launchy'
 end
 
 group :test do

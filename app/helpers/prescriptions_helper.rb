@@ -1,11 +1,24 @@
 module PrescriptionsHelper
-  def hidden_unless_pa_required(prescription)
-    prescription.pa_required? ? '' : 'hidden'
+
+  def patient_benefit_message(prescription)
+    if prescription.sponsored_message
+      prescription.sponsored_message
+    elsif prescription.copay_amt
+      "$#{prescription.copay_amt}"
+    elsif prescription.pa_required
+      "Prior Authorization Required"
+    elsif prescription.predicted && !prescription.pa_required
+      "Prior Authorization Not Required"
+    else
+      "Patient Benefit Not Available"
+    end
   end
 
-  def hidden_unless_pa_not_required(prescription)
-    return 'hidden' if prescription.new_record?
-    prescription.pa_required? ? 'hidden' : ''
+  def drug_info(drug)
+    "#{drug.strength} #{drug.strength_unit_of_measure} #{drug.route_of_administration} #{drug.dosage_form}"
   end
 
+  def address_info(address)
+    "#{address.city}, #{address.state} #{address['zip']}"
+  end
 end

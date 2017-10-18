@@ -1,0 +1,111 @@
+<%= form_for [@patient, @prescription], :class=>'form-vertical', :role=>'form' do |f| %>
+  <%= render 'shared/errors', object: f.object %>
+
+  <div id="request-add" class="template">
+    <fieldset>
+      <legend>Prescription - <%= "#{@patient.description}" %></legend>
+      <div class="row col-md-8">
+          <div class='row'>
+            <div class="drug-name col-md-8">
+              <%= @prescription.drug_name %>
+              <%= hidden_field :prescription, :drug_number %>
+              <%= hidden_field :prescription, :drug_name %>
+            </div>
+          </div>
+
+        <%= f.hidden_field :pa_required, value: (@prescription.pa_required ? 1 : 0) %>
+        <%= f.hidden_field :autostart, value: (@prescription.autostart ? 1 : 0) %>
+
+        <div class='row'>
+          <div class="form-group col-md-2">
+            <%= f.label :quantity %><br>
+            <%= @prescription.quantity %>
+            <%= hidden_field :prescription, :quantity %>
+          </div>
+
+          <div class="form-group col-md-2">
+            <%= f.label :frequency , "Directions"%><br>
+            <%= @prescription.frequency %>
+            <%= hidden_field :prescription, :frequency %>
+          </div>
+
+          <div class="form-group col-md-2">
+            <%= f.label :refills, "Refills" %><br>
+            <%= @prescription.refills %>
+            <%= hidden_field :prescription, :refills %>
+          </div>
+
+          <div class='form-group col-md-2'>
+            <%= f.label :dispense_as_written %>
+            <%= @prescription.dispense_as_written %>
+            <%= hidden_field :prescription, :dispense_as_written %>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class='row'>
+          <div class="drug-name col-md-12">
+            <h4><b>Prescription - Benefit Details</b></h4>
+          </div>
+        </div>
+
+        <div class='row'>
+          <div class="form-group col-md-4">
+            <b>Patient Benefit Amount</b><br>
+            <%= patient_benefit_message(@indicator_result.indicator.prescription) %>
+          </div>
+
+          <% if @substituted_drug %>
+            <div class="form-group col-md-4">
+                <b>Dispense</b> <span class="badge">Substitution</span><br>
+                <%= @substituted_drug.name %><br>
+                <%= drug_info(@substituted_drug) %><br>
+                <%= @indicator_result.indicator.prescription.quantity %>
+
+            </div>
+          <% end %>
+
+          <% if @indicator_result.indicator.pharmacy && @indicator_result.indicator.pharmacy.pharmacy_substitution_performed %>
+            <div class="form-group col-md-4">
+                <b>Pharmacy</b> <span class="badge">Non-Preferred</span><br>
+                <%= @indicator_result.indicator.pharmacy.name %><br>
+                <%= @indicator_result.indicator.pharmacy.address.street_1 %><br>
+                <%= address_info(@indicator_result.indicator.pharmacy.address) %>
+            </div>
+          <% end %>
+
+        </div>
+
+        <div class='row'>
+          <div class="col-md-12">
+            <small><%= @indicator_result.indicator.prescription.disclaimer_message %></small>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class='checkbox'>
+          <%= label_tag :start_pa do %>
+            <% if @indicator_result.indicator.prescription.autostart %>
+              <%= hidden_field_tag :start_pa, 1 %>
+              <%= check_box_tag :start_pa, '1', true, disabled: true %>
+              <b>Start PA?</b>
+            <% else %>
+              <%= hidden_field_tag :start_pa, 0 %>
+              <%= check_box_tag :start_pa %>
+              <b>Start PA?</b>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="actions">
+          <%= link_to "Cancel", :back %>
+          <%= f.submit nil, :class => 'btn btn-primary create', :onsubmit => 'getDrugName' %>
+        </div>
+
+        <%= hidden_field_tag 'prescription_patient_id', @patient.id %>
+      </div>
+    </fieldset>
+  </div>
+<% end %>

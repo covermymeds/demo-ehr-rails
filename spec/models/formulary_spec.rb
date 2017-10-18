@@ -6,7 +6,7 @@ describe Formulary do
     let(:base_api_url) { URI.parse(ENV['CMM_API_URL']).host }
     let(:base_api_scheme) { URI.parse(ENV['CMM_API_URL']).scheme }
 
-    let(:result) { described_class.pa_required?(patient, drug) }
+    let(:result) { described_class.pa_required?(patient, drug, pharmacy) }
     let(:drug_number) { junk(:int, size: 6, format: :string) }
     let(:drug_name) { junk }
     let(:ndc) { junk(:int, size: 11, format: :string) }
@@ -18,7 +18,7 @@ describe Formulary do
     end
     let(:drug) { Prescription.new(prescription_params) }
 
-    let(:patient_params) do 
+    let(:patient_params) do
       {
         first_name: junk,
         last_name: junk,
@@ -43,7 +43,19 @@ describe Formulary do
         }
       }
     end
-    before(:each) do 
+    let(:pharmacy) { Pharmacy.new(pharmacy_params) }
+    let(:pharmacy_params) do
+      {
+        name: 'CVS',
+        street: '670 N. High St.',
+        city: 'Columbus',
+        state: 'OH',
+        fax: '555-555-5555',
+        phone: '614-555-1212',
+        zip: '43021'
+      }
+    end
+    before(:each) do
       stub_request(:post, "#{base_api_scheme}://#{base_api_url}/indicators/?v=1").
         to_return(status: 200, body: result_params.to_json, :headers => {})
     end
@@ -73,7 +85,7 @@ describe Formulary do
         rx = result[:indicator][:prescription]
         expect(rx[:pa_required]).to eq(false)
         expect(rx[:autostart]).to eq(false)
-      end        
+      end
     end
 
   end

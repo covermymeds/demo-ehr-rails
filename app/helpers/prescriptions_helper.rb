@@ -1,9 +1,9 @@
 module PrescriptionsHelper
 
   def patient_benefit_message(prescription)
-    if prescription.sponsored_message
+    if !prescription.sponsored_message.blank?
       prescription.sponsored_message
-    elsif prescription.copay_amt
+    elsif !prescription.copay_amt.blank?
       "$#{prescription.copay_amt}"
     elsif prescription.pa_required
       "Prior Authorization Required"

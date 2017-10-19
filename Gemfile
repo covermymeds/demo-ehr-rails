@@ -31,8 +31,7 @@ gem 'jquery-ui-rails'
 
 gem 'carmen-rails'
 
-# cover my meds api gem - Will update once change from jenpayne/cover_my_meds is in
-gem 'cover_my_meds', git: "https://github.com/jenpayne/cover_my_meds", branch: "add_rxnorm_to_indicators_create"
+gem 'cover_my_meds', '~> 3.2.1'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 # gem 'turbolinks'

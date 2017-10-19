@@ -1,4 +1,4 @@
-<%= form_for [@patient, @prescription], :class=>'form-vertical', :role=>'form' do |f| %>
+<%= form_for [@patient, @prescription], :url => @confirm_url, :class=>'form-vertical', :role=>'form' do |f| %>
 
   <%= render 'shared/errors', object: f.object %>
 
@@ -6,77 +6,58 @@
 
   <fieldset>
     <legend>Prescription - <%= "#{@patient.description}" %></legend>
-    <div class='row'>
-      <div class="form-group col-md-12">
-        <%= f.label :drug_name, "Medication" %><br>
-        <%= f.text_field :drug_name, :class=>'form-control', placeholder: 'Drug Name' %>
-        <%= hidden_field :prescription, :drug_number %>
+    <div class="row col-md-8">
+        <div class='row'>
+          <div class="form-group col-md-8">
+            <%= f.label :drug_name, "Medication" %><br>
+            <%= f.text_field :drug_name, :class=>'form-control', placeholder: 'Drug Name' %>
+            <%= hidden_field :prescription, :drug_number %>
+          </div>
+        </div>
+
+      <div class='row'>
+        <div class="form-group col-md-2">
+          <%= f.label :quantity %><br>
+          <%= f.number_field :quantity, :class=>'form-control' %>
+        </div>
+
+        <div class="form-group col-md-2">
+          <%= f.label :frequency , "Directions"%><br>
+          <%= f.select :frequency, Prescription::FREQUENCIES, {}, {class: 'form-control'} %>
+        </div>
+
+        <div class="form-group col-md-2">
+          <%= f.label :refills, "Refills" %><br>
+          <%= f.select :refills, options_for_select((1..10)), {}, {class: 'form-control'} %>
+        </div>
+
+        <div class='checkbox form-group col-md-2'>
+          <%= f.label :dispense_as_written do %>
+          <%= f.check_box :dispense_as_written %>
+            <b>Dispense as Written</b>
+          <% end %>
+        </div>
       </div>
+
+
+      <div class='row'>
+        <div class="form-group col-md-8">
+          <%= f.label :pharmacy_id, "Filled By" %>
+          <%= f.collection_select :pharmacy_id, Pharmacy.all, :id, :display_name, {prompt: 'Select a Pharmacy'}, {class: 'form-control'} %>
+        </div>
+      </div>
+
+      <div class="actions">
+        <%= link_to "Cancel", :back %>
+        <%= f.submit "Confirm Prescription", :class => 'btn btn-primary create', :onsubmit => 'getDrugName' %>
+      </div>
+
+      <%= hidden_field_tag 'prescription_patient_id', @patient.id %>
     </div>
 
     <ul class='list-unstyled'>
-      <li>
-        <div id='pa_required_alert' class='alert alert-warning <%= hidden_unless_pa_required(@prescription) %>'>
-          This medication requires prior authorization
-        </div>
-        <div id='pa_not_required_alert' class='alert alert-warning <%= hidden_unless_pa_not_required(@prescription) %>'>
-          No prior authorization required
-        </div>
-      </li>
-    </ul>
-    <div class='checkbox'>
-      <%= label_tag :start_pa do %>
-        <% if @prescription.autostart %>
-          <%= hidden_field_tag :start_pa, 1 %>
-          <%= check_box_tag :start_pa, '1', true, disabled: true %>
-          <b>Start PA?</b>
-        <% else %>
-          <%= hidden_field_tag :start_pa, 0 %>
-          <%= check_box_tag :start_pa %>
-          <b>Start PA?</b>
-        <% end %>
-      <% end %>
-    </div>
+</ul>
 
-    <%= f.hidden_field :pa_required, value: (@prescription.pa_required ? 1 : 0) %>
-    <%= f.hidden_field :autostart, value: (@prescription.autostart ? 1 : 0) %>
-
-    <div class='row'>
-      <div class="form-group col-md-2">
-        <%= f.label :quantity %><br>
-        <%= f.number_field :quantity, :class=>'form-control' %>
-      </div>
-
-      <div class="form-group col-md-4">
-        <%= f.label :frequency , "Directions"%><br>
-        <%= f.select :frequency, Prescription::FREQUENCIES, {}, {class: 'form-control'} %>
-      </div>
-
-      <div class="form-group col-md-2">
-        <%= f.label :refills, "Refills" %><br>
-        <%= f.select :refills, options_for_select((1..10)), {}, {class: 'form-control'} %>
-      </div>
-
-      <div class='checkbox form-group col-md-4'>
-        <%= f.label :dispense_as_written do %>
-        <%= f.check_box :dispense_as_written %>
-          <b>Dispense as Written</b>
-        <% end %>
-      </div>
-    </div>
-
-
-    <div class="form-group">
-      <%= f.label :pharmacy_id, "Filled By" %>
-      <%= f.collection_select :pharmacy_id, Pharmacy.all, :id, :display_name, {prompt: 'Select a Pharmacy'}, {class: 'form-control'} %>
-    </div>
-
-    <div class="actions">
-      <%= link_to "Cancel", :back %>
-      <%= f.submit nil, :class => 'btn btn-primary create', :onsubmit => 'getDrugName' %>
-    </div>
-
-    <%= hidden_field_tag 'prescription_patient_id', @patient.id %>
 
   </fieldset>
 </div>

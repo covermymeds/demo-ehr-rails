@@ -119,6 +119,25 @@ describe 'eHR Example App' do
     }'
   end
 
+  let(:vanilla_stubbed_drug_response) do
+    '{
+      "drug": {
+        "id": "090915",
+        "gpi": "98330000000900",
+        "sort_group": null,
+        "sort_order": null,
+        "name": "Vanilla Flavor",
+        "route_of_administration": "XX",
+        "dosage_form": "LIQD",
+        "strength": "20",
+        "strength_unit_of_measure": "MG",
+        "dosage_form_name": "liquid",
+        "full_name": "Vanilla Flavor liquid",
+        "href": "https://api.covermymeds.com/drugs/090915"
+      }
+    }'
+  end
+
   it 'should have directions at the root' do
     visit(root_path)
     expect(page).to have_content("Let's pretend that this is your EHR...")
@@ -317,6 +336,8 @@ describe 'eHR Example App' do
 
       fill_in 'prescription_quantity', with: '1'
 
+      click_on('Confirm Prescription')
+
       click_on('Create Prescription')
 
       visit(patients_path)
@@ -340,11 +361,13 @@ describe 'eHR Example App' do
 
         it 'checks the PA Required checkbox', js: true do
           fill_in('Quantity', with: 1)
+          click_on('Confirm Prescription')
           expect(find('#start_pa')).to be_checked
         end
 
         it 'starts a PA', js: true do
           fill_in('Quantity', with: 1)
+          click_on('Confirm Prescription')
           click_on('Create Prescription')
           expect(page).to have_content('Your prior authorization request was successfully started.')
         end
@@ -357,12 +380,63 @@ describe 'eHR Example App' do
 
         it 'does not check the pa_required box', js: true do
           fill_in('Quantity', with: 1)
+          click_on('Confirm Prescription')
           expect(find('#start_pa')).to_not be_checked
         end
 
         it 'does not create a PA', js: true do
+          click_on('Confirm Prescription')
           click_on('Create Prescription')
           expect(page).to_not have_content('Your prior authorization request was successfully started.')
+        end
+      end
+
+      context 'drug substitution', js: true do
+        let(:drug_id) { junk 6 }
+        let(:pa_required) { false }
+
+        before do
+          stub_indicators_drug_substitution(drug_id, full_drug_name, pa_required)
+          stub_drug(drug_id, vanilla_stubbed_drug_response)
+        end
+
+        it 'displays the drug substitution' do
+          fill_in('Quantity', with: 1)
+          click_on('Confirm Prescription')
+          expect(page).to have_content('Substitution')
+          expect(page).to have_content('Vanilla')
+        end
+      end
+
+      context 'pharmacy substitution', js: true do
+        before do
+          stub_indicators_pharmacy_substitution(drug_name, pa_required)
+        end
+
+        it 'displays the pharmacy substitution' do
+          fill_in('Quantity', with: 1)
+          click_on('Confirm Prescription')
+          expect(page).to have_content('Non-Preferred')
+          expect(page).to have_content('CVS PHARMACY')
+        end
+      end
+
+      context 'pharmacy and drug substitution', js: true do
+        let(:drug_id) { junk 6 }
+        let(:pa_required) { false }
+
+        before do
+          stub_indicators_pharmacy_drug_substitution(drug_id, pa_required)
+          stub_drug(drug_id, vanilla_stubbed_drug_response)
+        end
+
+        it 'displays the pharmacy and drug substitution' do
+          fill_in('Quantity', with: 1)
+          click_on('Confirm Prescription')
+          expect(page).to have_content('Non-Preferred')
+          expect(page).to have_content('CVS PHARMACY')
+          expect(page).to have_content('Substitution')
+          expect(page).to have_content('Vanilla')
         end
       end
     end

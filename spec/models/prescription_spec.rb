@@ -21,4 +21,18 @@ RSpec.describe Prescription, type: :model do
 
     expect(prescription).to be_valid
   end
+
+  describe '#rxbc_test_case_drug' do
+    [
+      ['Flonase Allergy Relief 50MCG/ACT suspensions', '54868371800', nil      ],
+      ['Eliquis 2.5MG tablets',                        '00003089321', '1364441'],
+      ['TEGretol 100MG/5ML suspensions',               '00078051005', '866303' ],
+      ['Vytorin 10-10MG tablets',                      '54868525901', '1245449']
+    ].each do |drug_name, drug_number, rxnorm|
+      it "returns drug_number #{drug_number} and rxnorm #{rxnorm} for #{drug_name}" do
+        prescription = Prescription.new(prescription_params.merge(drug_name: drug_name))
+        expect(prescription.rxbc_test_case_drug).to eq(Hash[drug_number: drug_number, rxnorm: rxnorm])
+      end
+    end
+  end
 end

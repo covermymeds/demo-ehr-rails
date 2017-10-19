@@ -21,6 +21,7 @@ RSpec.describe "prescriptions/edit", type: :view do
       patient: @patient,
       pharmacy: @pharmacy
     ))
+
   end
 
   it "renders the edit prescription form" do

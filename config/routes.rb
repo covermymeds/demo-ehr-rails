@@ -17,6 +17,10 @@ Rails.application.routes.draw do
 
   resources :patients do
     resources :prescriptions do
+      collection do
+        post :confirm
+      end
+      patch :confirm, only: [:edit]
       resources :pa_requests
     end
   end

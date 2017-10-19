@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '~> 2.2.6'
+ruby '~> 2.3.0'
 
 gem 'rails', '4.2.7.1'
 
@@ -31,8 +31,7 @@ gem 'jquery-ui-rails'
 
 gem 'carmen-rails'
 
-# cover my meds api gem
-gem 'cover_my_meds', '>= 1.0'
+gem 'cover_my_meds', '~> 3.2.1'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 # gem 'turbolinks'
@@ -53,7 +52,7 @@ gem 'cocoon'
 
 gem 'dotenv-rails'
 
-group :development, :test do 
+group :development, :test do
   # run with the thin web server
   gem 'database_cleaner', :git => 'git://github.com/bmabey/database_cleaner.git'
   gem 'rb-readline'
@@ -63,8 +62,9 @@ group :development, :test do
   gem 'capybara'
   gem 'capybara-webkit'
   gem 'poltergeist'
-  gem 'selenium-webdriver', '~> 2.0'
+  gem 'selenium-webdriver', '~> 2.53'
   gem 'rack_session_access'
+  gem 'launchy'
 end
 
 group :test do

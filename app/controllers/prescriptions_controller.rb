@@ -18,10 +18,12 @@ class PrescriptionsController < ApplicationController
   # GET /patient/:patient_id/prescriptions/new
   def new
     @prescription = @patient.prescriptions.build
+    @confirm_url = confirm_patient_prescriptions_path(@patient)
   end
 
   # GET /patient/:patient_id/prescriptions/1/edit
   def edit
+    @confirm_url = patient_prescription_confirm_path(@patient, @prescription)
   end
 
   # POST /patient/:patient_id/prescriptions
@@ -80,7 +82,21 @@ class PrescriptionsController < ApplicationController
     end
   end
 
+  def confirm
+    @prescription = Prescription.new(prescription_params)
+    @patient = Patient.find(params[:patient_id])
+    @pharmacy = params[:pharmacy_id].blank? ? Pharmacy.new : Pharmacy.find(params[:pharmacy_id])
+    @indicator_result = Hashie::Mash.new Formulary.pa_required?(@patient, @prescription, @pharmacy)
+    @substituted_drug = substituted_drug(@indicator_result.indicator.prescription)
+  end
+
   private
+
+    def substituted_drug(prescription)
+      return unless prescription.drug_substitution_performed
+      client = CoverMyMeds.default_client
+      client.get_drug(prescription.drug_id)
+    end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_prescription
@@ -101,6 +117,7 @@ class PrescriptionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def prescription_params
-      params.require(:prescription).permit(:drug_number, :quantity, :frequency, :refills, :dispense_as_written, :patient_id, :drug_name, :pharmacy_id, :pa_required, :autostart)
+      params.require(:prescription).permit(:drug_number, :quantity, :frequency, :refills, :dispense_as_written, :patient_id,
+                     :drug_name, :pharmacy_id, :pa_required, :autostart, :pharmacy_id)
     end
   end

@@ -10,6 +10,9 @@
     resetElement: "<a href='#'>reset</a>",
   },
 
+  _newStroke: 1,
+  _continueStroke: 0,
+
   _create: function(){
     this.signatureInput = $(this.element)
     this.penstate       = false  // is the pen down?
@@ -30,7 +33,6 @@
     this.signaturePad.attr("class", this.options.signaturePadClass)
     this.signaturePad.attr("height", this.options.canvasSize.height)
     this.signaturePad.attr("width", this.options.canvasSize.width)
-
     this.signatureInput.after(this.signaturePad)
   },
 
@@ -46,8 +48,6 @@
   },
 
   _registerHanders: function(){
-    var signatureSelector = this.options.signatureSelector
-
     this.signaturePad.on("mousedown", $.proxy(this._penDown, this))
     this.signaturePad.on("touchstart", $.proxy(this._penDown, this))
     this.signaturePad.on("mousemove", $.proxy(this._penMove, this))
@@ -78,7 +78,7 @@
     this.pos = this._newEvent(event).penPosition()
     this.context.beginPath()
     this.context.moveTo(this.pos.x, this.pos.y)
-    this._savePenStroke(this._continueStroke)
+    this._savePenStroke(this._newStroke)
 
     return false  // return false to prevent IE selecting the image
   },
@@ -124,8 +124,6 @@
     }
   },
 
-  _newStroke: 1,
-  _continueStroke: 0,
 
   toString: function(){
     return JSON.stringify(this.stream)

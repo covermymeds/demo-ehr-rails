@@ -10,8 +10,17 @@ module PrescriptionsHelper
     elsif prescription.predicted && !prescription.pa_required
       "Prior Authorization Not Required"
     else
-      "Patient Benefit Not Available"
+      "Product Not Covered"
     end
+  end
+
+  def prescriber_info(prescriber_hash)
+    Hashie::Mash.new(prescriber_hash)
+  end
+
+  def format_phone(phone_number)
+    return '' if phone_number.nil?
+    phone_number.gsub(/(\d{3})(\d{3})(\d{4})/, '\1-\2-\3')
   end
 
   def drug_info(drug)

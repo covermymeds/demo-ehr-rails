@@ -77,6 +77,14 @@
 
         </div>
 
+        <% if @substituted_drug %>
+          <div class='row'>
+            <div class="col-md-12">
+              <span class="badge">Substitution</span><%= @indicator_result.indicator.prescription.drug_substitution_help_message %>
+            </div>
+          </div>
+        <% end %>
+
         <div class='row'>
           <div class="col-md-12">
             <small><%= @indicator_result.indicator.prescription.disclaimer_message %></small>
@@ -84,6 +92,27 @@
         </div>
 
         <hr />
+
+        <div class='row'>
+          <div class="form-group col-md-6">
+            <b>Preferred Pharmacy</b><br><br>
+              <%= @pharmacy.name %><br>
+              <%= @pharmacy.street %><br>
+              <%= "#{@pharmacy.city}, #{@pharmacy.state} #{@pharmacy.zip}" %><br>
+              <%= "P: #{format_phone(@pharmacy.phone)}" %><br>
+              <%= "F: #{format_phone(@pharmacy.fax)}" %>
+          </div>
+
+          <div class="form-group col-md-6">
+            <b>Prescribing Provider</b><br><br>
+              <% prescriber_info = prescriber_info(@patient.to_prescriber_hash) %>
+              <%= "#{prescriber_info.first_name} #{prescriber_info.last_name}"%><br>
+              <%= prescriber_info.address.street_1 %><br>
+              <%= address_info(prescriber_info.address) %><br>
+              <%= "P: #{format_phone(prescriber_info.phone_number)}" %><br>
+              <%= "F: #{format_phone(prescriber_info.fax_number)}" %>
+          </div>
+        </div>
 
         <div class='checkbox'>
           <%= label_tag :start_pa do %>

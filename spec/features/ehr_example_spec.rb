@@ -279,6 +279,7 @@ describe 'eHR Example App' do
 
         it 'should navigate to the patient show page if patient is clicked with no prescriptions assigned' do
           click_link('Mike Miller 10/01/1971 OH')
+          binding.pry
           expect(page).to have_content 'Edit Patient'
         end
 
@@ -405,6 +406,12 @@ describe 'eHR Example App' do
           click_on('Confirm Prescription')
           expect(page).to have_content('Substitution')
           expect(page).to have_content('Vanilla')
+        end
+
+        it 'displays the drug substitution help message' do
+          fill_in('Quantity', with: 1)
+          click_on('Confirm Prescription')
+          expect(page).to have_content('Price estimate is based on frequency prescribed alternative')
         end
       end
 

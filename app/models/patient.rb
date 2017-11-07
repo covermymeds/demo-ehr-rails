@@ -45,8 +45,8 @@ class Patient < ActiveRecord::Base
   def to_prescriber_hash
     {
       npi: "1386646586",
-      first_name: "Flemming",
-      last_name: "Andrew",
+      first_name: "Andrew",
+      last_name: "Fleming",
       clinic_name: "LAKE ARTHUR",
       fax_number: "6145555554",
       phone_number: "7256489633",

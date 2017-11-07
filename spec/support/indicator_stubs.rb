@@ -20,6 +20,7 @@ def stub_indicators_drug_substitution(id, drug_name, pa_required)
     'prescription' => {
       'drug_id' => id,
       'drug_substitution_performed' => true,
+      'drug_substitution_help_message' => "Price estimate is based on frequency prescribed alternative",
       'name' => drug_name,
       'pa_required' => pa_required,
       'predicted' => true

@@ -54,6 +54,9 @@
           <div class="form-group col-md-4">
             <b>Patient Benefit Amount</b><br>
             <%= patient_benefit_message(@indicator_result.indicator.prescription) %>
+            <% unless @indicator_result.indicator.prescription.sponsored_help_message.blank? %>
+              <%= image_tag("question.png", size: "25x25", title: @indicator_result.indicator.prescription.sponsored_help_message) %>
+            <% end %>
           </div>
 
           <% if @substituted_drug %>
@@ -63,6 +66,22 @@
                 <%= drug_info(@substituted_drug) %><br>
                 <%= @indicator_result.indicator.prescription.quantity %>
 
+            </div>
+          <% elsif @indicator_result.indicator.prescription.quantity_substitution_performed %>
+            <div class="form-group col-md-4">
+              <b>Dispense</b> <span class="badge">QTY Substitution</span><br>
+              <%= @prescription.drug_name %><br>
+              <%= drug_info(@indicator_result.indicator.prescription) %><br>
+              <%= @indicator_result.indicator.prescription.quantity %>
+            </div>
+          <% elsif !@indicator_result.indicator.prescription.suggested_drug_alternatives.blank? %>
+            <div class="form-group col-md-4">
+                <b>Suggested Drug Alternatives</b><br>
+                <ul type="disc">
+                  <% @indicator_result.indicator.prescription.suggested_drug_alternatives.each do |alternative| %>
+                     <li><%= alternative[:name] %></li>
+                  <% end %>
+                </ul>
             </div>
           <% end %>
 
@@ -85,6 +104,19 @@
           </div>
         <% end %>
 
+        <% unless @indicator_result.indicator.prescription.additional_content.blank? %>
+          <div class='row'>
+            <div class="col-md-12">
+              <% @indicator_result.indicator.prescription.additional_content.each do |content| %>
+                <%= content['text'] %><br>
+                <% unless content['href'].blank? %>
+                   <%= link_to content['href'], content['href'], method: content['method'] %><br>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
         <div class='row'>
           <div class="col-md-12">
             <small><%= @indicator_result.indicator.prescription.disclaimer_message %></small>
@@ -94,14 +126,16 @@
         <hr />
 
         <div class='row'>
-          <div class="form-group col-md-6">
-            <b>Preferred Pharmacy</b><br><br>
-              <%= @pharmacy.name %><br>
-              <%= @pharmacy.street %><br>
-              <%= "#{@pharmacy.city}, #{@pharmacy.state} #{@pharmacy.zip}" %><br>
-              <%= "P: #{format_phone(@pharmacy.phone)}" %><br>
-              <%= "F: #{format_phone(@pharmacy.fax)}" %>
-          </div>
+          <% unless @pharmacy.name.nil? %>
+            <div class="form-group col-md-6">
+              <b>Preferred Pharmacy</b><br><br>
+                <%= @pharmacy.name %><br>
+                <%= @pharmacy.street %><br>
+                <%= "#{@pharmacy.city}, #{@pharmacy.state} #{@pharmacy.zip}" %><br>
+                <%= "P: #{format_phone(@pharmacy.phone)}" %><br>
+                <%= "F: #{format_phone(@pharmacy.fax)}" %>
+            </div>
+          <% end %>
 
           <div class="form-group col-md-6">
             <b>Prescribing Provider</b><br><br>

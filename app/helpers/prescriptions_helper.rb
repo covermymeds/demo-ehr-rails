@@ -10,7 +10,7 @@ module PrescriptionsHelper
     elsif prescription.predicted && !prescription.pa_required
       "Prior Authorization Not Required"
     else
-      "Product Not Covered"
+      "Patient Benefit Not Available"
     end
   end
 

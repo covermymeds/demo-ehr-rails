@@ -279,7 +279,6 @@ describe 'eHR Example App' do
 
         it 'should navigate to the patient show page if patient is clicked with no prescriptions assigned' do
           click_link('Mike Miller 10/01/1971 OH')
-          binding.pry
           expect(page).to have_content 'Edit Patient'
         end
 
@@ -344,6 +343,17 @@ describe 'eHR Example App' do
       visit(patients_path)
       page.find('#patients-list > table > tbody > tr:nth-child(3) > td:nth-child(2) > a').click
       expect(page).to have_selector('#patient-show')
+    end
+
+    it 'should display the preferred pharmacy' do
+      # Find a drug
+      fill_autocomplete 'prescription_drug_name', with: drug_name, select: full_drug_name
+
+      fill_in 'prescription_quantity', with: '1'
+      select('CVS - 670 N. High St., Columbus, fax: 555-555-5555', from: 'prescription_pharmacy_id')
+
+      click_on('Confirm Prescription')
+      expect(page).to have_content('CVS')
     end
 
     describe 'formulary service' do
@@ -415,6 +425,19 @@ describe 'eHR Example App' do
         end
       end
 
+      context 'quantity substitution', js: true do
+        before do
+          stub_indicators_drug_qty_substitution(drug_name, pa_required)
+        end
+
+        it 'displays the quantity substitution' do
+          fill_in('Quantity', with: 100)
+          click_on('Confirm Prescription')
+          expect(page).to have_content('QTY Substitution')
+          expect(page).to have_content('115')
+        end
+      end
+
       context 'pharmacy substitution', js: true do
         before do
           stub_indicators_pharmacy_substitution(drug_name, pa_required)
@@ -422,9 +445,11 @@ describe 'eHR Example App' do
 
         it 'displays the pharmacy substitution' do
           fill_in('Quantity', with: 1)
+          select('CVS - 670 N. High St., Columbus, fax: 555-555-5555', from: 'prescription_pharmacy_id')
           click_on('Confirm Prescription')
           expect(page).to have_content('Non-Preferred')
-          expect(page).to have_content('CVS PHARMACY')
+          expect(page).to have_content('Walgreens')
+          expect(page).to have_content('CVS')
         end
       end
 
@@ -439,11 +464,58 @@ describe 'eHR Example App' do
 
         it 'displays the pharmacy and drug substitution' do
           fill_in('Quantity', with: 1)
+          select('CVS - 670 N. High St., Columbus, fax: 555-555-5555', from: 'prescription_pharmacy_id')
           click_on('Confirm Prescription')
           expect(page).to have_content('Non-Preferred')
-          expect(page).to have_content('CVS PHARMACY')
+          expect(page).to have_content('Walgreens')
+          expect(page).to have_content('CVS')
           expect(page).to have_content('Substitution')
           expect(page).to have_content('Vanilla')
+        end
+      end
+
+      context 'drug alternatives', js: true do
+        before do
+          stub_indicators_drug_alternatives
+        end
+
+        it 'displays the drug alternatives' do
+          fill_in('Quantity', with: 1)
+          click_on('Confirm Prescription')
+          expect(page).to have_content('Suggested Drug Alternatives')
+          expect(page).to have_content('Chocolate')
+          expect(page).to have_content('Butterscotch')
+        end
+      end
+
+      context 'additional content', js: true do
+        before do
+          stub_indicators_additional_content
+        end
+
+        it 'displays additional content' do
+          fill_in('Quantity', with: 1)
+          click_on('Confirm Prescription')
+          expect(page).to have_content('Assistance with completing and following up on the Prior Authorization is available.')
+          expect(page).to have_content('https://www.covermymeds.com/main/help/')
+          expect(page).to have_content('Common ICD-10 codes used for this medication are: W56.49, W56.22, and V91.07')
+        end
+      end
+
+      context 'sponsored help message' do
+        let(:full_drug_name) { 'NexIUM 2.5MG packets' }
+        let(:pa_required) { true }
+
+        before do
+          stub_indicators(full_drug_name, pa_required)
+        end
+
+        it 'displays the sponsored help message' do
+          fill_in('Quantity', with: 1)
+          click_on('Confirm Prescription')
+          expect(page).to have_selector(:xpath, '//*[@id="request-add"]/fieldset/div/div[4]/div/img')
+          selector = find(:xpath, "//*[@id='request-add']/fieldset/div/div[4]/div/img")
+          expect(selector['title']).to eq('This is a helpful message for: Prior Authorization Required')
         end
       end
     end

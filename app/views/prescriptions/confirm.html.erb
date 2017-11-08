@@ -55,7 +55,7 @@
             <b>Patient Benefit Amount</b><br>
             <%= patient_benefit_message(@indicator_result.indicator.prescription) %>
             <% unless @indicator_result.indicator.prescription.sponsored_help_message.blank? %>
-              <%= image_tag("question.png", size: "25x25", title: @indicator_result.indicator.prescription.sponsored_help_message) %>
+              <%= image_tag("question.png", size: "16x16", title: @indicator_result.indicator.prescription.sponsored_help_message) %>
             <% end %>
           </div>
 

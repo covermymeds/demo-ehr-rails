@@ -518,6 +518,23 @@ describe 'eHR Example App' do
           expect(selector['title']).to eq('This is a helpful message for: Prior Authorization Required')
         end
       end
+
+      context 'deductibles', js: true do
+        let(:drug_id) { junk 6 }
+        let(:pa_required) { false }
+
+        before do
+          stub_indicators_with_deductible_amounts(drug_id, pa_required)
+        end
+
+        it 'displays deductible information' do
+          fill_in('Quantity', with: 1)
+          click_on('Confirm Prescription')
+          expect(page).to have_content('Applied Deductible Amount')
+          expect(page).to have_content('Deductible Amount Remaining')
+          expect(page).to have_content('$275.00')
+        end
+      end
     end
   end
 end

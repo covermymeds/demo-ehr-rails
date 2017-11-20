@@ -162,3 +162,23 @@ def stub_indicators_pharmacy_drug_substitution(drug_id, pa_required)
     to receive(:post_indicators).
     and_return(Hashie::Mash.new(indicator_result))
 end
+
+
+def stub_indicators_with_deductible_amounts(drug_id, pa_required)
+  indicator_result = { 'indicator' =>
+    {
+    'prescription' => {
+      'drug_id' => drug_id,
+      'name' => drug_name,
+      'pa_required' => pa_required,
+      'predicted' => true,
+      'applied_deductible_amt' => '15.00',
+      'remaining_deductible_amt' => '275.00',
+      'copay_amt' => '15.00'
+      }
+    }
+  }
+  allow_any_instance_of(CoverMyMeds::Client).
+    to receive(:post_indicators).
+    and_return(Hashie::Mash.new(indicator_result))
+end

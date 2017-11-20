@@ -53,9 +53,9 @@
         <div class='row'>
           <div class="form-group col-md-4">
             <b>Patient Benefit Amount</b><br>
-            <%= patient_benefit_message(@indicator_result.indicator.prescription) %>
-            <% unless @indicator_result.indicator.prescription.sponsored_help_message.blank? %>
-              <%= image_tag("question.png", size: "16x16", title: @indicator_result.indicator.prescription.sponsored_help_message) %>
+            <%= patient_benefit_message(@indicator_prescription) %>
+            <% unless @indicator_prescription.sponsored_help_message.blank? %>
+              <%= image_tag("question.png", size: "16x16", title: @indicator_prescription.sponsored_help_message) %>
             <% end %>
           </div>
 
@@ -64,52 +64,52 @@
                 <b>Dispense</b> <span class="badge">Substitution</span><br>
                 <%= @substituted_drug.name %><br>
                 <%= drug_info(@substituted_drug) %><br>
-                <%= @indicator_result.indicator.prescription.quantity %>
+                <%= @indicator_prescription.quantity %>
 
             </div>
-          <% elsif @indicator_result.indicator.prescription.quantity_substitution_performed %>
+          <% elsif @indicator_prescription.quantity_substitution_performed %>
             <div class="form-group col-md-4">
               <b>Dispense</b> <span class="badge">QTY Substitution</span><br>
               <%= @prescription.drug_name %><br>
-              <%= drug_info(@indicator_result.indicator.prescription) %><br>
-              <%= @indicator_result.indicator.prescription.quantity %>
+              <%= drug_info(@indicator_prescription) %><br>
+              <%= @indicator_prescription.quantity %>
             </div>
-          <% elsif !@indicator_result.indicator.prescription.suggested_drug_alternatives.blank? %>
+          <% elsif !@indicator_prescription.suggested_drug_alternatives.blank? %>
             <div class="form-group col-md-4">
                 <b>Suggested Drug Alternatives</b><br>
                 <ul type="disc">
-                  <% @indicator_result.indicator.prescription.suggested_drug_alternatives.each do |alternative| %>
+                  <% @indicator_prescription.suggested_drug_alternatives.each do |alternative| %>
                      <li><%= alternative[:name] %></li>
                   <% end %>
                 </ul>
             </div>
           <% end %>
 
-          <% if @indicator_result.indicator.pharmacy && @indicator_result.indicator.pharmacy.pharmacy_substitution_performed %>
+          <% if @indicator_pharmacy && @indicator_pharmacy.pharmacy_substitution_performed %>
             <div class="form-group col-md-4">
                 <b>Pharmacy</b> <span class="badge">Non-Preferred</span><br>
-                <%= @indicator_result.indicator.pharmacy.name %><br>
-                <%= @indicator_result.indicator.pharmacy.address.street_1 %><br>
-                <%= address_info(@indicator_result.indicator.pharmacy.address) %>
+                <%= @indicator_pharmacy.name %><br>
+                <%= @indicator_pharmacy.address.street_1 %><br>
+                <%= address_info(@indicator_pharmacy.address) %>
             </div>
           <% end %>
 
         </div>
 
-        <% unless @indicator_result.indicator.prescription.applied_deductible_amt.blank? %>
+        <% unless @indicator_prescription.applied_deductible_amt.blank? %>
           <div class='row'>
             <div class="col-md-12">
               <b>Applied Deductible Amount</b><br>
-              <%= "$#{@indicator_result.indicator.prescription.applied_deductible_amt}" %><br>
+              <%= "$#{@indicator_prescription.applied_deductible_amt}" %><br>
             </div>
           </div>
         <% end %>
 
-        <% unless @indicator_result.indicator.prescription.remaining_deductible_amt.blank? %>
+        <% unless @indicator_prescription.remaining_deductible_amt.blank? %>
           <div class='row'>
             <div class="col-md-12">
               <b>Deductible Amount Remaining</b><br>
-              <%= "$#{@indicator_result.indicator.prescription.remaining_deductible_amt}" %><br>
+              <%= "$#{@indicator_prescription.remaining_deductible_amt}" %><br>
             </div>
           </div>
         <% end %>
@@ -117,15 +117,15 @@
         <% if @substituted_drug %>
           <div class='row'>
             <div class="col-md-12">
-              <span class="badge">Substitution</span><%= "#{ @indicator_result.indicator.prescription.drug_substitution_help_message}" %>
+              <span class="badge">Substitution</span><%= "#{ @indicator_prescription.drug_substitution_help_message}" %>
             </div>
           </div>
         <% end %>
 
-        <% unless @indicator_result.indicator.prescription.additional_content.blank? %>
+        <% unless @indicator_prescription.additional_content.blank? %>
           <div class='row'>
             <div class="col-md-12">
-              <% @indicator_result.indicator.prescription.additional_content.each do |content| %>
+              <% @indicator_prescription.additional_content.each do |content| %>
                 <%= content['text'] %><br>
                 <% unless content['href'].blank? %>
                    <%= link_to content['href'], content['href'], method: content['method'] %><br>
@@ -137,7 +137,7 @@
 
         <div class='row'>
           <div class="col-md-12">
-            <small><%= @indicator_result.indicator.prescription.disclaimer_message %></small>
+            <small><%= @indicator_prescription.disclaimer_message %></small>
           </div>
         </div>
 
@@ -168,7 +168,7 @@
 
         <div class='checkbox'>
           <%= label_tag :start_pa do %>
-            <% if @indicator_result.indicator.prescription.autostart %>
+            <% if @indicator_prescription.autostart %>
               <%= hidden_field_tag :start_pa, 1 %>
               <%= check_box_tag :start_pa, '1', true, disabled: true %>
               <b>Start PA?</b>

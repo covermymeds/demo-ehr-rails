@@ -5,180 +5,24 @@
     <fieldset>
       <legend>Prescription - <%= "#{@patient.description}" %></legend>
       <div class="row col-md-8">
-          <div class='row'>
-            <div class="drug-name col-md-8">
-              <%= @prescription.drug_name %>
-              <%= hidden_field :prescription, :drug_number %>
-              <%= hidden_field :prescription, :drug_name %>
-            </div>
-          </div>
+        <%= render "drug_name" %>
 
         <%= f.hidden_field :pa_required, value: (@prescription.pa_required ? 1 : 0) %>
         <%= f.hidden_field :autostart, value: (@prescription.autostart ? 1 : 0) %>
 
-        <div class='row'>
-          <div class="form-group col-md-2">
-            <%= f.label :quantity %><br>
-            <%= @prescription.quantity %>
-            <%= hidden_field :prescription, :quantity %>
-          </div>
-
-          <div class="form-group col-md-2">
-            <%= f.label :frequency , "Directions"%><br>
-            <%= @prescription.frequency %>
-            <%= hidden_field :prescription, :frequency %>
-          </div>
-
-          <div class="form-group col-md-2">
-            <%= f.label :refills, "Refills" %><br>
-            <%= @prescription.refills %>
-            <%= hidden_field :prescription, :refills %>
-          </div>
-
-          <div class='form-group col-md-2'>
-            <%= f.label :dispense_as_written %>
-            <%= @prescription.dispense_as_written %>
-            <%= hidden_field :prescription, :dispense_as_written %>
-          </div>
-        </div>
+        <%= render "prescription_info", f: f %>
 
         <hr />
 
-        <div class='row'>
-          <div class="drug-name col-md-12">
-            <h4><b>Prescription - Benefit Details</b></h4>
-          </div>
-        </div>
-
-        <div class='row'>
-          <div class="form-group col-md-4">
-            <b>Patient Benefit Amount</b><br>
-            <%= patient_benefit_message(@indicator_prescription) %>
-            <% unless @indicator_prescription.sponsored_help_message.blank? %>
-              <%= image_tag("question.png", size: "16x16", title: @indicator_prescription.sponsored_help_message) %>
-            <% end %>
-          </div>
-
-          <% if @substituted_drug %>
-            <div class="form-group col-md-4">
-                <b>Dispense</b> <span class="badge">Substitution</span><br>
-                <%= @substituted_drug.name %><br>
-                <%= drug_info(@substituted_drug) %><br>
-                <%= @indicator_prescription.quantity %>
-
-            </div>
-          <% elsif @indicator_prescription.quantity_substitution_performed %>
-            <div class="form-group col-md-4">
-              <b>Dispense</b> <span class="badge">QTY Substitution</span><br>
-              <%= @prescription.drug_name %><br>
-              <%= drug_info(@indicator_prescription) %><br>
-              <%= @indicator_prescription.quantity %>
-            </div>
-          <% elsif !@indicator_prescription.suggested_drug_alternatives.blank? %>
-            <div class="form-group col-md-4">
-                <b>Suggested Drug Alternatives</b><br>
-                <ul type="disc">
-                  <% @indicator_prescription.suggested_drug_alternatives.each do |alternative| %>
-                     <li><%= alternative[:name] %></li>
-                  <% end %>
-                </ul>
-            </div>
-          <% end %>
-
-          <% if @indicator_pharmacy && @indicator_pharmacy.pharmacy_substitution_performed %>
-            <div class="form-group col-md-4">
-                <b>Pharmacy</b> <span class="badge">Non-Preferred</span><br>
-                <%= @indicator_pharmacy.name %><br>
-                <%= @indicator_pharmacy.address.street_1 %><br>
-                <%= address_info(@indicator_pharmacy.address) %>
-            </div>
-          <% end %>
-
-        </div>
-
-        <% unless @indicator_prescription.applied_deductible_amt.blank? %>
-          <div class='row'>
-            <div class="col-md-12">
-              <b>Applied Deductible Amount</b><br>
-              <%= "$#{@indicator_prescription.applied_deductible_amt}" %><br>
-            </div>
-          </div>
-        <% end %>
-
-        <% unless @indicator_prescription.remaining_deductible_amt.blank? %>
-          <div class='row'>
-            <div class="col-md-12">
-              <b>Deductible Amount Remaining</b><br>
-              <%= "$#{@indicator_prescription.remaining_deductible_amt}" %><br><br>
-            </div>
-          </div>
-        <% end %>
-
-        <% if @substituted_drug %>
-          <div class='row'>
-            <div class="col-md-12">
-              <span class="badge">Substitution</span><%= " #{ @indicator_prescription.drug_substitution_help_message}" %>
-            </div>
-          </div>
-        <% end %>
-
-        <% unless @indicator_prescription.additional_content.blank? %>
-          <div class='row'>
-            <div class="col-md-12">
-              <% @indicator_prescription.additional_content.each do |content| %>
-                <%= content['text'] %><br>
-                <% unless content['href'].blank? %>
-                   <%= link_to content['href'], content['href'], method: content['method'] %><br>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-
-        <div class='row'>
-          <div class="col-md-12">
-            <small><%= @indicator_prescription.disclaimer_message %></small>
-          </div>
-        </div>
+        <%= render "patient_benefit_details" %>
+        <%= render "deductible_info" %>
+        <%= render "substitution_message" %>
+        <%= render "messages" %>
 
         <hr />
 
-        <div class='row'>
-          <% unless @pharmacy.name.nil? %>
-            <div class="form-group col-md-6">
-              <b>Preferred Pharmacy</b><br><br>
-                <%= @pharmacy.name %><br>
-                <%= @pharmacy.street %><br>
-                <%= "#{@pharmacy.city}, #{@pharmacy.state} #{@pharmacy.zip}" %><br>
-                <%= "P: #{format_phone(@pharmacy.phone)}" %><br>
-                <%= "F: #{format_phone(@pharmacy.fax)}" %>
-            </div>
-          <% end %>
-
-          <div class="form-group col-md-6">
-            <b>Prescribing Provider</b><br><br>
-              <% prescriber_info = prescriber_info(@patient.to_prescriber_hash) %>
-              <%= "#{prescriber_info.first_name} #{prescriber_info.last_name}"%><br>
-              <%= prescriber_info.address.street_1 %><br>
-              <%= address_info(prescriber_info.address) %><br>
-              <%= "P: #{format_phone(prescriber_info.phone_number)}" %><br>
-              <%= "F: #{format_phone(prescriber_info.fax_number)}" %>
-          </div>
-        </div>
-
-        <div class='checkbox'>
-          <%= label_tag :start_pa do %>
-            <% if @indicator_prescription.autostart %>
-              <%= hidden_field_tag :start_pa, 1 %>
-              <%= check_box_tag :start_pa, '1', true, disabled: true %>
-              <b>Start PA?</b>
-            <% else %>
-              <%= hidden_field_tag :start_pa, 0 %>
-              <%= check_box_tag :start_pa %>
-              <b>Start PA?</b>
-            <% end %>
-          <% end %>
-        </div>
+        <%= render "original_pharmacy_and_prescriber" %>
+        <%= render "start_pa_checkbox" %>
 
         <div class="actions">
           <%= link_to "Cancel", :back %>

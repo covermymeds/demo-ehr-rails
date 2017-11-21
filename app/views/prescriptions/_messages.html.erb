@@ -1,0 +1,18 @@
+<% unless @indicator_prescription.additional_content.blank? %>
+  <div class='row'>
+    <div class="col-md-12">
+      <% @indicator_prescription.additional_content.each do |content| %>
+        <%= content['text'] %><br>
+        <% unless content['href'].blank? %>
+           <%= link_to content['href'], content['href'], method: content['method'] %><br>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<div class='row'>
+  <div class="col-md-12">
+    <small><%= @indicator_prescription.disclaimer_message %></small>
+  </div>
+</div>

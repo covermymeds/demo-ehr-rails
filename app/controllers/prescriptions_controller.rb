@@ -85,9 +85,11 @@ class PrescriptionsController < ApplicationController
   def confirm
     @prescription = Prescription.new(prescription_params)
     @patient = Patient.find(params[:patient_id])
-    @pharmacy = params[:pharmacy_id].blank? ? Pharmacy.new : Pharmacy.find(params[:pharmacy_id])
-    @indicator_result = Hashie::Mash.new Formulary.pa_required?(@patient, @prescription, @pharmacy)
-    @substituted_drug = substituted_drug(@indicator_result.indicator.prescription)
+    @pharmacy = @prescription.pharmacy_id.blank? ? Pharmacy.new : Pharmacy.find(@prescription.pharmacy_id)
+    indicator_result = Hashie::Mash.new Formulary.pa_required?(@patient, @prescription, @pharmacy)
+    @indicator_prescription = indicator_result.indicator.prescription
+    @indicator_pharmacy = indicator_result.indicator.pharmacy
+    @substituted_drug = substituted_drug(indicator_result.indicator.prescription)
   end
 
   private

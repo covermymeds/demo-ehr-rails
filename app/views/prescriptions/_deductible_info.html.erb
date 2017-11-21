@@ -1,0 +1,17 @@
+<% unless @indicator_prescription.applied_deductible_amt.blank? %>
+  <div class='row'>
+    <div class="col-md-12">
+      <b>Applied Deductible Amount</b><br>
+      <%= "$#{@indicator_prescription.applied_deductible_amt}" %><br>
+    </div>
+  </div>
+<% end %>
+
+<% unless @indicator_prescription.remaining_deductible_amt.blank? %>
+  <div class='row'>
+    <div class="col-md-12">
+      <b>Deductible Amount Remaining</b><br>
+      <%= "$#{@indicator_prescription.remaining_deductible_amt}" %><br><br>
+    </div>
+  </div>
+<% end %>

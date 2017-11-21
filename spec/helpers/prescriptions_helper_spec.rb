@@ -69,4 +69,35 @@ RSpec.describe PrescriptionsHelper, :type => :helper do
       expect(helper.address_info(address)).to eq("Columbus, OH 44401")
     end
   end
+
+  describe "#format_phone" do
+    Hash[
+      "number with no symbols"        => ["5557241234", "555-724-1234"],
+      "number with dashes"            => ["555-724-1234", "555-724-1234"],
+      "nubmer with parentheses"       => ["(555) 724-1234", "(555) 724-1234"],
+    ].each do |context_name, input_value_with_result|
+      context context_name do
+        it "returns the correctly formatted phone number" do
+          expect(helper.format_phone(input_value_with_result[0])).to eq(input_value_with_result[1])
+        end
+      end
+    end
+  end
+
+  describe "prescriber_info" do
+    let(:prescriber_hash) do
+      {
+        first_name: "Andrew",
+        last_name: "Fleming",
+        fax_number: "6145555554",
+        phone_number: "7256489633"
+      }
+    end
+
+    it "returns a prescriber object" do
+      [:first_name, :last_name, :fax_number, :phone_number].each do |attribute|
+        expect(helper.prescriber_info(prescriber_hash)).to respond_to(attribute)
+      end
+    end
+  end
 end

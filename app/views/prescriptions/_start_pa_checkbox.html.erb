@@ -1,0 +1,13 @@
+<div class='checkbox'>
+  <%= label_tag :start_pa do %>
+    <% if @indicator_prescription.autostart %>
+      <%= hidden_field_tag :start_pa, 1 %>
+      <%= check_box_tag :start_pa, '1', true, disabled: true %>
+      <b>Start PA?</b>
+    <% else %>
+      <%= hidden_field_tag :start_pa, 0 %>
+      <%= check_box_tag :start_pa %>
+      <b>Start PA?</b>
+    <% end %>
+  <% end %>
+</div>

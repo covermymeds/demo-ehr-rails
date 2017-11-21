@@ -1,0 +1,18 @@
+<div class='row'>
+  <div class="drug-name col-md-12">
+    <h4><b>Prescription - Benefit Details</b></h4>
+  </div>
+</div>
+
+<div class='row'>
+  <div class="form-group col-md-4">
+    <b>Patient Benefit Amount</b><br>
+    <%= patient_benefit_message(@indicator_prescription) %>
+    <% unless @indicator_prescription.sponsored_help_message.blank? %>
+      <%= image_tag("question.png", size: "16x16", title: @indicator_prescription.sponsored_help_message) %>
+    <% end %>
+  </div>
+
+  <%= render "substitutions" %>
+
+</div>

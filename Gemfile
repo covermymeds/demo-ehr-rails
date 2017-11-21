@@ -16,7 +16,7 @@ gem 'bootstrap-datepicker-rails'
 gem 'rest-client'
 
 # for heroku
-gem 'rails_12factor', group: :production
+gem 'rails_12factor', group: [:production, :staging]
 gem 'puma'
 
 # Use Uglifier as compressor for JavaScript assets

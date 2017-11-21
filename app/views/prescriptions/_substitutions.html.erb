@@ -1,0 +1,34 @@
+<% if @substituted_drug %>
+  <div class="form-group col-md-4">
+      <b>Dispense</b> <span class="badge">Substitution</span><br>
+      <%= @substituted_drug.name %><br>
+      <%= drug_info(@substituted_drug) %><br>
+      <%= @indicator_prescription.quantity %>
+
+  </div>
+<% elsif @indicator_prescription.quantity_substitution_performed %>
+  <div class="form-group col-md-4">
+    <b>Dispense</b> <span class="badge">QTY Substitution</span><br>
+    <%= @prescription.drug_name %><br>
+    <%= drug_info(@indicator_prescription) %><br>
+    <%= @indicator_prescription.quantity %>
+  </div>
+<% elsif !@indicator_prescription.suggested_drug_alternatives.blank? %>
+  <div class="form-group col-md-4">
+      <b>Suggested Drug Alternatives</b><br>
+      <ul type="disc">
+        <% @indicator_prescription.suggested_drug_alternatives.each do |alternative| %>
+           <li><%= alternative[:name] %></li>
+        <% end %>
+      </ul>
+  </div>
+<% end %>
+
+<% if @indicator_pharmacy && @indicator_pharmacy.pharmacy_substitution_performed %>
+  <div class="form-group col-md-4">
+      <b>Pharmacy</b> <span class="badge">Non-Preferred</span><br>
+      <%= @indicator_pharmacy.name %><br>
+      <%= @indicator_pharmacy.address.street_1 %><br>
+      <%= address_info(@indicator_pharmacy.address) %>
+  </div>
+<% end %>

@@ -109,7 +109,7 @@
           <div class='row'>
             <div class="col-md-12">
               <b>Deductible Amount Remaining</b><br>
-              <%= "$#{@indicator_prescription.remaining_deductible_amt}" %><br>
+              <%= "$#{@indicator_prescription.remaining_deductible_amt}" %><br><br>
             </div>
           </div>
         <% end %>
@@ -117,7 +117,7 @@
         <% if @substituted_drug %>
           <div class='row'>
             <div class="col-md-12">
-              <span class="badge">Substitution</span><%= "#{ @indicator_prescription.drug_substitution_help_message}" %>
+              <span class="badge">Substitution</span><%= " #{ @indicator_prescription.drug_substitution_help_message}" %>
             </div>
           </div>
         <% end %>
